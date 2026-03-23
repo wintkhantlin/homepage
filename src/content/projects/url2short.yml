@@ -2,7 +2,7 @@ name: URL2Short
 type: utility
 description: A URL shortening service built with Node.js and Express, allowing users to create and manage
 source: https://github.com/happer64bit/url2short
-img: /img/url2short.png
+img: ../../assets/img/url2short.png
 technologies: ["Vue.JS", "Express.JS", "NestJS" ,"Microservice", "Postgres", "MongoDB", "Redis"]
 publishedDate: 2026-01-01
 color: "#000"

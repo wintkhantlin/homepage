@@ -1,28 +1,34 @@
 ---
 const links = [
-  { label: "Home", href: "/" },
   { label: "Projects", href: "/#projects" },
 ];
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50">
-  <div class="wrapper">
-    <div class="header-inner">
-      <a href="/" class="header-brand">
+<header class="fixed inset-x-0 top-0 z-50">
+  <div class="mx-auto max-w-4xl px-5 sm:px-6 md:px-8">
+    <div class="flex items-center justify-between py-5">
+      <a
+        href="/"
+        class="text-sm font-semibold tracking-[0.025em] text-(--text-heading) transition-colors duration-150 hover:text-(--text)"
+      >
         happer
       </a>
 
-      <nav class="header-nav">
+      <nav class="flex items-center gap-5 sm:gap-6">
         {links.map((link) => (
-          <a href={link.href} class="header-link">
+          <a
+            href={link.href}
+            class="text-sm text-(--text-muted) transition-colors duration-150 hover:text-(--text-heading)"
+          >
             {link.label}
           </a>
         ))}
+
         <a
           href="https://github.com/happer64bit"
           target="_blank"
           rel="noopener noreferrer"
-          class="header-link"
+          class="text-sm text-(--text-muted) transition-colors duration-150 hover:text-(--text-heading)"
         >
           GitHub
         </a>
@@ -31,7 +37,7 @@ const links = [
           id="theme-toggle"
           type="button"
           aria-label="Toggle theme"
-          class="header-link cursor-pointer"
+          class="inline-flex items-center justify-center rounded-md px-2.5 py-1.5 text-sm text-(--text-muted) transition-colors duration-150 hover:bg-(--border) hover:text-(--text-heading)"
         >
           <span id="theme-icon-dark" class="hidden">☀</span>
           <span id="theme-icon-light" class="hidden">☽</span>
@@ -41,98 +47,41 @@ const links = [
   </div>
 </header>
 
-<style>
-  .wrapper {
-    max-width: 50rem;
-    margin-inline: auto;
-    padding-inline: 1.25rem;
-  }
-
-  @media (min-width: 640px) {
-    .wrapper { padding-inline: 1.5rem; }
-  }
-
-  @media (min-width: 768px) {
-    .wrapper { padding-inline: 2rem; }
-  }
-
-  .header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: 1.25rem;
-  }
-
-  .header-brand {
-    color: var(--text-heading);
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.025em;
-    transition: color 0.15s;
-    text-decoration: none;
-  }
-  .header-brand:hover {
-    color: var(--text);
-  }
-
-  .header-nav {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-  }
-
-  @media (min-width: 640px) {
-    .header-nav { gap: 1.5rem; }
-  }
-
-  .header-link {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    transition: color 0.15s;
-    text-decoration: none;
-    background: none;
-    border: none;
-    padding: 0;
-    font-family: inherit;
-  }
-  .header-link:hover {
-    color: var(--text-heading);
-  }
-</style>
-
 <script>
   function updateIcons() {
-    const isLight = document.documentElement.classList.contains('light');
-    const darkIcon = document.getElementById('theme-icon-dark');
-    const lightIcon = document.getElementById('theme-icon-light');
-    if (darkIcon) darkIcon.classList.toggle('hidden', !isLight);
-    if (lightIcon) lightIcon.classList.toggle('hidden', isLight);
+    const isLight = document.documentElement.classList.contains("light");
+    const darkIcon = document.getElementById("theme-icon-dark");
+    const lightIcon = document.getElementById("theme-icon-light");
+
+    if (darkIcon) darkIcon.classList.toggle("hidden", !isLight);
+    if (lightIcon) lightIcon.classList.toggle("hidden", isLight);
   }
 
   function toggleTheme(e: MouseEvent) {
-    const isLight = document.documentElement.classList.contains('light');
-    const newTheme = isLight ? 'dark' : 'light';
+    const isLight = document.documentElement.classList.contains("light");
+    const newTheme = isLight ? "dark" : "light";
 
     const x = e.clientX;
     const y = e.clientY;
-    document.documentElement.style.setProperty('--x', `${x}px`);
-    document.documentElement.style.setProperty('--y', `${y}px`);
+
+    document.documentElement.style.setProperty("--x", `${x}px`);
+    document.documentElement.style.setProperty("--y", `${y}px`);
 
     if (document.startViewTransition) {
       document.startViewTransition(() => {
-        document.documentElement.classList.toggle('light', newTheme === 'light');
-        localStorage.setItem('theme', newTheme);
+        document.documentElement.classList.toggle("light", newTheme === "light");
+        localStorage.setItem("theme", newTheme);
         updateIcons();
       });
     } else {
-      document.documentElement.classList.toggle('light', newTheme === 'light');
-      localStorage.setItem('theme', newTheme);
+      document.documentElement.classList.toggle("light", newTheme === "light");
+      localStorage.setItem("theme", newTheme);
       updateIcons();
     }
   }
 
   updateIcons();
 
-  const btn = document.getElementById('theme-toggle');
-  btn?.addEventListener('click', (e) => toggleTheme(e));
+  const btn = document.getElementById("theme-toggle");
+  btn?.addEventListener("click", (e) => toggleTheme(e as MouseEvent));
 </script>

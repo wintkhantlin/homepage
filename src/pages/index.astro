@@ -1,9 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 
-const projects = (await getCollection("projects")).sort(
+const rawProjects = (await getCollection("projects")).sort(
   (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf()
+);
+
+const projects = await Promise.all(
+  rawProjects.map(async (project) => {
+    const preview = await getImage({
+      src: project.data.img,
+      width: 512,
+      format: "webp",
+    });
+
+    return {
+      ...project,
+      previewSrc: preview.src,
+    };
+  })
 );
 ---
 
@@ -11,46 +27,49 @@ const projects = (await getCollection("projects")).sort(
   title="Wint Khant Lin aka Happer"
   description="Hello, I am Wint Khant Lin, also known as Happer. I am a college student from Myanmar. I love coding, listening to music."
 >
-  <main class="page-wrapper" style="color: var(--text);">
-    <!-- Hero -->
-    <h1 class="hero-heading" style="color: var(--text-heading);">
+  <main class="mx-auto max-w-4xl px-5 text-(--text) sm:px-6 md:px-8">
+    <h1 class="mt-24 mb-14 text-4xl font-medium leading-tight tracking-[-0.02em] text-(--text-heading) md:text-5xl">
       Wint Khant Lin — curious about systems, software, and everything in between.
     </h1>
-    
-    <!-- Projects -->
-    <section id="projects" class="projects-section">
-      <h2 class="section-heading" style="color: var(--text-heading);">Projects</h2>
-      
-      <!-- Floating preview image (desktop only) -->
+
+    <section id="projects" class="relative mt-16 mb-24">
+      <h2 class="mb-6 text-lg font-bold text-(--text-heading)">Projects</h2>
+
       <div
         id="project-preview"
-        class="project-preview"
+        class="pointer-events-none fixed top-0 left-0 z-50 hidden opacity-0 transition-opacity duration-200 ease-out md:block"
       >
         <img
           id="project-preview-img"
           src=""
           alt=""
-          class="project-preview-img"
+          class="w-64 rounded-lg border border-(--border) object-cover shadow-2xl"
         />
       </div>
 
-      <div id="projects-list" class="projects-list">
+      <div id="projects-list" class="flex flex-col">
         {projects.map((project) => (
           <a
             href={project.data.source}
             target="_blank"
             rel="noopener noreferrer"
-            class="project-row"
-            data-img={project.data.img || ""}
+            class="group flex items-center justify-between border-b border-(--border) py-4 no-underline transition-opacity duration-150 hover:opacity-80"
+            data-img={project.previewSrc}
           >
-            <div class="project-left">
-              <span class="project-chevron">&rsaquo;</span>
-              <span class="project-name">{project.data.name}</span>
+            <div class="flex min-w-0 items-center gap-2.5">
+              <span class="shrink-0 text-sm text-(--text-faint)">&rsaquo;</span>
+              <span class="truncate text-[15px] text-(--text) transition-colors duration-150 group-hover:text-(--text-heading)">
+                {project.data.name}
+              </span>
             </div>
-            
-            <div class="project-right">
-              <span class="project-type">{project.data.type || project.data.description}</span>
-              <span class="project-year">{project.data.publishedDate.getFullYear()}</span>
+
+            <div class="ml-4 flex shrink-0 items-center gap-4 sm:gap-6">
+              <span class="hidden text-sm text-(--text-muted) sm:block">
+                {project.data.type || project.data.description}
+              </span>
+              <span class="text-sm tabular-nums text-(--text-muted)">
+                {project.data.publishedDate.getFullYear()}
+              </span>
             </div>
           </a>
         ))}
@@ -59,175 +78,35 @@ const projects = (await getCollection("projects")).sort(
   </main>
 </BaseLayout>
 
-<style>
-  /* ── Page wrapper with consistent responsive padding ── */
-  .page-wrapper {
-    max-width: 50rem;
-    margin-inline: auto;
-    padding-inline: 1.25rem;
-  }
-
-  @media (min-width: 640px) {
-    .page-wrapper { padding-inline: 1.5rem; }
-  }
-
-  @media (min-width: 768px) {
-    .page-wrapper { padding-inline: 2rem; }
-  }
-
-  /* ── Hero heading ── */
-  .hero-heading {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 500;
-    line-height: 1.2;
-    margin-top: 6rem;
-    margin-bottom: 3.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  /* ── Section spacing ── */
-  .projects-section {
-    position: relative;
-    margin-top: 4rem;
-    margin-bottom: 6rem;
-  }
-
-  .section-heading {
-    font-size: 1.125rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-  }
-
-  /* ── Project rows ── */
-  .projects-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .project-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: 0.875rem;
-    border-bottom: 1px solid var(--border);
-    text-decoration: none;
-    transition: opacity 0.15s;
-  }
-
-  @media (min-width: 640px) {
-    .project-row { padding-block: 1rem; }
-  }
-
-  .project-row:hover {
-    opacity: 0.8;
-  }
-
-  .project-row:hover .project-name {
-    color: var(--text-heading);
-  }
-
-  .project-left {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    min-width: 0;
-  }
-
-  .project-chevron {
-    color: var(--text-faint);
-    font-size: 0.875rem;
-    flex-shrink: 0;
-  }
-
-  .project-name {
-    color: var(--text);
-    font-size: 0.9375rem;
-    transition: color 0.15s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .project-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-shrink: 0;
-    margin-left: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .project-right { gap: 1.5rem; }
-  }
-
-  .project-type {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    display: none;
-  }
-
-  @media (min-width: 640px) {
-    .project-type { display: block; }
-  }
-
-  .project-year {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* ── Floating preview (desktop only) ── */
-  .project-preview {
-    pointer-events: none;
-    position: fixed;
-    z-index: 50;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    display: none;
-  }
-
-  @media (min-width: 768px) {
-    .project-preview { display: block; }
-  }
-
-  .project-preview-img {
-    width: 16rem;
-    border-radius: 0.5rem;
-    object-fit: cover;
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-    border: 1px solid var(--border);
-  }
-</style>
-
 <script>
-  const preview = document.getElementById('project-preview') as HTMLElement;
-  const previewImg = document.getElementById('project-preview-img') as HTMLImageElement;
-  const rows = document.querySelectorAll<HTMLElement>('.project-row');
-  const projectsList = document.getElementById('projects-list') as HTMLElement;
+  const preview = document.getElementById("project-preview") as HTMLElement | null;
+  const previewImg = document.getElementById("project-preview-img") as HTMLImageElement | null;
+  const rows = document.querySelectorAll<HTMLAnchorElement>("#projects-list a");
+  const projectsList = document.getElementById("projects-list") as HTMLElement | null;
 
   let isVisible = false;
 
   rows.forEach((row) => {
     const imgSrc = row.dataset.img;
 
-    row.addEventListener('mouseenter', () => {
+    row.addEventListener("mouseenter", () => {
       if (!imgSrc || !preview || !previewImg) return;
+
       previewImg.src = imgSrc;
-      previewImg.alt = row.textContent?.trim() || '';
-      preview.style.opacity = '1';
+      previewImg.alt = row.textContent?.trim() || "";
+      preview.style.opacity = "1";
       isVisible = true;
     });
 
-    row.addEventListener('mouseleave', () => {
+    row.addEventListener("mouseleave", () => {
       if (!preview) return;
-      preview.style.opacity = '0';
+
+      preview.style.opacity = "0";
       isVisible = false;
     });
 
-    row.addEventListener('mousemove', (e: MouseEvent) => {
-      if (!isVisible || !preview) return;
+    row.addEventListener("mousemove", (e: MouseEvent) => {
+      if (!isVisible || !preview || !projectsList) return;
 
       const listRect = projectsList.getBoundingClientRect();
       const x = listRect.right + 24;

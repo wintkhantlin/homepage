@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content'
 
 import { glob } from 'astro/loaders'
-import * as z from 'astro:schema'
+import * as z from 'astro/zod'
 
 export const content = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "src/content/posts" }),
@@ -19,7 +19,7 @@ export const content = defineCollection({
 
 export const projects = defineCollection({
   loader: glob({ pattern: "**/*.yml", base: "src/content/projects" }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     name: z.string(),
     type: z.string().optional(),
     description: z.string(),
@@ -28,7 +28,7 @@ export const projects = defineCollection({
       v => typeof v === 'string' || v instanceof Date ? new Date(v) : v,
       z.date()
     ),
-    img: z.string().optional(),
+    img: image(),
     technologies: z.array(z.string()).optional(),
     color: z.string()
   })

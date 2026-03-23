@@ -1,4 +1,5 @@
 name: Zay Chin
+type: collaborative shopping
 description: A collaborative shopping cart application that allows family members to create groups, add items to shared carts, and track shopping locations on a map.
 source: https://github.com/happer64bit/Zay-Chin
 img: /img/zay_chin.png

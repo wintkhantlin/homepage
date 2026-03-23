@@ -1,121 +1,240 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ProjectsShowcase from "../components/ProjectsShowcase.astro";
-import AboutSection from "../components/AboutSection.astro";
-import TechMarquee from "../components/TechMarquee.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf()
+);
 ---
 
 <BaseLayout
   title="Wint Khant Lin aka Happer"
   description="Hello, I am Wint Khant Lin, also known as Happer. I am a college student from Myanmar. I love coding, listening to music."
 >
-  <main
-    id="home"
-    class="body-mono relative flex min-h-screen flex-col justify-center px-4 py-20 text-center"
-  >
-    <h1
-      id="heading-text"
-      class="heading-sans mx-auto font-black leading-tight text-center text-balance
-         text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl"
-    >
-      <span id="anim-text">Yooo 👋, I am</span>
-
-      <span
-        id="name-span"
-        class="highlight-blue ink-text mx-2 inline-block overflow-hidden whitespace-nowrap rounded-md"
-      >
-        Wint Khant Lin.
-      </span>
-
-      <span id="anim-text-2" class="mt-2 block"
-        >I am currently learning software engineering.</span
-      >
+  <main class="page-wrapper" style="color: var(--text);">
+    <!-- Hero -->
+    <h1 class="hero-heading" style="color: var(--text-heading);">
+      Wint Khant Lin — curious about systems, software, and everything in between.
     </h1>
+    
+    <!-- Projects -->
+    <section id="projects" class="projects-section">
+      <h2 class="section-heading" style="color: var(--text-heading);">Projects</h2>
+      
+      <!-- Floating preview image (desktop only) -->
+      <div
+        id="project-preview"
+        class="project-preview"
+      >
+        <img
+          id="project-preview-img"
+          src=""
+          alt=""
+          class="project-preview-img"
+        />
+      </div>
+
+      <div id="projects-list" class="projects-list">
+        {projects.map((project) => (
+          <a
+            href={project.data.source}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project-row"
+            data-img={project.data.img || ""}
+          >
+            <div class="project-left">
+              <span class="project-chevron">&rsaquo;</span>
+              <span class="project-name">{project.data.name}</span>
+            </div>
+            
+            <div class="project-right">
+              <span class="project-type">{project.data.type || project.data.description}</span>
+              <span class="project-year">{project.data.publishedDate.getFullYear()}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
   </main>
-
-  <div class="w-full mt-12 sm:my-16">
-    <TechMarquee />
-  </div>
-
-  <ProjectsShowcase />
-  <AboutSection />
 </BaseLayout>
 
+<style>
+  /* ── Page wrapper with consistent responsive padding ── */
+  .page-wrapper {
+    max-width: 50rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-wrapper { padding-inline: 1.5rem; }
+  }
+
+  @media (min-width: 768px) {
+    .page-wrapper { padding-inline: 2rem; }
+  }
+
+  /* ── Hero heading ── */
+  .hero-heading {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 6rem;
+    margin-bottom: 3.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── Section spacing ── */
+  .projects-section {
+    position: relative;
+    margin-top: 4rem;
+    margin-bottom: 6rem;
+  }
+
+  .section-heading {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── Project rows ── */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 0.875rem;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  @media (min-width: 640px) {
+    .project-row { padding-block: 1rem; }
+  }
+
+  .project-row:hover {
+    opacity: 0.8;
+  }
+
+  .project-row:hover .project-name {
+    color: var(--text-heading);
+  }
+
+  .project-left {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-width: 0;
+  }
+
+  .project-chevron {
+    color: var(--text-faint);
+    font-size: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  .project-name {
+    color: var(--text);
+    font-size: 0.9375rem;
+    transition: color 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .project-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .project-right { gap: 1.5rem; }
+  }
+
+  .project-type {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .project-type { display: block; }
+  }
+
+  .project-year {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Floating preview (desktop only) ── */
+  .project-preview {
+    pointer-events: none;
+    position: fixed;
+    z-index: 50;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .project-preview { display: block; }
+  }
+
+  .project-preview-img {
+    width: 16rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    border: 1px solid var(--border);
+  }
+</style>
+
 <script>
-  import { gsap } from "gsap";
-  import SplitText from "gsap/SplitText";
+  const preview = document.getElementById('project-preview') as HTMLElement;
+  const previewImg = document.getElementById('project-preview-img') as HTMLImageElement;
+  const rows = document.querySelectorAll<HTMLElement>('.project-row');
+  const projectsList = document.getElementById('projects-list') as HTMLElement;
 
-  gsap.registerPlugin(SplitText);
+  let isVisible = false;
 
-  let hasInitialized = false;
-  let splitInstances: SplitText[] = [];
+  rows.forEach((row) => {
+    const imgSrc = row.dataset.img;
 
-  function cleanupHeroAnimation() {
-    gsap.killTweensOf("#name-span");
-    gsap.killTweensOf("#anim-text span");
-    gsap.killTweensOf("#anim-text-2 span");
-    splitInstances.forEach((split) => split.revert());
-    splitInstances = [];
-    hasInitialized = false;
-  }
-
-  function initHeroAnimation() {
-    if (hasInitialized) return;
-
-    const intro = document.querySelector("#anim-text");
-    const outro = document.querySelector("#anim-text-2");
-    const nameSpan = document.querySelector("#name-span");
-    if (!intro || !outro || !nameSpan) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    hasInitialized = true;
-
-    const introSplit = new SplitText(intro, { type: "words" });
-    const nameSplit = new SplitText(nameSpan, { type: "chars" });
-    const outroSplit = new SplitText(outro, { type: "words" });
-    splitInstances = [introSplit, nameSplit, outroSplit];
-
-    const allChars = [
-      ...introSplit.words,
-      ...nameSplit.chars,
-      ...outroSplit.words,
-    ];
-
-    gsap.set(allChars, { y: 70, opacity: 0, display: "inline-block" });
-    gsap.set(nameSpan, {
-      scaleX: 0.0,
-      opacity: 0.65,
-      transformOrigin: "left center",
+    row.addEventListener('mouseenter', () => {
+      if (!imgSrc || !preview || !previewImg) return;
+      previewImg.src = imgSrc;
+      previewImg.alt = row.textContent?.trim() || '';
+      preview.style.opacity = '1';
+      isVisible = true;
     });
 
-    gsap
-      .timeline({ defaults: { ease: "expo.out" } })
-      .to(nameSpan, {
-        scaleX: 1,
-        opacity: 1,
-        duration: 0.45,
-      })
-      .to(
-        allChars,
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.35,
-          stagger: 0.014,
-          ease: "back.out(1.7)",
-        },
-        "-=0.15",
-      );
-  }
-
-  document.addEventListener("astro:before-swap", cleanupHeroAnimation);
-  document.addEventListener("astro:page-load", initHeroAnimation);
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initHeroAnimation, {
-      once: true,
+    row.addEventListener('mouseleave', () => {
+      if (!preview) return;
+      preview.style.opacity = '0';
+      isVisible = false;
     });
-  } else {
-    initHeroAnimation();
-  }
+
+    row.addEventListener('mousemove', (e: MouseEvent) => {
+      if (!isVisible || !preview) return;
+
+      const listRect = projectsList.getBoundingClientRect();
+      const x = listRect.right + 24;
+      const y = e.clientY - 100;
+
+      preview.style.left = `${x}px`;
+      preview.style.top = `${y}px`;
+    });
+  });
 </script>

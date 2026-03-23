@@ -16,13 +16,19 @@ const { title, description } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="view-transition" content="same-origin" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <GoogleAnalytics />
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        if (theme === 'light') document.documentElement.classList.add('light');
+      })();
+    </script>
   </head>
-  <body class="paper-canvas body-mono ink-text">
-    <!-- <Header /> -->
+  <body>
+    <Header />
     <slot />
-    <Footer />
   </body>
 </html>

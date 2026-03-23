@@ -21,6 +21,7 @@ export const projects = defineCollection({
   loader: glob({ pattern: "**/*.yml", base: "src/content/projects" }),
   schema: z.object({
     name: z.string(),
+    type: z.string().optional(),
     description: z.string(),
     source: z.string(),
     publishedDate: z.preprocess(

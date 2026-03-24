@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "devicon/devicon-base.css";
 
+@plugin "@tailwindcss/typography";
+
 @theme {
     --font-sans: var(--font-heading), "Plus Jakarta Sans", "Inter", "Segoe UI", sans-serif;
     --font-mono: var(--font-body), "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;

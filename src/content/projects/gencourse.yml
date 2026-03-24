@@ -1,0 +1,8 @@
+name: GenCourse
+type: AI EduTech
+description: GenCourse, an AI web app that turns your learning prompts into structured, interactive courses.
+source: https://github.com/wintkhantlin/gencourse
+technologies: ["Microservice", "GoLang", "Python", "TypeScript"]
+img: ../../assets/img/gencourse.png
+publishedDate: 2026-03-14
+color: "#e6abf4"

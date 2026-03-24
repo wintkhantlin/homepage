@@ -4,7 +4,11 @@ import { getCollection } from "astro:content";
 import { getImage } from "astro:assets";
 
 const rawProjects = (await getCollection("projects")).sort(
-  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf()
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+);
+
+const posts = (await getCollection("content")).sort(
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
 );
 
 const projects = await Promise.all(
@@ -19,7 +23,7 @@ const projects = await Promise.all(
       ...project,
       previewSrc: preview.src,
     };
-  })
+  }),
 );
 ---
 
@@ -28,12 +32,30 @@ const projects = await Promise.all(
   description="Hello, I am Wint Khant Lin, also known as Happer. I am a college student from Myanmar. I love coding, listening to music."
 >
   <main class="mx-auto max-w-4xl px-5 text-(--text) sm:px-6 md:px-8">
-    <h1 class="mt-24 mb-14 text-4xl font-medium leading-tight tracking-[-0.02em] text-(--text-heading) md:text-5xl">
-      Wint Khant Lin — curious about systems, software, and everything in between.
-    </h1>
+    <section class="mt-26">
+      <p class="mb-3 text-sm text-(--text-muted)">Wint Khant Lin / Happer</p>
+      <h1
+        class="max-w-3xl text-4xl font-medium leading-tight tracking-[-0.02em] text-(--text-heading) md:text-5xl"
+      >
+        Curious about systems, software, and everything in between.
+      </h1>
+      <p class="mt-4 max-w-2xl text-[15px] leading-7 text-(--text-muted)">
+        I’m a college student from Myanmar who enjoys building things, learning
+        how software works, and exploring ideas across backend engineering,
+        systems, and product development.
+      </p>
+    </section>
 
-    <section id="projects" class="relative mt-16 mb-24">
-      <h2 class="mb-6 text-lg font-bold text-(--text-heading)">Projects</h2>
+    <section
+      id="projects"
+      class="relative mt-12 mb-16 border-t border-(--border) pt-6"
+    >
+      <h2 class="mb-3 text-lg font-semibold text-(--text-heading)">
+        Product Level Projects
+      </h2>
+      <p class="mb-4 max-w-2xl text-sm leading-6 text-(--text-muted)">
+        A selection of things I’ve built and experimented with.
+      </p>
 
       <div
         id="project-preview"
@@ -48,72 +70,152 @@ const projects = await Promise.all(
       </div>
 
       <div id="projects-list" class="flex flex-col">
-        {projects.map((project) => (
-          <a
-            href={project.data.source}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group flex items-center justify-between border-b border-(--border) py-4 no-underline transition-opacity duration-150 hover:opacity-80"
-            data-img={project.previewSrc}
-          >
-            <div class="flex min-w-0 items-center gap-2.5">
-              <span class="shrink-0 text-sm text-(--text-faint)">&rsaquo;</span>
-              <span class="truncate text-[15px] text-(--text) transition-colors duration-150 group-hover:text-(--text-heading)">
-                {project.data.name}
-              </span>
-            </div>
+        {
+          projects.map((project) => (
+            <a
+              href={project.data.source}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-center justify-between border-b border-(--border) py-3 no-underline transition-opacity duration-150 hover:opacity-80"
+              data-img={project.previewSrc}
+            >
+              <div class="flex min-w-0 items-center gap-2.5">
+                <span class="shrink-0 text-sm text-(--text-faint)">
+                  &rsaquo;
+                </span>
+                <span class="truncate text-[15px] text-(--text) transition-colors duration-150 group-hover:text-(--text-heading)">
+                  {project.data.name}
+                </span>
+              </div>
 
-            <div class="ml-4 flex shrink-0 items-center gap-4 sm:gap-6">
-              <span class="hidden text-sm text-(--text-muted) sm:block">
-                {project.data.type || project.data.description}
-              </span>
-              <span class="text-sm tabular-nums text-(--text-muted)">
-                {project.data.publishedDate.getFullYear()}
-              </span>
-            </div>
-          </a>
-        ))}
+              <div class="ml-4 flex shrink-0 items-center gap-4 sm:gap-6">
+                <span class="hidden text-sm text-(--text-muted) sm:block">
+                  {project.data.type || project.data.description}
+                </span>
+                <span class="text-sm tabular-nums text-(--text-muted)">
+                  {project.data.publishedDate.getFullYear()}
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="writing" class="mt-12 mb-16 border-t border-(--border) pt-6">
+      <h2 class="mb-1 text-lg font-semibold text-(--text-heading)">
+        Notes / Writing
+      </h2>
+      <p class="mb-6 text-sm text-(--text-muted)">
+        Thoughts, experiments, and things I found interesting.
+      </p>
+
+      <div class="grid gap-6 grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
+        {
+          posts.map((post, i) => {
+            const tilts = [
+              "-rotate-[1.5deg]",
+              "-rotate-[1.2deg]",
+              "rotate-[0.8deg]",
+              "-rotate-[0.5deg]",
+              "rotate-[1.4deg]",
+            ];
+            const colors = [
+              "bg-yellow-50",
+              "bg-pink-50",
+              "bg-green-50",
+              "bg-blue-50",
+              "bg-orange-50",
+            ];
+
+            return (
+              <a
+                href={`/blog/${post.id}`}
+                class={`note-card group relative block no-underline p-4 pb-5 border-b-[3px] border-black/5 cursor-pointer transition-all duration-200 hover:rotate-0 hover:scale-[1.04] hover:shadow-2xl hover:z-10 ${tilts[i % 5]} ${colors[i % 5]}`}
+              >
+                {/* Pushpin */}
+                <span class="absolute -top-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-red-500 shadow-md" />
+
+                {/* Lined paper */}
+                <span class="pointer-events-none absolute inset-0 top-8 bg-[repeating-linear-gradient(transparent,transparent_23px,rgba(0,0,0,0.07)_23px,rgba(0,0,0,0.07)_24px)]" />
+
+                <span class="relative text-[10px] uppercase tracking-widest font-medium text-black/40">
+                  {post.data.categories}
+                </span>
+                <p class="relative mt-1.5 mb-2 text-sm font-medium leading-snug text-black/80">
+                  {post.data.title}
+                </p>
+                <p class="relative font-mono text-[11px] text-black/40">
+                  {post.data.publishedDate.toLocaleDateString("en-US", {
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
+              </a>
+            );
+          })
+        }
       </div>
     </section>
   </main>
 </BaseLayout>
 
 <script>
-  const preview = document.getElementById("project-preview") as HTMLElement | null;
-  const previewImg = document.getElementById("project-preview-img") as HTMLImageElement | null;
+  const preview = document.getElementById(
+    "project-preview",
+  ) as HTMLDivElement | null;
+  const previewImg = document.getElementById(
+    "project-preview-img",
+  ) as HTMLImageElement | null;
   const rows = document.querySelectorAll<HTMLAnchorElement>("#projects-list a");
-  const projectsList = document.getElementById("projects-list") as HTMLElement | null;
 
-  let isVisible = false;
+  let activeRow: HTMLAnchorElement | null = null;
+
+  const showPreview = () => {
+    if (!preview) return;
+    preview.classList.remove("hidden");
+    requestAnimationFrame(() => {
+      preview.style.opacity = "1";
+    });
+  };
+
+  const hidePreview = () => {
+    if (!preview) return;
+    preview.style.opacity = "0";
+
+    const onTransitionEnd = () => {
+      if (preview.style.opacity === "0") {
+        preview.classList.add("hidden");
+      }
+      preview.removeEventListener("transitionend", onTransitionEnd);
+    };
+
+    preview.addEventListener("transitionend", onTransitionEnd);
+  };
 
   rows.forEach((row) => {
-    const imgSrc = row.dataset.img;
-
     row.addEventListener("mouseenter", () => {
-      if (!imgSrc || !preview || !previewImg) return;
+      const imgSrc = row.dataset.img;
+      if (!imgSrc || !previewImg) return;
 
+      activeRow = row;
       previewImg.src = imgSrc;
       previewImg.alt = row.textContent?.trim() || "";
-      preview.style.opacity = "1";
-      isVisible = true;
+      showPreview();
     });
 
     row.addEventListener("mouseleave", () => {
-      if (!preview) return;
-
-      preview.style.opacity = "0";
-      isVisible = false;
+      activeRow = null;
+      hidePreview();
     });
+  });
 
-    row.addEventListener("mousemove", (e: MouseEvent) => {
-      if (!isVisible || !preview || !projectsList) return;
+  document.addEventListener("mousemove", (e: MouseEvent) => {
+    if (!preview || !activeRow) return;
 
-      const listRect = projectsList.getBoundingClientRect();
-      const x = listRect.right + 24;
-      const y = e.clientY - 100;
+    const offsetX = 24;
+    const offsetY = 24;
 
-      preview.style.left = `${x}px`;
-      preview.style.top = `${y}px`;
-    });
+    preview.style.transform = `translate(${e.clientX + offsetX}px, ${e.clientY + offsetY}px)`;
   });
 </script>

@@ -1,7 +1,7 @@
 name: Chate Sat
 type: disaster relief
 description: Chate Sat is an application designed to facilitate the coordination of volunteers during disasters.
-source: https://github.com/happer64bit/chate-sat
+source: https://github.com/wintkhantlin/chate-sat
 technologies: ["Next.JS", "TailwindCSS", "PostgreSQL"]
 img: ../../assets/img/chatesat.png
 publishedDate: 2025-11-09

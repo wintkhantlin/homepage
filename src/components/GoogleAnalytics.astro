@@ -1,11 +1,17 @@
+---
+const GA_ID = import.meta.env.PUBLIC_GA_ID;
+---
+
 <script
   type="text/partytown"
-  src="https://www.googletagmanager.com/gtag/js?id=G-QJ7KVTTN9F"></script>
+  src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}>
+</script>
+
 <script is:inline type="text/partytown">
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     window.dataLayer.push(arguments);
   }
   gtag("js", new Date());
-  gtag("config", "GA_MEASUREMENT_ID");
+  gtag("config", "{GA_ID}");
 </script>

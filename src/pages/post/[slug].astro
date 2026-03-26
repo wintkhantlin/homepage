@@ -16,13 +16,12 @@ const { Content } = await render(post);
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description ?? ""}>
-  <main class="mx-auto max-w-4xl px-5 sm:px-6 md:px-8 my-20">
+  <main class="mx-auto my-20 max-w-4xl px-5 sm:px-6 md:px-8">
     <!-- Back -->
-    <div class="mt-10 mb-10">
+    <div class="mb-10 mt-10">
       <a
         href="/"
-        class="inline-flex items-center gap-1.5 text-sm
-      text-(--text-muted) no-underline transition-opacity hover:opacity-60"
+        class="inline-flex items-center gap-1.5 text-sm text-(--text-muted) transition-opacity hover:opacity-60"
       >
         <span class="text-base leading-none">&lsaquo;</span>
         <span>Back</span>
@@ -32,12 +31,12 @@ const { Content } = await render(post);
     <!-- Header -->
     <section class="mb-12 border-b border-(--border) pb-10">
       <div class="mb-4 flex items-center gap-3">
-        <span
-          class="text-[10px] uppercase tracking-widest font-medium text-(--text-muted)"
-        >
+        <span class="text-[10px] font-medium uppercase tracking-widest text-(--text-muted)">
           {post.data.categories}
         </span>
-        <span class="text-(--text-faint) text-xs">·</span>
+
+        <span class="text-xs text-(--text-faint)">·</span>
+
         <time class="font-mono text-[11px] text-(--text-muted)">
           {
             post.data.publishedDate.toLocaleDateString("en-US", {
@@ -49,9 +48,7 @@ const { Content } = await render(post);
         </time>
       </div>
 
-      <h1
-        class="max-w-3xl text-3xl font-medium leading-tight tracking-[-0.02em] text-(--text-heading) md:text-4xl"
-      >
+      <h1 class="max-w-3xl text-3xl font-medium leading-tight tracking-[-0.02em] text-(--text-heading) md:text-4xl">
         {post.data.title}
       </h1>
 
@@ -65,128 +62,94 @@ const { Content } = await render(post);
     </section>
 
     <!-- Body -->
-    <article class="prose-custom mb-24">
+    <article
+      class="prose mb-24 max-w-[68ch]
+      prose-p:mb-6 prose-p:leading-7 prose-p:text-(--text-muted)
+
+      prose-headings:font-medium
+      prose-headings:tracking-[-0.02em]
+      prose-h2:mb-3 prose-h2:mt-10 prose-h2:text-(--text-heading)
+      prose-h3:mb-2 prose-h3:mt-8 prose-h3:text-(--text-heading)
+
+      prose-strong:text-(--text-heading)
+
+      prose-a:text-(--text-heading)
+      prose-a:underline
+      prose-a:decoration-(--border)
+      prose-a:underline-offset-[3px]
+      hover:prose-a:decoration-(--text-heading)
+
+      prose-ul:text-(--text-muted)
+      prose-ol:text-(--text-muted)
+      prose-li:my-1
+
+      prose-blockquote:border-l-2
+      prose-blockquote:border-(--border)
+      prose-blockquote:pl-4
+      prose-blockquote:italic
+      prose-blockquote:text-(--text-muted)
+
+      prose-img:rounded-xl
+      prose-img:border
+      prose-img:border-(--border)
+
+      prose-th:text-(--text-heading)
+      prose-td:text-(--text-muted)
+
+      prose-code:rounded-md
+      prose-code:px-1.5
+      prose-code:py-0.5
+      prose-code:text-[0.9em]
+      prose-code:font-medium
+      prose-code:text-(--text-heading)
+
+      prose-code:before:content-none
+      prose-code:after:content-none
+
+      prose-pre:overflow-x-auto
+      prose-pre:rounded-2xl
+      prose-pre:border
+      prose-pre:border-white/5
+      prose-pre:bg-[#1e252f]
+      prose-pre:px-6
+      prose-pre:py-5
+      prose-pre:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]
+
+      prose-pre:code:bg-transparent
+      prose-pre:code:p-0
+      prose-pre:code:text-[15px]
+      prose-pre:code:leading-8
+      prose-pre:code:font-normal
+      prose-pre:code:text-[#e5e7eb]"
+    >
       <Content />
     </article>
   </main>
 
-  <style>
-    /* Prose styles scoped to this page, matching your design tokens */
-    .prose-custom {
-      max-width: 68ch;
-      font-size: 15px;
-      line-height: 1.85;
-      color: var(--text);
-    }
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll(".prose a");
 
-    .prose-custom :global(h2) {
-      font-size: 1.15rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      color: var(--text-heading);
-      margin: 2.5rem 0 0.75rem;
-    }
+      links.forEach((link) => {
+        const href = link.getAttribute("href");
+        if (!href) return;
 
-    .prose-custom :global(h3) {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--text-heading);
-      margin: 2rem 0 0.5rem;
-    }
+        const isInternal =
+          href.startsWith("/") ||
+          href.startsWith("#") ||
+          href.startsWith("./");
 
-    .prose-custom :global(p) {
-      margin: 0 0 1.4rem;
-    }
+        if (isInternal) return;
 
-    .prose-custom :global(a) {
-      color: var(--text-heading);
-      text-underline-offset: 3px;
-      text-decoration-thickness: 1px;
-      text-decoration-color: var(--border);
-      transition: text-decoration-color 0.15s;
-    }
+        try {
+          const url = new URL(href, window.location.origin);
 
-    .prose-custom :global(a:hover) {
-      text-decoration-color: var(--text-heading);
-    }
-
-    .prose-custom :global(code) {
-      font-family: var(--font-mono, monospace);
-      font-size: 0.82em;
-      background: var(--border);
-      padding: 0.15em 0.4em;
-      border-radius: 4px;
-      color: var(--text-heading);
-    }
-
-    .prose-custom :global(pre) {
-      background: var(--text-heading);
-      color: var(--bg, #fff);
-      padding: 1.25rem 1.5rem;
-      border-radius: 6px;
-      overflow-x: auto;
-      font-size: 0.82em;
-      line-height: 1.7;
-      margin: 1.75rem 0;
-    }
-
-    .prose-custom :global(pre code) {
-      background: none;
-      padding: 0;
-      color: inherit;
-      font-size: inherit;
-    }
-
-    .prose-custom :global(blockquote) {
-      border-left: 2px solid var(--border);
-      margin: 1.75rem 0;
-      padding: 0.25rem 0 0.25rem 1.25rem;
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    .prose-custom :global(ul),
-    .prose-custom :global(ol) {
-      padding-left: 1.25rem;
-      margin: 0 0 1.4rem;
-    }
-
-    .prose-custom :global(li) {
-      margin-bottom: 0.4rem;
-    }
-
-    .prose-custom :global(hr) {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 2.5rem 0;
-    }
-
-    .prose-custom :global(img) {
-      width: 100%;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      margin: 1.75rem 0;
-    }
-
-    .prose-custom :global(table) {
-      width: 100%;
-      font-size: 0.9em;
-      border-collapse: collapse;
-      margin: 1.75rem 0;
-    }
-
-    .prose-custom :global(th) {
-      text-align: left;
-      font-weight: 500;
-      color: var(--text-heading);
-      border-bottom: 1px solid var(--border);
-      padding: 0.5rem 0.75rem;
-    }
-
-    .prose-custom :global(td) {
-      border-bottom: 1px solid var(--border);
-      padding: 0.5rem 0.75rem;
-      color: var(--text-muted);
-    }
-  </style>
+          if (url.origin !== window.location.origin) {
+            link.setAttribute("target", "_blank");
+            link.setAttribute("rel", "noopener noreferrer");
+          }
+        } catch {}
+      });
+    });
+  </script>
 </BaseLayout>

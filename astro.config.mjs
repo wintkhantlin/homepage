@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, fontProviders } from "astro/config";
+import mdx from "@astrojs/mdx";
 
 import icon from "astro-icon";
 
@@ -8,6 +9,10 @@ import partytown from "@astrojs/partytown";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  image: {
+    domains: ["www.bigocheatsheet.com"],
+  },
+
   fonts: [
     {
       provider: fontProviders.google(),
@@ -26,6 +31,7 @@ export default defineConfig({
   ],
 
   integrations: [
+    mdx(),
     icon(),
     partytown({
       config: {

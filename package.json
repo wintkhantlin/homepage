@@ -7,9 +7,6 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "serve:ci": "serve dist -l 3000",
-    "wait:ci": "wait-on http://127.0.0.1:3000",
-    "audit:ci": "unlighthouse-ci --site http://127.0.0.1:3000 --budget 75 --build-static",
     "prepare": "husky"
   },
   "dependencies": {

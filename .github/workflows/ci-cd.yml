@@ -66,13 +66,13 @@ jobs:
         run: bun run build
 
       - name: Start static preview server
-        run: bun run serve:ci &
+        run: ./node_modules/.bin/serve dist -l 3000 &
 
       - name: Wait for preview
-        run: bun run wait:ci
+        run: ./node_modules/.bin/wait-on http://127.0.0.1:3000
 
       - name: Run Unlighthouse
-        run: bun run audit:ci
+        run: ./node_modules/.bin/unlighthouse-ci --site http://127.0.0.1:3000 --budget 75 --build-static
 
       - name: Upload Unlighthouse report
         if: always()

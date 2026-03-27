@@ -1,0 +1,146 @@
+---
+type Project = Awaited<ReturnType<typeof import("../../lib/content").getProjectsWithPreviews>>[number];
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props as Props;
+---
+
+<section id="projects" class="relative mt-12 mb-16 border-t border-(--border) pt-6">
+  <h2 class="mb-3 text-lg font-semibold text-(--text-heading)">
+    Product Level Projects
+  </h2>
+
+  <p class="mb-4 max-w-2xl text-sm leading-6 text-(--text-muted)">
+    A selection of things I’ve built and experimented with.
+  </p>
+
+  <div
+    id="project-preview"
+    class="pointer-events-none fixed top-0 left-0 z-50 hidden opacity-0 transition-opacity duration-200 ease-out md:block"
+  >
+    <img
+      id="project-preview-img"
+      src=""
+      alt=""
+      class="w-64 rounded-lg border border-(--border) object-cover shadow-2xl transition-[filter,opacity] duration-300 ease-out"
+    />
+  </div>
+
+  <div id="projects-list" class="flex flex-col">
+    {
+      projects.map((project) => (
+        <a
+          href={project.data.source}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-center justify-between border-b border-(--border) py-3 no-underline transition-opacity duration-150 hover:opacity-80"
+          data-img={project.previewSrc}
+          data-blur-img={project.blurPreviewSrc}
+          data-name={project.data.name}
+        >
+          <div class="flex min-w-0 items-center gap-2.5">
+            <span class="shrink-0 text-sm text-(--text-faint)">&rsaquo;</span>
+
+            <span class="truncate text-[15px] text-(--text) transition-colors duration-150 group-hover:text-(--text-heading)">
+              {project.data.name}
+            </span>
+          </div>
+
+          <div class="ml-4 flex shrink-0 items-center gap-4 sm:gap-6">
+            <span class="hidden text-sm text-(--text-muted) sm:block">
+              {project.data.type || project.data.description}
+            </span>
+
+            <span class="text-sm tabular-nums text-(--text-muted)">
+              {project.data.publishedDate.getFullYear()}
+            </span>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const preview = document.getElementById("project-preview");
+  const previewImg = document.getElementById("project-preview-img");
+  const projectLinks = document.querySelectorAll("#projects-list a");
+
+  if (preview instanceof HTMLDivElement && previewImg instanceof HTMLImageElement) {
+    const offset = 24;
+    let currentFullSrc = "";
+
+    const showPreview = () => {
+      preview.classList.remove("hidden");
+      requestAnimationFrame(() => {
+        preview.style.opacity = "1";
+      });
+    };
+
+    const hidePreview = () => {
+      preview.style.opacity = "0";
+
+      const handleTransitionEnd = () => {
+        if (preview.style.opacity === "0") {
+          preview.classList.add("hidden");
+        }
+
+        preview.removeEventListener("transitionend", handleTransitionEnd);
+      };
+
+      preview.addEventListener("transitionend", handleTransitionEnd);
+    };
+
+    const movePreview = (x: number, y: number) => {
+      preview.style.transform = `translate(${x + offset}px, ${y + offset}px)`;
+    };
+
+    const showBlurPreview = (src: string, alt: string) => {
+      previewImg.src = src;
+      previewImg.alt = alt;
+      previewImg.classList.add("blur-md", "opacity-70");
+      previewImg.classList.remove("blur-0", "opacity-100");
+    };
+
+    const showFullPreview = (src: string, alt: string) => {
+      previewImg.src = src;
+      previewImg.alt = alt;
+      previewImg.classList.remove("blur-md", "opacity-70");
+      previewImg.classList.add("blur-0", "opacity-100");
+    };
+
+    projectLinks.forEach((link) => {
+      if (!(link instanceof HTMLAnchorElement)) return;
+
+      link.addEventListener("mouseenter", () => {
+        const blurSrc = link.dataset.blurImg;
+        const fullSrc = link.dataset.img;
+        const name = link.dataset.name || "";
+
+        if (!blurSrc || !fullSrc) return;
+
+        currentFullSrc = fullSrc;
+
+        showBlurPreview(blurSrc, name);
+        showPreview();
+
+        const fullImage = new Image();
+        fullImage.src = fullSrc;
+
+        fullImage.onload = () => {
+          if (currentFullSrc !== fullSrc) return;
+          showFullPreview(fullSrc, name);
+        };
+      });
+
+      link.addEventListener("mouseleave", hidePreview);
+
+      link.addEventListener("mousemove", (event) => {
+        movePreview(event.clientX, event.clientY);
+      });
+    });
+  }
+</script>

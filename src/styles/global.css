@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "devicon/devicon-base.css";
 
 @plugin "@tailwindcss/typography";
 
@@ -67,4 +66,3 @@ body {
         mask-position: center;
     }
 }
-

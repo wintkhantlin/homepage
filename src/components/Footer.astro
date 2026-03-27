@@ -6,23 +6,23 @@
 
       <div class="relative z-10 grid gap-10 md:grid-cols-[1.25fr_0.75fr] md:gap-12">
         <div class="space-y-6">
-          <p class="heading-sans text-xs font-bold uppercase tracking-[0.24em] text-black/58">
+          <p class="text-xs font-bold uppercase tracking-[0.24em] text-(--text-faint)">
             Building In Public
           </p>
 
-          <h2 class="heading-sans max-w-2xl text-4xl font-black leading-[1.03] sm:text-5xl md:text-6xl">
-            I’m focused on <span class="highlight-blue">learning</span>, shipping
+          <h2 class="max-w-2xl text-4xl font-black leading-[1.03] tracking-[-0.03em] text-(--text-heading) sm:text-5xl md:text-6xl">
+            I’m focused on <span class="text-sky-500">learning</span>, shipping
             thoughtful experiments, and documenting the process.
           </h2>
-          
+
           <div class="flex flex-wrap gap-3">
-            <a href="mailto:wintkhantlin@gmail.com" class="btn-doodle">Say hello</a>
-            <a href="/#projects" class="btn-doodle">View projects</a>
+            <a href="mailto:wintkhantlin@gmail.com" class="footer-button">Say hello</a>
+            <a href="/#projects" class="footer-button">View projects</a>
           </div>
         </div>
 
         <div class="space-y-5">
-          <h3 class="heading-sans text-xs font-bold uppercase tracking-[0.25em] text-black/60">
+          <h3 class="text-xs font-bold uppercase tracking-[0.25em] text-(--text-faint)">
             Elsewhere
           </h3>
 
@@ -32,7 +32,7 @@
                 href="https://github.com/wintkhantlin"
                 target="_blank"
                 rel="noreferrer"
-                class="footer-link body-mono"
+                class="footer-link font-mono"
               >
                 GitHub
               </a>
@@ -42,13 +42,13 @@
                 href="https://www.linkedin.com/in/wintkhantlin/"
                 target="_blank"
                 rel="noreferrer"
-                class="footer-link body-mono"
+                class="footer-link font-mono"
               >
                 LinkedIn
               </a>
             </li>
             <li>
-              <a href="mailto:wintkhantlin@gmail.com" class="footer-link body-mono">
+              <a href="mailto:wintkhantlin@gmail.com" class="footer-link font-mono">
                 Email
               </a>
             </li>
@@ -61,10 +61,11 @@
 
 <style>
   .footer-board {
-    border: 1.5px solid rgba(24, 24, 24, 0.58);
-    border-radius: 26px 16px 30px 14px / 15px 28px 16px 24px;
-    background: color-mix(in srgb, var(--paper-cream) 90%, white 10%);
-    box-shadow: 3px 4px 0 rgba(24, 24, 24, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--bg) 94%, white 6%), color-mix(in srgb, var(--bg) 98%, black 2%));
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
   }
 
   .footer-board::before {
@@ -76,8 +77,8 @@
     background-image:
       repeating-linear-gradient(
         -8deg,
-        rgba(24, 24, 24, 0.08) 0,
-        rgba(24, 24, 24, 0.08) 1px,
+        rgba(255, 255, 255, 0.06) 0,
+        rgba(255, 255, 255, 0.06) 1px,
         transparent 1px,
         transparent 10px
       );
@@ -87,8 +88,8 @@
     position: absolute;
     width: 90px;
     height: 22px;
-    background: color-mix(in srgb, var(--highlighter-yellow) 58%, white 42%);
-    border: 1px solid rgba(24, 24, 24, 0.2);
+    background: color-mix(in srgb, #facc15 62%, white 38%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     transform: rotate(-8deg);
     opacity: 0.42;
     z-index: 2;
@@ -111,14 +112,32 @@
     border-bottom: 2px solid transparent;
     font-size: 0.92rem;
     font-weight: 500;
-    color: rgba(24, 24, 24, 0.72);
+    color: var(--text-muted);
     transition: transform 130ms ease, border-color 130ms ease, color 130ms ease;
   }
 
   .footer-link:hover {
     transform: translateX(5px);
-    border-bottom-color: rgba(24, 24, 24, 0.65);
-    color: rgba(24, 24, 24, 1);
+    border-bottom-color: var(--text-heading);
+    color: var(--text-heading);
+  }
+
+  .footer-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    color: var(--text-heading);
+    text-decoration: none;
+    transition: transform 130ms ease, border-color 130ms ease, background-color 130ms ease;
+  }
+
+  .footer-button:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--text-heading) 55%, var(--border) 45%);
+    background: color-mix(in srgb, var(--text-heading) 8%, transparent 92%);
   }
 
   @media (max-width: 768px) {

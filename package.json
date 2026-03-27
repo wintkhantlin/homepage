@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "0.9.8",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@iconify-json/heroicons": "1.2.3",
     "@iconify-json/lucide": "1.2.98",
-    "@tailwindcss/typography": "0.5.19"
+    "@tailwindcss/typography": "0.5.19",
+    "husky": "^9.1.7"
   }
 }

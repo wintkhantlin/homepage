@@ -72,7 +72,7 @@ jobs:
         run: bunx wait-on http://127.0.0.1:3000
 
       - name: Run Unlighthouse
-        run: bunx --package @unlighthouse/cli --package puppeteer unlighthouse-ci --site http://127.0.0.1:3000 --budget 75 --build-static
+        run: bunx -p @unlighthouse/cli -p puppeteer unlighthouse-ci --site http://127.0.0.1:3000 --budget 75 --build-static
 
       - name: Upload Unlighthouse report
         if: always()

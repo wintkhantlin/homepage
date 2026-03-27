@@ -66,16 +66,13 @@ jobs:
         run: bun run build
 
       - name: Start static preview server
-        run: bunx serve dist -l 3000 &
+        run: bun run serve:ci &
 
       - name: Wait for preview
-        run: bunx wait-on http://127.0.0.1:3000
-
-      - name: Install audit tools
-        run: bun add --dev @unlighthouse/cli puppeteer
+        run: bun run wait:ci
 
       - name: Run Unlighthouse
-        run: bunx unlighthouse-ci --site http://127.0.0.1:3000 --budget 75 --build-static
+        run: bun run audit:ci
 
       - name: Upload Unlighthouse report
         if: always()

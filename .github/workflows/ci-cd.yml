@@ -71,8 +71,11 @@ jobs:
       - name: Wait for preview
         run: bunx wait-on http://127.0.0.1:3000
 
+      - name: Install audit tools
+        run: bun add --dev @unlighthouse/cli puppeteer
+
       - name: Run Unlighthouse
-        run: bunx -p @unlighthouse/cli -p puppeteer unlighthouse-ci --site http://127.0.0.1:3000 --budget 75 --build-static
+        run: bunx unlighthouse-ci --site http://127.0.0.1:3000 --budget 75 --build-static
 
       - name: Upload Unlighthouse report
         if: always()

@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
 
 import icon from "astro-icon";
 
@@ -8,7 +9,10 @@ import partytown from "@astrojs/partytown";
 
 import tailwindcss from "@tailwindcss/vite";
 
+const site = process.env.SITE_URL;
+
 export default defineConfig({
+  site,
   image: {
     domains: ["www.bigocheatsheet.com"],
   },
@@ -32,6 +36,7 @@ export default defineConfig({
 
   integrations: [
     mdx(),
+    sitemap(),
     icon(),
     partytown({
       config: {

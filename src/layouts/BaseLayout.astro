@@ -4,8 +4,43 @@ import Footer from "../components/Footer.astro";
 import "./../styles/global.css";
 import { Font } from "astro:assets";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
+import { dedupeKeywords, siteConfig } from "../lib/seo";
 
-const { title, description } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  canonicalPath?: string;
+  keywords?: string[];
+  noindex?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const {
+  title = siteConfig.defaultTitle,
+  description = siteConfig.defaultDescription,
+  image = siteConfig.defaultImage,
+  type = "website",
+  canonicalPath,
+  keywords = [],
+  noindex = false,
+  publishedTime,
+  modifiedTime,
+  structuredData,
+} = Astro.props as Props;
+
+const pathname = canonicalPath ?? Astro.url.pathname;
+const canonicalUrl = Astro.site ? new URL(pathname, Astro.site).toString() : undefined;
+const imageUrl = image
+  ? (Astro.site ? new URL(image, Astro.site).toString() : image)
+  : undefined;
+const metaKeywords = dedupeKeywords([...siteConfig.defaultKeywords, ...keywords]);
+const structuredDataPayload = structuredData
+  ? JSON.stringify(Array.isArray(structuredData) ? structuredData : [structuredData])
+  : undefined;
 ---
 
 <html lang="en">
@@ -19,7 +54,37 @@ const { title, description } = Astro.props;
     <meta name="view-transition" content="same-origin" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={siteConfig.author} />
+    <meta name="keywords" content={metaKeywords.join(", ")} />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    <meta name="theme-color" content="#101828" />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    <meta property="og:locale" content={siteConfig.locale} />
+    <meta property="og:site_name" content={siteConfig.siteName} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    {type === "article" && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {type === "article" && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime} />
+    )}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+
     <GoogleAnalytics />
+    {
+      structuredDataPayload && (
+        <script type="application/ld+json" set:html={structuredDataPayload} />
+      )
+    }
     <script is:inline>
       (function() {
         const theme = localStorage.getItem('theme') || 'dark';
@@ -30,6 +95,5 @@ const { title, description } = Astro.props;
   <body>
     <Header />
     <slot />
-    <Footer />
   </body>
 </html>

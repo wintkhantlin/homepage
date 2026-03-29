@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
+import { siteConfig } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const posts = await getCollection("content");
@@ -13,9 +14,43 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const description = post.data.description ?? post.data.summary ?? siteConfig.defaultDescription;
+const publishedTime = post.data.publishedDate.toISOString();
+const canonicalPath = `/post/${post.id}`;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description,
+  datePublished: publishedTime,
+  dateModified: publishedTime,
+  author: {
+    "@type": "Person",
+    name: siteConfig.author,
+  },
+  publisher: {
+    "@type": "Person",
+    name: siteConfig.author,
+  },
+  mainEntityOfPage: Astro.site ? new URL(canonicalPath, Astro.site).toString() : undefined,
+  keywords: post.data.categories,
+};
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description ?? ""}>
+<BaseLayout
+  title={`${post.data.title} | ${siteConfig.siteName}`}
+  description={description}
+  canonicalPath={canonicalPath}
+  keywords={[
+    ...post.data.categories,
+    "programming article",
+    "software engineering blog",
+  ]}
+  type="article"
+  publishedTime={publishedTime}
+  modifiedTime={publishedTime}
+  structuredData={structuredData}
+>
   <main class="mx-auto my-20 max-w-4xl px-5 sm:px-6 md:px-8">
     <!-- Back -->
     <div class="mb-10 mt-10">
@@ -32,7 +67,7 @@ const { Content } = await render(post);
     <section class="mb-12 border-b border-(--border) pb-10">
       <div class="mb-4 flex items-center gap-3">
         <span class="text-[10px] font-medium uppercase tracking-widest text-(--text-muted)">
-          {post.data.categories}
+          {post.data.categories.join(" / ")}
         </span>
 
         <span class="text-xs text-(--text-faint)">·</span>

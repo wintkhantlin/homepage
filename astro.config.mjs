@@ -9,7 +9,7 @@ import partytown from "@astrojs/partytown";
 
 import tailwindcss from "@tailwindcss/vite";
 
-const site = process.env.SITE_URL;
+const site = process.env.SITE_URL || "https://wintkhantlin.com";
 
 export default defineConfig({
   site,

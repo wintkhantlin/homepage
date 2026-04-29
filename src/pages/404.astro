@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="404 — Page Not Found | Wint Khant Lin" noindex={true}>
+  <main class="mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-5 text-center sm:px-6 md:px-8">
+    <p class="text-8xl font-black tracking-tighter text-(--text-faint) md:text-[10rem]">
+      404
+    </p>
+
+    <h1 class="mt-2 text-xl font-medium text-(--text-heading)">
+      This page doesn't exist yet
+    </h1>
+
+    <p class="mt-3 max-w-md text-sm text-(--text-muted)">
+      You might have followed an old link, or the page may have moved. Let's get you back on track.
+    </p>
+
+    <a
+      href="/"
+      class="mt-8 inline-flex items-center gap-1.5 rounded-full border border-(--border) px-5 py-2.5 text-sm text-(--text-heading) transition-all duration-200 hover:border-(--text-faint) hover:bg-white/5"
+    >
+      <span>&larr;</span>
+      <span>Back to home</span>
+    </a>
+  </main>
+</BaseLayout>

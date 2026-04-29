@@ -1,64 +1,43 @@
 ---
-type Post = Awaited<ReturnType<typeof import("../../lib/content").getSortedPosts>>[number];
+import { Icon } from "astro-icon/components";
+import PostCard from "../PostCard.astro";
+
+type Post = Awaited<
+  ReturnType<typeof import("../../lib/content").getSortedPosts>
+>[number];
 
 interface Props {
   posts: Post[];
 }
 
 const { posts } = Astro.props as Props;
-
-const noteTilts = [
-  "-rotate-[1.5deg]",
-  "-rotate-[1.2deg]",
-  "rotate-[0.8deg]",
-  "-rotate-[0.5deg]",
-  "rotate-[1.4deg]",
-];
-
-const noteColors = [
-  "bg-yellow-50",
-  "bg-pink-50",
-  "bg-green-50",
-  "bg-blue-50",
-  "bg-orange-50",
-];
 ---
 
-<section id="writing" class="mt-12 mb-16 border-t border-(--border) pt-6">
-  <h2 class="mb-1 text-lg font-semibold text-(--text-heading)">
-    Notes / Writing
-  </h2>
+<section id="writing" class="mt-32 mb-16 pt-6">
+  <div
+    class="mb-12 flex items-center justify-between border-b border-(--border) pb-4"
+  >
+    <h2
+      class="text-xs font-bold uppercase tracking-[0.2em] text-(--text-heading)"
+    >
+      Notes & Writing
+    </h2>
+    <a
+      href="/writing"
+      class="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-(--text-faint) transition-colors hover:text-(--text-heading)"
+    >
+      <span>View Archive</span>
+      <Icon
+        name="lucide:arrow-right"
+        class="size-3 transition-transform duration-300 group-hover:translate-x-1"
+      />
+    </a>
+  </div>
 
-  <p class="mb-6 text-sm text-(--text-muted)">
-    Thoughts, experiments, and things I found interesting.
-  </p>
-
-  <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-6">
+  <div class="flex flex-col">
     {
-      posts.map((post, index) => (
-        <a
-          href={`/post/${post.id}`}
-          class={`note-card group relative block cursor-pointer border-b-[3px] border-black/5 p-4 pb-5 no-underline transition-all duration-200 hover:z-10 hover:rotate-0 hover:scale-[1.04] hover:shadow-2xl ${noteTilts[index % noteTilts.length]} ${noteColors[index % noteColors.length]}`}
-        >
-          <span class="absolute -top-2 left-1/2 h-3.5 w-3.5 -translate-x-1/2 rounded-full bg-red-500 shadow-md" />
-
-          <span class="pointer-events-none absolute inset-0 top-8 bg-[repeating-linear-gradient(transparent,transparent_23px,rgba(0,0,0,0.07)_23px,rgba(0,0,0,0.07)_24px)]" />
-
-          <span class="relative text-[10px] font-medium uppercase tracking-widest text-black/40">
-            {post.data.categories}
-          </span>
-
-          <p class="relative mt-1.5 mb-2 text-sm font-medium leading-snug text-black/80">
-            {post.data.title}
-          </p>
-
-          <p class="relative font-mono text-[11px] text-black/40">
-            {post.data.publishedDate.toLocaleDateString("en-US", {
-              month: "short",
-              year: "numeric",
-            })}
-          </p>
-        </a>
+      posts.map((post) => (
+        <PostCard post={post} headingLevel="h3" showExtraMeta={false} />
       ))
     }
   </div>

@@ -1,5 +1,7 @@
 ---
-type Project = Awaited<ReturnType<typeof import("../../lib/content").getProjectsWithPreviews>>[number];
+type Project = Awaited<
+  ReturnType<typeof import("../../lib/content").getProjectsWithPreviews>
+>[number];
 
 interface Props {
   projects: Project[];
@@ -8,14 +10,16 @@ interface Props {
 const { projects } = Astro.props as Props;
 ---
 
-<section id="projects" class="relative mt-12 mb-16 border-t border-(--border) pt-6">
-  <h2 class="mb-3 text-lg font-semibold text-(--text-heading)">
-    Product Level Projects
-  </h2>
-
-  <p class="mb-4 max-w-2xl text-sm leading-6 text-(--text-muted)">
-    A selection of things I’ve built and experimented with.
-  </p>
+<section id="projects" class="relative mt-32 mb-16 pt-6">
+  <div
+    class="mb-4 flex items-center justify-between border-b border-(--border) pb-4 fade-up"
+  >
+    <h2
+      class="text-xs font-bold uppercase tracking-[0.2em] text-(--text-heading)"
+    >
+      Selected Work
+    </h2>
+  </div>
 
   <div
     id="project-preview"
@@ -25,7 +29,7 @@ const { projects } = Astro.props as Props;
       id="project-preview-img"
       src=""
       alt=""
-      class="w-64 rounded-lg border border-(--border) object-cover shadow-2xl transition-[filter,opacity] duration-300 ease-out"
+      class="w-[400px] aspect-video object-cover shadow-2xl transition-[filter,opacity,transform] duration-300 ease-out"
     />
   </div>
 
@@ -36,25 +40,22 @@ const { projects } = Astro.props as Props;
           href={project.data.source}
           target="_blank"
           rel="noopener noreferrer"
-          class="group flex items-center justify-between border-b border-(--border) py-3 no-underline transition-opacity duration-150 hover:opacity-80"
+          class="invert-on-hover group flex flex-col justify-center border-b border-(--border) py-8 px-4 no-underline transition-colors sm:flex-row sm:items-center sm:justify-between"
           data-img={project.previewSrc}
           data-blur-img={project.blurPreviewSrc}
           data-name={project.data.name}
         >
-          <div class="flex min-w-0 items-center gap-2.5">
-            <span class="shrink-0 text-sm text-(--text-faint)">&rsaquo;</span>
-
-            <span class="truncate text-[15px] text-(--text) transition-colors duration-150 group-hover:text-(--text-heading)">
+          <div class="flex items-center gap-4">
+            <h3 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
               {project.data.name}
-            </span>
+            </h3>
           </div>
 
-          <div class="ml-4 flex shrink-0 items-center gap-4 sm:gap-6">
-            <span class="hidden text-sm text-(--text-muted) sm:block">
-              {project.data.type || project.data.description}
+          <div class="mt-4 flex items-center justify-between gap-8 sm:mt-0 sm:shrink-0 sm:justify-end">
+            <span class="text-xs font-bold uppercase tracking-[0.2em]">
+              {project.data.type || "Product"}
             </span>
-
-            <span class="text-sm tabular-nums text-(--text-muted)">
+            <span class="text-xs font-mono">
               {project.data.publishedDate.getFullYear()}
             </span>
           </div>
@@ -69,7 +70,10 @@ const { projects } = Astro.props as Props;
   const previewImg = document.getElementById("project-preview-img");
   const projectLinks = document.querySelectorAll("#projects-list a");
 
-  if (preview instanceof HTMLDivElement && previewImg instanceof HTMLImageElement) {
+  if (
+    preview instanceof HTMLDivElement &&
+    previewImg instanceof HTMLImageElement
+  ) {
     const offset = 24;
     let currentFullSrc = "";
 
@@ -77,11 +81,13 @@ const { projects } = Astro.props as Props;
       preview.classList.remove("hidden");
       requestAnimationFrame(() => {
         preview.style.opacity = "1";
+        previewImg.style.transform = "scale(1)";
       });
     };
 
     const hidePreview = () => {
       preview.style.opacity = "0";
+      previewImg.style.transform = "scale(0.95)";
 
       const handleTransitionEnd = () => {
         if (preview.style.opacity === "0") {

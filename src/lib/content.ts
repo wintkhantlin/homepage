@@ -17,13 +17,14 @@ export async function getProjectsWithPreviews() {
       const [preview, blurPreview] = await Promise.all([
         getImage({
           src: project.data.img,
-          width: 512,
+          width: 1024,
           format: "webp",
         }),
         getImage({
           src: project.data.img,
           width: 24,
           format: "webp",
+          quality: 10
         }),
       ]);
 

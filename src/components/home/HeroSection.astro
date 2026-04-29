@@ -1,13 +1,27 @@
-<section class="mt-26">
-  <p class="mb-3 text-sm text-(--text-muted)">Wint Khant Lin / Happer</p>
+---
+import { Icon } from "astro-icon/components";
+---
 
-  <h1 class="max-w-3xl text-4xl font-medium leading-tight tracking-[-0.02em] text-(--text-heading) md:text-5xl">
-    Curious about systems, software, and everything in between.
+<section class="mt-32 mb-24 flex flex-col items-start justify-center">
+  <h1 class="text-5xl font-bold leading-[1.1] tracking-[-0.02em] text-(--text-heading) sm:text-6xl md:text-7xl lg:text-8xl">
+    Wint Khant Lin.
   </h1>
 
-  <p class="mt-4 max-w-2xl text-[15px] leading-7 text-(--text-muted)">
-    I’m a college student from Myanmar who enjoys building things, learning how
-    software works, and exploring ideas across backend engineering, systems,
-    and product development.
-  </p>
+  <div class="mt-8 max-w-xl">
+    <h2 class="text-lg leading-relaxed text-(--text-muted) sm:text-xl font-normal">
+      I'm a college student from Myanmar focused on backend engineering, systems design, and building software that solves real problems.
+    </h2>
+
+    <div class="mt-10 flex items-center gap-8">
+      <a href="/#projects" class="group relative inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-(--text-heading)">
+        <span>Selected Work</span>
+        <span class="absolute -bottom-2 left-0 h-[2px] w-full origin-right scale-x-100 bg-(--text-heading) transition-transform duration-300 group-hover:origin-left group-hover:scale-x-0"></span>
+      </a>
+      
+      <a href="mailto:wintkhantlin@gmail.com" class="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-(--text-muted) transition-colors hover:text-(--text-heading)">
+        <span>Get in touch</span>
+        <Icon name="lucide:arrow-right" class="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+      </a>
+    </div>
+  </div>
 </section>

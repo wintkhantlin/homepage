@@ -10,7 +10,6 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.9",
     "@astrojs/mdx": "5.0.4",
     "@astrojs/partytown": "2.1.7",
     "@astrojs/rss": "^4.0.18",
@@ -23,13 +22,8 @@
     "typescript": "6.0.3"
   },
   "devDependencies": {
-    "@iconify-json/heroicons": "1.2.3",
     "@iconify-json/lucide": "1.2.105",
     "@tailwindcss/typography": "0.5.19",
-    "@unlighthouse/cli": "^0.17.9",
-    "husky": "^9.1.7",
-    "puppeteer": "^24.42.0",
-    "serve": "^14.2.6",
-    "wait-on": "^9.0.5"
+    "husky": "^9.1.7"
   }
 }

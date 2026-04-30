@@ -12,21 +12,22 @@ const links = [
   class="fixed inset-x-0 top-6 z-50 flex justify-center px-4 max-w-[750px] w-full mx-auto"
 >
   <div
-    class="flex w-full items-center justify-between rounded-full bg-(--bg)/60 backdrop-blur-sm border border-(--border)/80 px-6 py-2.5 shadow-sm"
+    class="flex w-full items-center justify-between rounded-full bg-(--bg)/60 backdrop-blur-sm border border-(--border)/80 px-4 sm:px-6 py-2.5 shadow-sm"
   >
     <a
       href="/"
-      class="text-md font-extrabold tracking-tight text-(--text-heading) transition-opacity duration-200 hover:opacity-60"
+      class="text-sm sm:text-base font-extrabold tracking-tight text-(--text-heading) transition-opacity duration-200 hover:opacity-60"
     >
-      WINT KHANT
+      <span class="sm:hidden">WK</span>
+      <span class="hidden sm:inline">WINT KHANT</span>
     </a>
 
-    <nav class="flex items-center gap-6">
+    <nav class="flex items-center gap-3 sm:gap-6">
       {
         links.map((link) => (
           <a
             href={link.href}
-            class="text-[14px] text-(--text-muted) transition-colors hover:text-(--text-heading)"
+            class="text-[13px] sm:text-[14px] text-(--text-muted) transition-colors hover:text-(--text-heading)"
           >
             {link.label}
           </a>
@@ -37,7 +38,7 @@ const links = [
         href="https://github.com/wintkhantlin"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-[13px] font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
+        class="hidden sm:block text-[13px] font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
       >
         GitHub
       </a>

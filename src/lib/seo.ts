@@ -22,7 +22,7 @@ export const siteConfig = {
   social: {
     github: "https://github.com/wintkhantlin",
     linkedin: "https://www.linkedin.com/in/wintkhantlin/",
-    email: "mailto:wintkhantlin@gmail.com",
+    email: "mailto:hello@wintkhantlin.com",
   },
   defaultImage: "/animation.gif",
 };

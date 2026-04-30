@@ -2,13 +2,48 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getSortedPosts } from "../lib/content";
 import PostCard from "../components/PostCard.astro";
+import { createBreadcrumbSchema, siteConfig } from "../lib/seo";
 
 const posts = await getSortedPosts();
+const title = `Programming Writing | ${siteConfig.siteName}`;
+const description =
+  "Read programming notes from Wint Khant Lin on algorithms, systems thinking, software goals, and learning in public as a Myanmar developer.";
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "Programming Writing",
+    url: Astro.site ? new URL("/writing", Astro.site).toString() : "/writing",
+    description,
+    author: {
+      "@type": "Person",
+      name: siteConfig.author,
+    },
+    blogPost: posts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.data.title,
+      url: Astro.site
+        ? new URL(`/post/${post.id}`, Astro.site).toString()
+        : `/post/${post.id}`,
+      datePublished: post.data.publishedDate.toISOString(),
+    })),
+  },
+  createBreadcrumbSchema(
+    [
+      { name: "Home", path: "/" },
+      { name: "Writing", path: "/writing" },
+    ],
+    Astro.site,
+  ),
+];
 ---
 
 <BaseLayout
-  title="Writing | Wint Khant Lin"
-  description="Notes and writing by Wint Khant Lin on software, systems, and learning in public."
+  title={title}
+  description={description}
+  canonicalPath="/writing"
+  keywords={["programming writing", "software engineering notes", "developer blog"]}
+  structuredData={structuredData}
 >
   <main class="mx-auto max-w-5xl px-5 pb-16 pt-28 text-(--text) sm:px-6 md:px-8">
     <section class="flex flex-col border-t border-(--border)">

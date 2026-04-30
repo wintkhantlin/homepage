@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
-import { siteConfig } from "../../lib/seo";
+import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const posts = await getCollection("content");
@@ -17,24 +17,41 @@ const { Content } = await render(post);
 const description = post.data.description ?? post.data.summary ?? siteConfig.defaultDescription;
 const publishedTime = post.data.publishedDate.toISOString();
 const canonicalPath = `/post/${post.id}`;
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  headline: post.data.title,
-  description,
-  datePublished: publishedTime,
-  dateModified: publishedTime,
-  author: {
-    "@type": "Person",
-    name: siteConfig.author,
+const canonicalUrl = absoluteUrl(canonicalPath, Astro.site);
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.data.title,
+    description,
+    datePublished: publishedTime,
+    dateModified: publishedTime,
+    inLanguage: "en",
+    author: {
+      "@type": "Person",
+      name: siteConfig.author,
+      url: absoluteUrl("/", Astro.site),
+    },
+    publisher: {
+      "@type": "Person",
+      name: siteConfig.author,
+      url: absoluteUrl("/", Astro.site),
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": canonicalUrl,
+    },
+    keywords: post.data.categories,
   },
-  publisher: {
-    "@type": "Person",
-    name: siteConfig.author,
-  },
-  mainEntityOfPage: Astro.site ? new URL(canonicalPath, Astro.site).toString() : undefined,
-  keywords: post.data.categories,
-};
+  createBreadcrumbSchema(
+    [
+      { name: "Home", path: "/" },
+      { name: "Writing", path: "/writing" },
+      { name: post.data.title, path: canonicalPath },
+    ],
+    Astro.site,
+  ),
+];
 ---
 
 <BaseLayout

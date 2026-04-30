@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://wintkhantlin.com/sitemap-index.xml

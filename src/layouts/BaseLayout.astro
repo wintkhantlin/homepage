@@ -82,7 +82,7 @@ const structuredDataPayload = structuredData
     <GoogleAnalytics />
     {
       structuredDataPayload && (
-        <script type="application/ld+json" set:html={structuredDataPayload} />
+        <script is:inline type="application/ld+json" set:html={structuredDataPayload} />
       )
     }
     <script is:inline>
@@ -95,5 +95,6 @@ const structuredDataPayload = structuredData
   <body>
     <Header />
     <slot />
+    <Footer />
   </body>
 </html>

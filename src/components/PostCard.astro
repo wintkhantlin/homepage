@@ -11,8 +11,9 @@ interface Props {
 
 const { post, headingLevel = "h3", showExtraMeta = false } = Astro.props;
 
+const wordCount = post.body?.split(/\s+/u).filter(Boolean).length ?? 0;
 const minutes = showExtraMeta 
-  ? Math.max(1, Math.ceil(post.body.split(/\s+/u).filter(Boolean).length / 180))
+  ? Math.max(1, Math.ceil(wordCount / 180))
   : 0;
 const isMyanmar = showExtraMeta 
   ? /[\u1000-\u109F]/u.test(post.data.title)

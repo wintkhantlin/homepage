@@ -5,28 +5,22 @@ import ProjectsSection from "../components/home/ProjectsSection.astro";
 import WritingSection from "../components/home/WritingSection.astro";
 import AboutSection from "../components/home/AboutSection.astro";
 import { getProjectsWithPreviews, getSortedPosts } from "../lib/content";
+import { createPersonSchema, createWebsiteSchema, siteConfig } from "../lib/seo";
 
 const [projects, posts] = await Promise.all([
   getProjectsWithPreviews(),
   getSortedPosts(),
 ]);
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Wint Khant Lin",
-  "alternateName": "Happer",
-  "url": "https://wintkhantlin.com",
-  "jobTitle": "Software Engineer",
-  "sameAs": [
-    "https://github.com/wintkhantlin",
-    "https://www.linkedin.com/in/wintkhantlin/"
-  ]
-};
+const structuredData = [
+  createPersonSchema(Astro.site),
+  createWebsiteSchema(Astro.site),
+];
 ---
 
 <BaseLayout
-  title="Wint Khant Lin aka Happer"
-  description="Portfolio of Wint Khant Lin (Happer), a software engineering student from Myanmar sharing backend projects, systems thinking, web development experiments, and programming notes."
+  title={siteConfig.defaultTitle}
+  description={siteConfig.defaultDescription}
+  canonicalPath="/"
   structuredData={structuredData}
 >
   <main class="mx-auto max-w-5xl px-5 text-(--text) sm:px-6 md:px-8">

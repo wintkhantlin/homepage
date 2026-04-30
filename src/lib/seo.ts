@@ -5,9 +5,9 @@ export const siteConfig = {
   author: "Wint Khant Lin",
   role: "Software engineer",
   locale: "en_US",
-  defaultTitle: "Wint Khant Lin | Software Engineering Portfolio, Projects, and Writing",
+  defaultTitle: "Wint Khant Lin | Software Engineer Portfolio",
   defaultDescription:
-    "Portfolio of Wint Khant Lin (Happer), a software engineering student from Myanmar sharing backend projects, systems thinking, web development experiments, and programming notes.",
+    "Explore Wint Khant Lin's software engineer portfolio, backend projects, systems thinking, web experiments, and programming notes from Myanmar.",
   defaultKeywords: [
     "Wint Khant Lin",
     "Happer",
@@ -31,3 +31,56 @@ export function dedupeKeywords(values: Array<string | undefined | null>) {
   return [...new Set(values.filter(Boolean).map((value) => value!.trim()))];
 }
 
+export function absoluteUrl(path: string, site?: URL) {
+  return site ? new URL(path, site).toString() : path;
+}
+
+export function createPersonSchema(site?: URL) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: siteConfig.name,
+    alternateName: siteConfig.handle,
+    url: absoluteUrl("/", site),
+    image: absoluteUrl("/favicon.png", site),
+    jobTitle: siteConfig.role,
+    knowsAbout: [
+      "Backend engineering",
+      "Systems programming",
+      "Web development",
+      "Software architecture",
+    ],
+    sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
+  };
+}
+
+export function createWebsiteSchema(site?: URL) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteConfig.siteName,
+    url: absoluteUrl("/", site),
+    description: siteConfig.defaultDescription,
+    inLanguage: "en",
+    author: {
+      "@type": "Person",
+      name: siteConfig.author,
+    },
+  };
+}
+
+export function createBreadcrumbSchema(
+  items: Array<{ name: string; path: string }>,
+  site?: URL,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path, site),
+    })),
+  };
+}

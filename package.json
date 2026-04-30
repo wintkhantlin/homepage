@@ -10,14 +10,14 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.8",
-    "@astrojs/mdx": "4.3.14",
-    "@astrojs/partytown": "^2.1.6",
+    "@astrojs/check": "0.9.9",
+    "@astrojs/mdx": "5.0.4",
+    "@astrojs/partytown": "2.1.7",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/ts-plugin": "1.10.7",
     "@tailwindcss/vite": "4.2.2",
-    "astro": "6.0.8",
+    "astro": "6.2.0",
     "astro-icon": "1.1.5",
     "tailwindcss": "4.2.2",
     "typescript": "5.9.3"

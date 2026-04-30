@@ -49,7 +49,7 @@ export default defineConfig({
     plugins: [tailwindcss({
       optimize: {
         minify: true
-      }
+      },
     })],
   },
 });

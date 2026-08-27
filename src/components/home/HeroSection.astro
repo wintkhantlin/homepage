@@ -2,26 +2,20 @@
 import { Icon } from "astro-icon/components";
 ---
 
-<section class="mt-32 mb-24 flex flex-col items-start justify-center">
-  <h1 class="text-5xl font-bold leading-[1.1] tracking-[-0.02em] text-(--text-heading) sm:text-6xl md:text-7xl lg:text-8xl">
-    Wint Khant Lin.
-  </h1>
+<section class="relative flex min-h-[100svh] items-end overflow-hidden px-1 pb-20 pt-36 sm:px-2 lg:px-4">
+  <div class="hero-intro-glow pointer-events-none absolute inset-x-0 top-0 h-[58%]"></div>
 
-  <div class="mt-8 max-w-xl">
-    <h2 class="text-lg leading-relaxed text-(--text-muted) sm:text-xl font-normal">
-      I'm a college student from Myanmar focused on backend engineering, systems design, and building software that solves real problems.
-    </h2>
+  <div class="relative z-10 w-full">
+    <h1 class="max-w-[1240px] text-balance font-serif text-[clamp(3rem,5.35vw,5.35rem)] font-normal leading-[0.98] tracking-[-0.035em] text-(--text-heading)">
+      <span class="sm:hidden">Hey, I'm Wint. I build useful software.</span>
+      <span class="hidden sm:inline">Hey! I'm Wint Khant Lin, a software engineer building reliable systems for useful products.</span>
+    </h1>
 
-    <div class="mt-10 flex items-center gap-8">
-      <a href="/#projects" class="group relative inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-(--text-heading)">
-        <span>Selected Work</span>
-        <span class="absolute -bottom-2 left-0 h-[2px] w-full origin-right scale-x-100 bg-(--text-heading) transition-transform duration-300 group-hover:origin-left group-hover:scale-x-0"></span>
-      </a>
-      
-      <a href="mailto:hello@wintkhantlin.com" class="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-(--text-muted) transition-colors hover:text-(--text-heading)">
-        <span>Get in touch</span>
-        <Icon name="lucide:arrow-right" class="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-      </a>
-    </div>
+    <a href="mailto:hello@wintkhantlin.com" class="hero-cta group mt-9 inline-flex min-h-14 items-center gap-4 rounded-full px-6 text-base font-medium leading-none text-white transition-[transform,box-shadow,filter] duration-200 ease-out active:translate-y-0.5 sm:min-h-16 sm:gap-6 sm:px-8 sm:text-xl">
+      <span class="relative z-10">Start a project with me</span>
+      <span class="hero-cta-icon relative z-10 flex size-7 items-center justify-center" aria-hidden="true">
+        <Icon name="lucide:play" class="size-4 fill-current transition-transform duration-200 ease-out group-hover:translate-x-0.5" />
+      </span>
+    </a>
   </div>
 </section>

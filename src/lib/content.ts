@@ -1,38 +1,140 @@
-import { getCollection } from "astro:content";
-import { getImage } from "astro:assets";
+import { readFile } from "node:fs/promises";
+import type { ImageMetadata } from "astro";
+
+type ContentComponent = (...args: any[]) => any;
+
+type PostFrontmatter = {
+  title: string;
+  seoTitle?: string;
+  summary?: string;
+  description?: string;
+  seoDescription?: string;
+  categories: string[];
+  publishedDate: string | Date;
+  lang?: "en" | "my";
+};
+
+type ProjectFrontmatter = {
+  name: string;
+  type?: string;
+  description: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  source: string;
+  publishedDate: string | Date;
+  img: string;
+  technologies?: string[];
+  color: string;
+  caseStudy?: {
+    status: string;
+    challenge: string;
+    approach: string;
+    architecture: string[];
+    highlights: string[];
+    diagram: string;
+  };
+};
+
+type MarkdownModule<TFrontmatter> = {
+  Content: ContentComponent;
+  file?: string;
+  frontmatter: TFrontmatter;
+};
+
+type ImportedImageModule = {
+  default: ImageMetadata;
+};
+
+export type PostEntry = {
+  id: string;
+  body?: string;
+  Content: ContentComponent;
+  data: Omit<PostFrontmatter, "publishedDate"> & {
+    publishedDate: Date;
+  };
+};
+
+export type ProjectEntry = {
+  id: string;
+  body?: string;
+  Content: ContentComponent;
+  data: Omit<ProjectFrontmatter, "publishedDate" | "img"> & {
+    publishedDate: Date;
+    img: ImageMetadata;
+  };
+};
+
+const postModules = import.meta.glob<MarkdownModule<PostFrontmatter>>(
+  "../content/posts/*.mdx",
+  { eager: true },
+);
+
+const projectModules = import.meta.glob<MarkdownModule<ProjectFrontmatter>>(
+  "../content/projects/*.{md,mdx}",
+  { eager: true },
+);
+
+const projectImages = import.meta.glob<ImportedImageModule>("../assets/img/*", {
+  eager: true,
+});
+
+function getIdFromPath(path: string) {
+  return path.split("/").pop()?.replace(/\.(md|mdx)$/, "") ?? path;
+}
+
+async function readBody(file?: string) {
+  if (!file) return undefined;
+
+  const source = await readFile(file, "utf-8");
+  return source.replace(/^---[\s\S]*?\n---\s*/u, "").trim();
+}
+
+async function mapPosts() {
+  return Promise.all(
+    Object.entries(postModules).map(async ([path, mod]) => ({
+      id: getIdFromPath(path),
+      body: await readBody(mod.file),
+      Content: mod.Content,
+      data: {
+        ...mod.frontmatter,
+        publishedDate: new Date(mod.frontmatter.publishedDate),
+      },
+    })),
+  );
+}
+
+async function mapProjects() {
+  return Promise.all(
+    Object.entries(projectModules).map(async ([path, mod]) => {
+      const imageName = String(mod.frontmatter.img).split("/").pop();
+      const imagePath = Object.keys(projectImages).find((key) => key.endsWith(`/${imageName}`));
+      if (!imagePath) {
+        throw new Error(`Unable to resolve project image "${mod.frontmatter.img}" for ${path}`);
+      }
+      const image = projectImages[imagePath].default;
+
+      return {
+        id: getIdFromPath(path),
+        body: await readBody(mod.file),
+        Content: mod.Content,
+        data: {
+          ...mod.frontmatter,
+          img: image,
+          publishedDate: new Date(mod.frontmatter.publishedDate),
+        },
+      };
+    }),
+  );
+}
 
 export async function getSortedPosts() {
-  return (await getCollection("content")).sort(
+  return (await mapPosts()).sort(
     (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
   );
 }
 
-export async function getProjectsWithPreviews() {
-  const rawProjects = (await getCollection("projects")).sort(
+export async function getSortedProjects() {
+  return (await mapProjects()).sort(
     (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
-  );
-
-  return Promise.all(
-    rawProjects.map(async (project) => {
-      const [preview, blurPreview] = await Promise.all([
-        getImage({
-          src: project.data.img,
-          width: 1024,
-          format: "webp",
-        }),
-        getImage({
-          src: project.data.img,
-          width: 24,
-          format: "webp",
-          quality: 10
-        }),
-      ]);
-
-      return {
-        ...project,
-        previewSrc: preview.src,
-        blurPreviewSrc: blurPreview.src,
-      };
-    }),
   );
 }

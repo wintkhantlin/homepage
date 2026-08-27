@@ -1,10 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Icon } from "astro-icon/components";
 ---
 
-<BaseLayout title="404 — Page Not Found | Wint Khant Lin" noindex={true}>
-  <main class="mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-5 text-center sm:px-6 md:px-8">
-    <p class="text-8xl font-black tracking-tighter text-(--text-faint) md:text-[10rem]">
+<BaseLayout
+  title="404 — Page Not Found | Wint Khant Lin"
+  description="The requested page could not be found. Return to Wint Khant Lin's software engineering portfolio, projects, and programming notes."
+  noindex={true}
+>
+  <main id="main-content" tabindex="-1" class="mx-auto flex min-h-[70vh] max-w-4xl flex-col items-center justify-center px-5 pt-24 text-center sm:px-6 md:px-8">
+    <p class="font-serif text-8xl font-normal tracking-[-0.035em] text-(--text-faint) md:text-[10rem]">
       404
     </p>
 
@@ -18,9 +23,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     <a
       href="/"
-      class="mt-8 inline-flex items-center gap-1.5 rounded-full border border-(--border) px-5 py-2.5 text-sm text-(--text-heading) transition-all duration-200 hover:border-(--text-faint) hover:bg-white/5"
+      class="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-(--text-heading) px-5 text-sm font-semibold text-(--bg) transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0"
     >
-      <span>&larr;</span>
+      <Icon name="lucide:arrow-left" class="size-4" aria-hidden="true" />
       <span>Back to home</span>
     </a>
   </main>

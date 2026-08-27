@@ -18,10 +18,13 @@
     "@tailwindcss/vite": "4.2.4",
     "astro": "6.4.2",
     "astro-icon": "1.1.5",
+    "mermaid": "^11.17.2",
     "tailwindcss": "4.2.4",
     "typescript": "6.0.3"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@iconify-json/devicon": "^1.2.62",
     "@iconify-json/lucide": "1.2.105",
     "@tailwindcss/typography": "0.5.19",
     "husky": "^9.1.7"

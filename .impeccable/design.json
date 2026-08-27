@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-04T06:50:07Z",
+  "title": "Design System: Happer Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "paper": { "role": "neutral", "displayName": "Portfolio Paper", "canonical": "#f4f0e8", "tonalRamp": ["#25231f", "#49453f", "#6f6960", "#958e83", "#bcb4a8", "#ddd7ce", "#f4f0e8", "#fffdf8"] },
+      "ink": { "role": "neutral", "displayName": "Printer's Ink", "canonical": "#111111", "tonalRamp": ["#111111", "#2b2b2b", "#484848", "#686868", "#8b8b8b", "#b0b0b0", "#d7d7d7", "#f4f4f4"] },
+      "soft-surface": { "role": "neutral", "displayName": "Warm Gray Surface", "canonical": "#e5e0d7", "tonalRamp": ["#24221e", "#46423c", "#69645b", "#8d867b", "#b2aa9e", "#d4cec4", "#e5e0d7", "#fbf8f2"] },
+      "image-fallback": { "role": "neutral", "displayName": "Image Placeholder Taupe", "canonical": "#d4cfc4", "tonalRamp": ["#23211d", "#433f38", "#645f55", "#867f73", "#aaa295", "#c9c2b7", "#d4cfc4", "#f7f3ec"] },
+      "paper-highlight": { "role": "neutral", "displayName": "Paper Grain Highlight", "canonical": "rgba(255, 255, 255, .8)", "tonalRamp": ["rgba(255,255,255,.12)", "rgba(255,255,255,.22)", "rgba(255,255,255,.34)", "rgba(255,255,255,.46)", "rgba(255,255,255,.58)", "rgba(255,255,255,.7)", "rgba(255,255,255,.8)", "rgba(255,255,255,.92)"] },
+      "accent-red": { "role": "primary", "displayName": "Editorial Red Mark", "canonical": "#f06449", "tonalRamp": ["#3a0c05", "#6b1b10", "#9d2c1d", "#c84531", "#f06449", "#f58b75", "#fac0b5", "#fde9e5"] },
+      "status-green": { "role": "tertiary", "displayName": "Availability Green", "canonical": "#55b878", "tonalRamp": ["#072716", "#124b2b", "#216f42", "#35955c", "#55b878", "#81d39a", "#b3e8c1", "#e4f8e9"] },
+      "muted-ink": { "role": "neutral", "displayName": "Muted Ink", "canonical": "#555149", "tonalRamp": ["#171613", "#2d2b26", "#444139", "#5c574e", "#7a7469", "#9f988d", "#c7c0b6", "#eee9e2"] },
+      "faint-ink": { "role": "neutral", "displayName": "Faint Ink", "canonical": "#716c63", "tonalRamp": ["#191714", "#322f2a", "#4b4740", "#666158", "#827c72", "#a7a096", "#cdc7bd", "#f2ede6"] },
+      "brand-github-deep": { "role": "neutral", "displayName": "GitHub Tile Deep", "canonical": "#151515", "tonalRamp": ["#151515", "#2d2d2d", "#464646", "#626262", "#808080", "#a3a3a3", "#cccccc", "#f3f3f3"] },
+      "brand-github-lift": { "role": "neutral", "displayName": "GitHub Tile Lift", "canonical": "#454545", "tonalRamp": ["#121212", "#292929", "#454545", "#606060", "#7e7e7e", "#a1a1a1", "#cacaca", "#f2f2f2"] },
+      "brand-writing-soft": { "role": "secondary", "displayName": "Writing Tile Soft Pink", "canonical": "#ffc0e8", "tonalRamp": ["#3b0928", "#71174f", "#a82976", "#d94a9d", "#ea88c8", "#ffc0e8", "#ffd8f1", "#fff0fa"] },
+      "brand-writing-strong": { "role": "secondary", "displayName": "Writing Tile Strong Pink", "canonical": "#ea88c8", "tonalRamp": ["#33061f", "#64123f", "#972461", "#c8478b", "#ea88c8", "#f4addb", "#fad1ec", "#fff0fa"] },
+      "brand-writing-ink": { "role": "secondary", "displayName": "Writing Tile Ink", "canonical": "#873f6c", "tonalRamp": ["#1f0716", "#3e132d", "#5e2446", "#873f6c", "#ad6392", "#ce8ab4", "#e9b8d6", "#f9e7f2"] },
+      "brand-linkedin-deep": { "role": "secondary", "displayName": "LinkedIn Tile Deep", "canonical": "#0754a5", "tonalRamp": ["#02142a", "#032a54", "#06417e", "#0754a5", "#2270c4", "#5797dc", "#9ac4ef", "#e0f0ff"] },
+      "brand-linkedin-lift": { "role": "secondary", "displayName": "LinkedIn Tile Lift", "canonical": "#3781d8", "tonalRamp": ["#04172d", "#0a315a", "#164d87", "#2869b3", "#3781d8", "#6aa4e6", "#a8cdf3", "#e4f2ff"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Compressed Editorial Display", "purpose": "Hero, section, project, and contact headlines." },
+      "body": { "displayName": "Clear Reading Voice", "purpose": "Narrative copy, article text, labels, and navigation." }
+    },
+    "shadows": [
+      { "name": "header-floating", "value": "0 8px 24px rgba(17, 17, 17, .14)", "purpose": "Keeps the fixed navigation legible without making it feel like a card." },
+      { "name": "about-photo-natural", "value": "0 1.1rem 2.6rem rgba(17, 17, 17, .18)", "purpose": "Soft natural lift for overlapping personal photographs only." },
+      { "name": "social-tile-gloss", "value": "0 .65rem 1.35rem rgba(17, 17, 17, .2), inset 0 1px 0 rgba(255, 255, 255, .34)", "purpose": "The footer's compact branded destination exception." }
+    ],
+    "motion": [
+      { "name": "editorial-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Decisive image, arrow, social tile, and header state changes." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "640px" },
+      { "name": "compact-grid", "value": "900px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Header Contact",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Compact pill action used inside the fixed editorial navigation.",
+      "html": "<a class=\"ds-header-contact\" href=\"#\">LET'S TALK <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7 7h10v10M7 17L17 7\"/></svg></a>",
+      "css": ".ds-header-contact{display:inline-flex;min-height:44px;align-items:center;gap:6px;padding:0 14px;border-radius:999px;background:#111111;color:#f4f0e8;font:750 13px Inter,Arial,sans-serif;text-decoration:none}.ds-header-contact svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .22s cubic-bezier(.16,1,.3,1)}.ds-header-contact:hover svg{transform:translate(3px,-3px)}.ds-header-contact:focus-visible{outline:3px solid #111111;outline-offset:5px}"
+    },
+    {
+      "name": "Project Chapter Image",
+      "kind": "card",
+      "refersTo": "project-card",
+      "description": "Large rounded project evidence with a restrained editorial hover response.",
+      "html": "<a class=\"ds-project\" href=\"#\"><span>PROJECT SCREENSHOT</span><b><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7 7h10v10M7 17L17 7\"/></svg></b></a>",
+      "css": ".ds-project{position:relative;display:grid;place-items:center;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#d4cfc4;color:#111111;font:850 18px 'Inter Tight',Arial,sans-serif;text-decoration:none;transition:transform .55s cubic-bezier(.16,1,.3,1),box-shadow .55s cubic-bezier(.16,1,.3,1)}.ds-project span{transition:transform .65s cubic-bezier(.16,1,.3,1)}.ds-project b{position:absolute;right:16px;top:16px;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#f4f0e8;color:#111111}.ds-project svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.ds-project:hover{transform:translateY(-5px);box-shadow:0 19px 40px rgba(17,17,17,.18)}.ds-project:hover span{transform:scale(1.02)}.ds-project:focus-visible{outline:3px solid #111111;outline-offset:5px}"
+    },
+    {
+      "name": "Editorial Link",
+      "kind": "custom",
+      "description": "Underlined text action with directional arrow movement instead of button chrome.",
+      "html": "<a class=\"ds-link\" href=\"#\">VIEW SOURCE <span>↗</span></a>",
+      "css": ".ds-link{display:inline-flex;min-height:44px;align-items:center;gap:10px;color:#111111;font:800 14px Inter,Arial,sans-serif;text-underline-offset:4px;text-decoration-thickness:2px}.ds-link span{transition:transform .22s cubic-bezier(.16,1,.3,1)}.ds-link:hover span{transform:translate(3px,-3px)}.ds-link:focus-visible{outline:3px solid #111111;outline-offset:5px}"
+    },
+    {
+      "name": "Journey Link",
+      "kind": "custom",
+      "description": "Full-width sectional link that keeps the long-scroll story moving without card chrome.",
+      "html": "<a class=\"ds-journey\" href=\"#\"><span>NEXT: SEE HOW I THINK</span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7 7h10v10M7 17L17 7\"/></svg></a>",
+      "css": ".ds-journey{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;min-height:84px;padding:20px 0;border-top:1px solid #111111;border-bottom:1px solid #111111;color:#111111;font:850 clamp(24px,3vw,52px) 'Inter Tight',Arial,sans-serif;letter-spacing:-.035em;line-height:1;text-decoration:none}.ds-journey span{max-width:22ch}.ds-journey svg{width:36px;height:36px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .28s cubic-bezier(.16,1,.3,1)}.ds-journey:hover svg{transform:translate(4px,4px)}.ds-journey:focus-visible{outline:3px solid #111111;outline-offset:5px}"
+    },
+    {
+      "name": "Site Navigation",
+      "kind": "nav",
+      "description": "Slim fixed editorial strip with a strong wordmark and compact section links.",
+      "html": "<nav class=\"ds-nav\"><strong>WKL</strong><a href=\"#\">WORK</a><a href=\"#\">WRITING</a><a href=\"#\">ABOUT</a></nav>",
+      "css": ".ds-nav{display:inline-flex;min-height:52px;align-items:center;gap:4px;padding:4px;border-radius:999px;background:#111111;color:#f4f0e8;box-shadow:0 8px 24px rgba(17,17,17,.14);font:750 12px Inter,Arial,sans-serif}.ds-nav strong{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#f4f0e8;color:#111111;font:850 11px 'Inter Tight',Arial,sans-serif}.ds-nav a{position:relative;min-height:44px;display:inline-flex;align-items:center;padding:0 10px;color:rgba(244,240,232,.68);text-decoration:none}.ds-nav a:after{content:'';position:absolute;left:10px;right:calc(100% - 10px);bottom:8px;height:2px;background:#f06449;transition:right .26s cubic-bezier(.16,1,.3,1)}.ds-nav a:hover{color:#f4f0e8}.ds-nav a:hover:after{right:10px}.ds-nav a:focus-visible{outline:3px solid currentColor;outline-offset:5px}"
+    },
+    {
+      "name": "Social Tile",
+      "kind": "custom",
+      "refersTo": "social-tile",
+      "description": "Small glossy verified-destination tile, the one branded color exception in the system.",
+      "html": "<a class=\"ds-social-tile\" href=\"#\" aria-label=\"LinkedIn\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6M2 9h4v12H2z\"/><circle cx=\"4\" cy=\"4\" r=\"2\"/></svg></a>",
+      "css": ".ds-social-tile{display:inline-flex;align-items:center;justify-content:center;width:72px;aspect-ratio:1;border-radius:24%;background:linear-gradient(145deg,#3781d8,#0754a5);color:#f4f0e8;box-shadow:0 10px 22px rgba(17,17,17,.2),inset 0 1px 0 rgba(255,255,255,.34);text-decoration:none;transform:rotate(4deg);transition:transform .28s cubic-bezier(.16,1,.3,1),box-shadow .28s cubic-bezier(.16,1,.3,1)}.ds-social-tile svg{width:52%;height:52%;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.ds-social-tile:hover{transform:translateY(-7px) rotate(0) scale(1.04);box-shadow:0 16px 29px rgba(17,17,17,.24),inset 0 1px 0 rgba(255,255,255,.38)}.ds-social-tile:focus-visible{outline:3px solid #111111;outline-offset:5px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Marked-Up Swiss Proof",
+    "overview": "A rigorous twelve-column editorial grid gives the portfolio authority; oversized typography, direct copy, and real artifacts provide the proof. Hand-drawn arrows, circles, stickers, and slight overlaps interrupt that order with Wint's curious, informal personality. The result is bold but never noisy: one continuous off-white canvas, strong black type, real imagery, and a few expressive marks.",
+    "keyCharacteristics": ["Continuous off-white paper canvas", "Twelve-column editorial grid", "Oversized grotesk typography", "Real project evidence and personal photography", "Restrained hand-made marks", "Tiny semantic accent moments"],
+    "rules": [
+      { "name": "The Neutral Canvas Rule", "body": "Every large section stays on the same paper canvas; accent colors never become section or component backgrounds.", "section": "colors" },
+      { "name": "The Verified Tile Exception", "body": "Footer social destinations may use branded glossy tiles because they identify verified external destinations, not decorative palette expansion.", "section": "components" }
+    ],
+    "dos": [
+      "Do let typography and real project imagery carry the page.",
+      "Do keep every large section on the same neutral paper canvas.",
+      "Do reserve accent color for tiny semantic or typographic moments.",
+      "Do keep motion restrained: one entrance rhythm and decisive hover feedback.",
+      "Do preserve clear reading order and generous whitespace."
+    ],
+    "donts": [
+      "Don't scatter all accent colors inside the same section.",
+      "Don't use yellow, blue, green, or red as a page, section, card, button, or sticker background.",
+      "Don't use glass effects, decorative gradients, generic icon cards, or heavy shadows.",
+      "Don't fabricate client proof, project outcomes, or capability claims.",
+      "Don't make hand-drawn marks compete with functional controls."
+    ]
+  }
+}

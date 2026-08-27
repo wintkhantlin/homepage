@@ -1,8 +1,0 @@
-name: ToolyDooly
-type: productivity
-description: A Todo application built with NestJS, Express, Vue, Postgres, and MongoDB, running in a Dockerized microservice architecture.
-source: https://github.com/wintkhantlin/toolydooly
-img: ../../assets/img/toolydooly.png
-technologies: ["Vue.JS", "Express.JS", "NestJS" ,"Microservice", "Postgres", "MongoDB", "Redis"]
-publishedDate: 2025-11-05
-color: "#b1badc"

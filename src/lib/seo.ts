@@ -1,13 +1,16 @@
 export const siteConfig = {
   name: "Wint Khant Lin",
+  givenName: "Wint Khant",
+  familyName: "Lin",
   siteName: "Wint Khant Lin",
   handle: "Happer",
   author: "Wint Khant Lin",
   role: "Software engineer",
   locale: "en_US",
-  defaultTitle: "Wint Khant Lin | Software Engineer Portfolio",
+  defaultTitle: "Backend Software Engineer Portfolio | Wint Khant Lin",
   defaultDescription:
     "Explore Wint Khant Lin's software engineer portfolio, backend projects, systems thinking, web experiments, and programming notes from Myanmar.",
+  defaultImage: "/favicon.png",
   defaultKeywords: [
     "Wint Khant Lin",
     "Happer",
@@ -30,18 +33,37 @@ export function dedupeKeywords(values: Array<string | undefined | null>) {
   return [...new Set(values.filter(Boolean).map((value) => value!.trim()))];
 }
 
-export function absoluteUrl(path: string, site?: URL) {
-  return site ? new URL(path, site).toString() : path;
+function normalizeInternalPath(path: string) {
+  if (!path.startsWith("/")) return path;
+
+  const url = new URL(path, "https://portfolio.invalid");
+  const finalSegment = url.pathname.split("/").pop() ?? "";
+  const isFile = finalSegment.includes(".");
+
+  if (url.pathname !== "/" && !url.pathname.endsWith("/") && !isFile) {
+    url.pathname += "/";
+  }
+
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
-export function createPersonSchema(site?: URL) {
+export function absoluteUrl(path: string, site?: URL) {
+  const normalizedPath = normalizeInternalPath(path);
+  return site ? new URL(normalizedPath, site).toString() : normalizedPath;
+}
+
+export function createPersonSchema(site?: URL, image?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": absoluteUrl("/#person", site),
     name: siteConfig.name,
+    givenName: siteConfig.givenName,
+    familyName: siteConfig.familyName,
     alternateName: siteConfig.handle,
     url: absoluteUrl("/", site),
-    image: absoluteUrl("/favicon.png", site),
+    description: `${siteConfig.role} from Myanmar focused on backend systems, web products, and software architecture.`,
+    ...(image ? { image: absoluteUrl(image, site) } : {}),
     jobTitle: siteConfig.role,
     knowsAbout: [
       "Backend engineering",
@@ -63,6 +85,7 @@ export function createWebsiteSchema(site?: URL) {
     inLanguage: "en",
     author: {
       "@type": "Person",
+      "@id": absoluteUrl("/#person", site),
       name: siteConfig.author,
     },
   };

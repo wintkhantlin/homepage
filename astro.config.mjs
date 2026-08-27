@@ -31,6 +31,21 @@ export default defineConfig({
       cssVariable: "--font-body",
       display: "swap",
     },
+    {
+      provider: fontProviders.local(),
+      name: "LT Superior Serif",
+      cssVariable: "--font-display",
+      display: "swap",
+      options: {
+        variants: [
+          {
+            src: ["./src/assets/fonts/LTSuperiorSerif-Regular.otf"],
+            weight: "400",
+            style: "normal",
+          },
+        ],
+      },
+    },
   ],
 
   integrations: [

@@ -13,20 +13,23 @@ interface Props {
 const { posts } = Astro.props as Props;
 ---
 
-<section id="writing" class="mt-32 mb-16 pt-6">
+<section id="writing" class="scroll-mt-28 py-32">
   <div
-    class="mb-12 flex items-center justify-between border-b border-(--border) pb-4"
+    class="mb-4 flex flex-col justify-between gap-7 border-b border-(--border) pb-8 sm:flex-row sm:items-end"
   >
-    <h2
-      class="text-xs font-bold uppercase tracking-[0.2em] text-(--text-heading)"
-    >
-      Notes & Writing
-    </h2>
+    <div>
+      <h2 class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)">
+        Notes & writing
+      </h2>
+      <p class="mt-5 max-w-xl text-base leading-7 text-(--text-muted)">
+        Ideas about software, systems, algorithms, and the process of learning in public.
+      </p>
+    </div>
     <a
       href="/writing"
-      class="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-(--text-faint) transition-colors hover:text-(--text-heading)"
+      class="group flex items-center gap-2 text-sm font-semibold text-(--text-muted) transition-colors hover:text-(--text-heading)"
     >
-      <span>View Archive</span>
+      <span>View all notes</span>
       <Icon
         name="lucide:arrow-right"
         class="size-3 transition-transform duration-300 group-hover:translate-x-1"
@@ -36,9 +39,13 @@ const { posts } = Astro.props as Props;
 
   <div class="flex flex-col">
     {
-      posts.map((post) => (
-        <PostCard post={post} headingLevel="h3" showExtraMeta={false} />
-      ))
+      posts.length > 0 ? (
+        posts.map((post) => <PostCard post={post} headingLevel="h3" />)
+      ) : (
+        <p class="border-b border-(--border) px-1 py-12 text-base leading-7 text-(--text-muted)">
+          No notes are published yet. Check back soon.
+        </p>
+      )
     }
   </div>
 </section>

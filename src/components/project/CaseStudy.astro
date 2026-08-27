@@ -1,0 +1,194 @@
+---
+interface Props {
+  challenge: string;
+  approach: string;
+  architecture: string[];
+  highlights: string[];
+  diagram: string;
+}
+
+const { challenge, approach, architecture, highlights, diagram } = Astro.props as Props;
+---
+
+<div class="space-y-20">
+  <section>
+    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
+      The challenge
+    </h2>
+    <p class="mt-6 max-w-[68ch] text-base leading-8 text-(--text-muted) sm:text-lg">
+      {challenge}
+    </p>
+  </section>
+
+  <section>
+    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
+      The approach
+    </h2>
+    <p class="mt-6 max-w-[68ch] text-base leading-8 text-(--text-muted) sm:text-lg">
+      {approach}
+    </p>
+  </section>
+
+  <section>
+    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
+      System architecture
+    </h2>
+    <div
+      class="mermaid-enhancement mt-7 overscroll-x-contain overflow-x-auto rounded-2xl border border-(--border) bg-(--bg) p-4 sm:p-8"
+      data-mermaid-diagram
+      tabindex="0"
+      aria-label="Scrollable system architecture diagram"
+    >
+      <pre class="hidden" data-mermaid-source>{diagram}</pre>
+      <div
+        class="flex min-h-72 min-w-[44rem] items-center justify-center text-sm text-(--text-faint)"
+        data-mermaid-output
+        role="img"
+        aria-label="System architecture diagram"
+        aria-live="polite"
+        aria-busy="true"
+      >
+        Rendering architecture…
+      </div>
+      <div class="hidden min-h-72 flex-col items-center justify-center gap-4 text-center" data-mermaid-error role="alert">
+        <p class="max-w-md text-sm leading-6 text-(--text-muted)">
+          The architecture diagram could not be rendered. The same system details remain available in the list below.
+        </p>
+        <button
+          type="button"
+          class="min-h-11 rounded-full border border-(--border) px-5 text-sm font-semibold text-(--text-heading) transition-colors hover:bg-(--border)"
+          data-mermaid-retry
+        >
+          Try rendering again
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
+      How it is structured
+    </h2>
+    <ol class="mt-7 border-t border-(--border)">
+      {architecture.map((item, index) => (
+        <li class="grid gap-4 border-b border-(--border) py-5 sm:grid-cols-[2rem_1fr]">
+          <span class="font-mono text-xs text-(--text-faint)">{String(index + 1).padStart(2, "0")}</span>
+          <span class="text-[15px] leading-7 text-(--text-muted)">{item}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section>
+    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
+      What it includes
+    </h2>
+    <ul class="mt-7 grid gap-px overflow-hidden rounded-xl border border-(--border) bg-(--border) sm:grid-cols-2">
+      {highlights.map((item) => (
+        <li class="bg-(--bg) p-6 text-[15px] leading-7 text-(--text-muted)">{item}</li>
+      ))}
+    </ul>
+  </section>
+</div>
+
+<script>
+  type Mermaid = typeof import("mermaid").default;
+  let mermaidPromise: Promise<Mermaid> | undefined;
+
+  function loadMermaid() {
+    mermaidPromise ??= import("mermaid").then((module) => module.default);
+    return mermaidPromise;
+  }
+
+  function configureMermaid(mermaid: Mermaid) {
+    const styles = getComputedStyle(document.documentElement);
+    const background = styles.getPropertyValue("--bg").trim();
+    const heading = styles.getPropertyValue("--text-heading").trim();
+    const muted = styles.getPropertyValue("--text-muted").trim();
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      theme: "base",
+      fontFamily: styles.fontFamily,
+      themeVariables: {
+        background,
+        primaryColor: heading,
+        primaryTextColor: background,
+        primaryBorderColor: muted,
+        secondaryColor: background,
+        secondaryTextColor: heading,
+        secondaryBorderColor: muted,
+        lineColor: muted,
+        textColor: heading,
+      },
+      flowchart: {
+        curve: "basis",
+        htmlLabels: false,
+        useMaxWidth: true,
+      },
+    });
+  }
+
+  async function renderDiagram(force = false) {
+    const diagram = document.querySelector<HTMLElement>("[data-mermaid-diagram]");
+    const source = diagram?.querySelector<HTMLElement>("[data-mermaid-source]")?.textContent?.trim();
+    const output = diagram?.querySelector<HTMLElement>("[data-mermaid-output]");
+    const errorState = diagram?.querySelector<HTMLElement>("[data-mermaid-error]");
+
+    if (!diagram || !source || !output || !errorState) return;
+    if (diagram.dataset.loading === "true") return;
+    if (!force && diagram.dataset.rendered === "true") return;
+
+    diagram.dataset.loading = "true";
+    diagram.dataset.rendered = "false";
+    errorState.classList.add("hidden");
+    errorState.classList.remove("flex");
+    output.classList.remove("hidden");
+    output.classList.add("flex", "min-h-72");
+    output.setAttribute("aria-busy", "true");
+    output.textContent = "Rendering architecture…";
+
+    try {
+      const mermaid = await loadMermaid();
+      configureMermaid(mermaid);
+      const { svg, bindFunctions } = await mermaid.render(`case-diagram-${Date.now()}`, source);
+      output.innerHTML = svg;
+      output.classList.remove("min-h-72");
+      output.setAttribute("aria-busy", "false");
+      bindFunctions?.(output);
+      diagram.dataset.rendered = "true";
+    } catch (error) {
+      output.classList.add("hidden");
+      output.classList.remove("flex");
+      output.setAttribute("aria-busy", "false");
+      errorState.classList.remove("hidden");
+      errorState.classList.add("flex");
+      console.error("Unable to render Mermaid diagram", error);
+    } finally {
+      diagram.dataset.loading = "false";
+    }
+  }
+
+  const diagram = document.querySelector<HTMLElement>("[data-mermaid-diagram]");
+  const retry = diagram?.querySelector<HTMLButtonElement>("[data-mermaid-retry]");
+
+  retry?.addEventListener("click", () => void renderDiagram(true));
+  window.addEventListener("portfolio:theme-change", () => {
+    if (diagram?.dataset.rendered === "true") void renderDiagram(true);
+  });
+
+  if (diagram && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void renderDiagram();
+      },
+      { rootMargin: "320px" },
+    );
+    observer.observe(diagram);
+  } else {
+    void renderDiagram();
+  }
+</script>

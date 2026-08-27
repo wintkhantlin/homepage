@@ -2,32 +2,43 @@
 import { Icon } from "astro-icon/components";
 
 const links = [
-  { label: "Projects", href: "/#projects" },
-  { label: "Writing", href: "/writing" },
-  { label: "About", href: "/#about" },
+  { label: "Work", href: "/#projects" },
+  { label: "Notes", href: "/writing" },
+  { label: "Story", href: "/#about" },
 ];
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) => {
+  if (href === "/writing") return pathname === "/writing" || pathname.startsWith("/post/");
+  if (href === "/#projects") return pathname.startsWith("/project/");
+  return false;
+};
 ---
 
 <header
-  class="fixed inset-x-0 top-6 z-50 flex justify-center px-4 max-w-[750px] w-full mx-auto"
+  class="fixed inset-x-0 top-5 z-50 mx-auto flex w-full max-w-[820px] justify-center px-4 sm:top-6"
 >
   <div
-    class="flex w-full items-center justify-between rounded-full bg-(--bg)/60 backdrop-blur-sm border border-(--border)/80 px-4 sm:px-6 py-2.5 shadow-sm"
+    class="flex w-full items-center justify-between rounded-full border border-(--border) bg-(--bg)/78 px-4 py-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.12)] backdrop-blur-xl sm:px-6"
   >
     <a
       href="/"
-      class="text-sm sm:text-base font-extrabold tracking-tight text-(--text-heading) transition-opacity duration-200 hover:opacity-60"
+      class="inline-flex min-h-11 items-center text-sm font-extrabold tracking-tight text-(--text-heading) transition-opacity duration-200 hover:opacity-60 active:opacity-45 sm:text-base"
     >
       <span class="sm:hidden">WK</span>
-      <span class="hidden sm:inline">WINT KHANT</span>
+      <span class="hidden sm:inline">WINT KHANT LIN</span>
     </a>
 
-    <nav class="flex items-center gap-3 sm:gap-6">
+    <nav class="flex items-center gap-3 sm:gap-6" aria-label="Primary navigation">
       {
         links.map((link) => (
           <a
             href={link.href}
-            class="text-[13px] sm:text-[14px] text-(--text-muted) transition-colors hover:text-(--text-heading)"
+            aria-current={isActive(link.href) ? "page" : undefined}
+            class:list={[
+              "inline-flex min-h-11 items-center text-[13px] text-(--text-muted) transition-colors hover:text-(--text-heading) active:text-(--text-heading) sm:text-[14px]",
+              { "text-(--text-heading) underline decoration-(--text-faint) underline-offset-8": isActive(link.href) },
+            ]}
           >
             {link.label}
           </a>
@@ -35,19 +46,18 @@ const links = [
       }
 
       <a
-        href="https://github.com/wintkhantlin"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hidden sm:block text-[13px] font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
+        href="mailto:hello@wintkhantlin.com"
+        class="hidden min-h-10 items-center rounded-full bg-(--text-heading) px-4 text-[13px] font-semibold text-(--bg) transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:inline-flex"
       >
-        GitHub
+        Let's talk
       </a>
 
       <button
         id="theme-toggle"
         type="button"
-        aria-label="Toggle theme"
-        class="ml-1 flex cursor-pointer items-center justify-center text-(--text-muted) transition-colors hover:text-(--text-heading)"
+        aria-label="Switch to light theme"
+        aria-pressed="false"
+        class="flex size-11 cursor-pointer items-center justify-center rounded-full text-(--text-muted) transition-[background-color,color,transform] duration-300 hover:bg-(--border) hover:text-(--text-heading) active:scale-95 sm:ml-1"
       >
         <span id="theme-icon-dark" class="hidden">
           <Icon name="lucide:sun" class="size-[15px]" />
@@ -65,39 +75,46 @@ const links = [
     const isLight = document.documentElement.classList.contains("light");
     const darkIcon = document.getElementById("theme-icon-dark");
     const lightIcon = document.getElementById("theme-icon-light");
+    const button = document.getElementById("theme-toggle");
+    const themeColor = document.getElementById("theme-color");
 
-    if (darkIcon) darkIcon.classList.toggle("hidden", !isLight);
-    if (lightIcon) lightIcon.classList.toggle("hidden", isLight);
+    if (darkIcon) darkIcon.classList.toggle("hidden", isLight);
+    if (lightIcon) lightIcon.classList.toggle("hidden", !isLight);
+    button?.setAttribute("aria-label", isLight ? "Switch to dark theme" : "Switch to light theme");
+    button?.setAttribute("aria-pressed", String(isLight));
+    themeColor?.setAttribute("content", isLight ? "#fafafa" : "#0a0a0a");
   }
 
-  function toggleTheme(e: MouseEvent) {
+  function persistTheme(theme: "light" | "dark") {
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {}
+  }
+
+  function applyTheme(theme: "light" | "dark") {
+    document.documentElement.classList.toggle("light", theme === "light");
+    persistTheme(theme);
+    updateIcons();
+    window.dispatchEvent(new CustomEvent("portfolio:theme-change"));
+  }
+
+  function toggleTheme() {
     const isLight = document.documentElement.classList.contains("light");
     const newTheme = isLight ? "dark" : "light";
 
-    const x = e.clientX;
-    const y = e.clientY;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    document.documentElement.style.setProperty("--x", `${x}px`);
-    document.documentElement.style.setProperty("--y", `${y}px`);
-
-    if (document.startViewTransition) {
+    if (document.startViewTransition && !reduceMotion) {
       document.startViewTransition(() => {
-        document.documentElement.classList.toggle(
-          "light",
-          newTheme === "light",
-        );
-        localStorage.setItem("theme", newTheme);
-        updateIcons();
+        applyTheme(newTheme);
       });
     } else {
-      document.documentElement.classList.toggle("light", newTheme === "light");
-      localStorage.setItem("theme", newTheme);
-      updateIcons();
+      applyTheme(newTheme);
     }
   }
 
   updateIcons();
 
   const btn = document.getElementById("theme-toggle");
-  btn?.addEventListener("click", (e) => toggleTheme(e as MouseEvent));
+  btn?.addEventListener("click", toggleTheme);
 </script>

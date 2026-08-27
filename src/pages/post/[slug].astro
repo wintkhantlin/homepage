@@ -1,10 +1,11 @@
 ---
+import { getSortedPosts, type PostEntry } from "../../lib/content";
+import { Icon } from "astro-icon/components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection, render } from "astro:content";
 import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("content");
+  const posts = await getSortedPosts();
 
   return posts.map((post) => ({
     params: { slug: post.id },
@@ -12,10 +13,13 @@ export async function getStaticPaths() {
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { post } = Astro.props as { post: PostEntry };
+const Content = post.Content;
 const description = post.data.description ?? post.data.summary ?? siteConfig.defaultDescription;
+const metaDescription = post.data.seoDescription ?? description;
 const publishedTime = post.data.publishedDate.toISOString();
+const isMyanmar = /[\u1000-\u109F]/u.test(post.data.title);
+const language = post.data.lang ?? (isMyanmar ? "my" : "en");
 const canonicalPath = `/post/${post.id}`;
 const canonicalUrl = absoluteUrl(canonicalPath, Astro.site);
 const structuredData = [
@@ -23,17 +27,19 @@ const structuredData = [
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.data.title,
-    description,
+    description: metaDescription,
     datePublished: publishedTime,
     dateModified: publishedTime,
-    inLanguage: "en",
+    inLanguage: language,
     author: {
       "@type": "Person",
+      "@id": absoluteUrl("/#person", Astro.site),
       name: siteConfig.author,
       url: absoluteUrl("/", Astro.site),
     },
     publisher: {
       "@type": "Person",
+      "@id": absoluteUrl("/#person", Astro.site),
       name: siteConfig.author,
       url: absoluteUrl("/", Astro.site),
     },
@@ -55,8 +61,8 @@ const structuredData = [
 ---
 
 <BaseLayout
-  title={`${post.data.title} | ${siteConfig.siteName}`}
-  description={description}
+  title={post.data.seoTitle ?? `${post.data.title} | ${siteConfig.siteName}`}
+  description={metaDescription}
   canonicalPath={canonicalPath}
   keywords={[
     ...post.data.categories,
@@ -67,29 +73,31 @@ const structuredData = [
   publishedTime={publishedTime}
   modifiedTime={publishedTime}
   structuredData={structuredData}
+  lang={language}
+  locale={language === "my" ? "my_MM" : siteConfig.locale}
 >
-  <main class="mx-auto my-20 max-w-4xl px-5 sm:px-6 md:px-8">
+  <main id="main-content" tabindex="-1" class="mx-auto max-w-6xl px-5 pb-24 pt-36 sm:px-6 md:px-8 sm:pt-40">
     <!-- Back -->
-    <div class="mb-10 mt-10">
+    <div class="mb-14">
       <a
-        href="/"
-        class="inline-flex items-center gap-1.5 text-sm text-(--text-muted) transition-opacity hover:opacity-60"
+        href="/writing"
+        class="inline-flex min-h-11 items-center gap-2 text-sm text-(--text-muted) transition-colors hover:text-(--text-heading) active:text-(--text-heading)"
       >
-        <span class="text-base leading-none">&lsaquo;</span>
-        <span>Back</span>
+        <Icon name="lucide:arrow-left" class="size-4" aria-hidden="true" />
+        <span>All notes</span>
       </a>
     </div>
 
     <!-- Header -->
-    <section class="mb-12 border-b border-(--border) pb-10">
-      <div class="mb-4 flex items-center gap-3">
+    <section class="mb-16 border-b border-(--border) pb-12">
+      <div class="mb-4 flex flex-wrap items-center gap-3">
         <span class="text-[10px] font-medium uppercase tracking-widest text-(--text-muted)">
           {post.data.categories.join(" / ")}
         </span>
 
-        <span class="text-xs text-(--text-faint)">·</span>
+        <span class="text-xs text-(--text-faint)" aria-hidden="true">·</span>
 
-        <time class="font-mono text-[11px] text-(--text-muted)">
+        <time datetime={publishedTime} class="font-mono text-[11px] tabular-nums text-(--text-muted)">
           {
             post.data.publishedDate.toLocaleDateString("en-US", {
               month: "long",
@@ -98,9 +106,17 @@ const structuredData = [
             })
           }
         </time>
+
+        <span class="text-xs text-(--text-faint)" aria-hidden="true">·</span>
+        <span class="text-[11px] text-(--text-muted)">By {siteConfig.author}</span>
       </div>
 
-      <h1 class="max-w-3xl text-3xl font-medium leading-tight tracking-[-0.02em] text-(--text-heading) md:text-4xl">
+      <h1
+        class:list={[
+          "max-w-4xl font-serif text-[clamp(2.75rem,7vw,6rem)] font-normal tracking-[-0.035em] text-(--text-heading)",
+          isMyanmar ? "leading-[1.08]" : "leading-[0.98]",
+        ]}
+      >
         {post.data.title}
       </h1>
 

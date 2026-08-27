@@ -1,6 +1,9 @@
 ---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
 type Project = Awaited<
-  ReturnType<typeof import("../../lib/content").getProjectsWithPreviews>
+  ReturnType<typeof import("../../lib/content").getSortedProjects>
 >[number];
 
 interface Props {
@@ -10,143 +13,84 @@ interface Props {
 const { projects } = Astro.props as Props;
 ---
 
-<section id="projects" class="relative mt-32 mb-16 pt-6">
-  <div
-    class="mb-4 flex items-center justify-between border-b border-(--border) pb-4 fade-up"
-  >
-    <h2
-      class="text-xs font-bold uppercase tracking-[0.2em] text-(--text-heading)"
-    >
-      Selected Work
-    </h2>
+<section id="projects" class="scroll-mt-28 py-32">
+  <div class="mb-16 grid gap-6 border-b border-(--border) pb-8 md:grid-cols-[1fr_auto] md:items-end">
+    <div>
+      <h2 class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)">
+        Selected work
+      </h2>
+      <p class="mt-5 max-w-xl text-base leading-7 text-(--text-muted)">
+        Product experiments shaped through backend architecture, interface work, and a habit of learning by shipping.
+      </p>
+    </div>
+    <p class="text-sm text-(--text-faint)">{projects.length} projects documented</p>
   </div>
 
-  <div
-    id="project-preview"
-    class="pointer-events-none fixed top-0 left-0 z-50 hidden opacity-0 transition-opacity duration-200 ease-out md:block"
-  >
-    <img
-      id="project-preview-img"
-      src=""
-      alt=""
-      class="w-[400px] aspect-video object-cover shadow-2xl transition-[filter,opacity,transform] duration-300 ease-out"
-    />
-  </div>
-
-  <div id="projects-list" class="flex flex-col">
-    {
-      projects.map((project) => (
+  <div>
+    {projects.length > 0 ? projects.map((project) => (
+      <article class="grid gap-7 border-b border-(--border) py-10 md:grid-cols-12 md:items-start md:gap-10 lg:py-14">
         <a
-          href={project.data.source}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="invert-on-hover group flex flex-col justify-center border-b border-(--border) py-8 px-4 no-underline transition-colors sm:flex-row sm:items-center sm:justify-between"
-          data-img={project.previewSrc}
-          data-blur-img={project.blurPreviewSrc}
-          data-name={project.data.name}
+          href={`/project/${project.id}`}
+          class="group overflow-hidden rounded-xl bg-(--border) md:col-span-7"
+          aria-label={`Read the ${project.data.name} case study`}
         >
-          <div class="flex items-center gap-4">
-            <h3 class="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-              {project.data.name}
-            </h3>
+          <Image
+            src={project.data.img}
+            alt={`${project.data.name} product interface`}
+            width={1280}
+            height={720}
+            class="aspect-video h-auto w-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+          />
+        </a>
+
+        <div class="md:col-span-5">
+          <div class="flex items-center justify-between gap-5 text-xs font-semibold uppercase tracking-[0.14em] text-(--text-faint)">
+            <span>{project.data.type || "Product"}</span>
+            <time datetime={project.data.publishedDate.toISOString()} class="tabular-nums">{project.data.publishedDate.getFullYear()}</time>
           </div>
 
-          <div class="mt-4 flex items-center justify-between gap-8 sm:mt-0 sm:shrink-0 sm:justify-end">
-            <span class="text-xs font-bold uppercase tracking-[0.2em]">
-              {project.data.type || "Product"}
-            </span>
-            <span class="text-xs font-mono">
-              {project.data.publishedDate.getFullYear()}
-            </span>
+          <h3 class="mt-5 text-4xl font-semibold tracking-[-0.04em] text-(--text-heading) sm:text-5xl">
+            <a href={`/project/${project.id}`} class="transition-opacity duration-300 hover:opacity-60">
+              {project.data.name}
+            </a>
+          </h3>
+
+          <p class="mt-4 max-w-xl text-[15px] leading-7 text-(--text-muted)">
+            {project.data.description}
+          </p>
+
+          {project.data.technologies && (
+            <ul class="mt-6 flex flex-wrap gap-x-4 gap-y-2" aria-label={`${project.data.name} technologies`}>
+              {project.data.technologies.slice(0, 5).map((technology) => (
+                <li class="text-xs text-(--text-faint)">{technology}</li>
+              ))}
+            </ul>
+          )}
+
+          <div class="mt-8 flex flex-wrap items-center gap-5">
+            <a
+              href={`/project/${project.id}`}
+              class="group inline-flex min-h-11 items-center gap-3 rounded-full bg-(--text-heading) px-5 text-sm font-semibold text-(--bg) transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0"
+            >
+              Read case study
+              <Icon name="lucide:arrow-right" class="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
+            <a
+              href={project.data.source}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group inline-flex min-h-11 items-center gap-2 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
+            >
+              Source
+              <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
           </div>
-        </a>
-      ))
-    }
+        </div>
+      </article>
+    )) : (
+      <p class="border-y border-(--border) py-12 text-base leading-7 text-(--text-muted)">
+        No project case studies are published yet. Check back soon.
+      </p>
+    )}
   </div>
 </section>
-
-<script>
-  const preview = document.getElementById("project-preview");
-  const previewImg = document.getElementById("project-preview-img");
-  const projectLinks = document.querySelectorAll("#projects-list a");
-
-  if (
-    preview instanceof HTMLDivElement &&
-    previewImg instanceof HTMLImageElement
-  ) {
-    const offset = 24;
-    let currentFullSrc = "";
-
-    const showPreview = () => {
-      preview.classList.remove("hidden");
-      requestAnimationFrame(() => {
-        preview.style.opacity = "1";
-        previewImg.style.transform = "scale(1)";
-      });
-    };
-
-    const hidePreview = () => {
-      preview.style.opacity = "0";
-      previewImg.style.transform = "scale(0.95)";
-
-      const handleTransitionEnd = () => {
-        if (preview.style.opacity === "0") {
-          preview.classList.add("hidden");
-        }
-
-        preview.removeEventListener("transitionend", handleTransitionEnd);
-      };
-
-      preview.addEventListener("transitionend", handleTransitionEnd);
-    };
-
-    const movePreview = (x: number, y: number) => {
-      preview.style.transform = `translate(${x + offset}px, ${y + offset}px)`;
-    };
-
-    const showBlurPreview = (src: string, alt: string) => {
-      previewImg.src = src;
-      previewImg.alt = alt;
-      previewImg.classList.add("blur-md", "opacity-70");
-      previewImg.classList.remove("blur-0", "opacity-100");
-    };
-
-    const showFullPreview = (src: string, alt: string) => {
-      previewImg.src = src;
-      previewImg.alt = alt;
-      previewImg.classList.remove("blur-md", "opacity-70");
-      previewImg.classList.add("blur-0", "opacity-100");
-    };
-
-    projectLinks.forEach((link) => {
-      if (!(link instanceof HTMLAnchorElement)) return;
-
-      link.addEventListener("mouseenter", () => {
-        const blurSrc = link.dataset.blurImg;
-        const fullSrc = link.dataset.img;
-        const name = link.dataset.name || "";
-
-        if (!blurSrc || !fullSrc) return;
-
-        currentFullSrc = fullSrc;
-
-        showBlurPreview(blurSrc, name);
-        showPreview();
-
-        const fullImage = new Image();
-        fullImage.src = fullSrc;
-
-        fullImage.onload = () => {
-          if (currentFullSrc !== fullSrc) return;
-          showFullPreview(fullSrc, name);
-        };
-      });
-
-      link.addEventListener("mouseleave", hidePreview);
-
-      link.addEventListener("mousemove", (event) => {
-        movePreview(event.clientX, event.clientY);
-      });
-    });
-  }
-</script>

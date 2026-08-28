@@ -11,6 +11,7 @@ interface Props {
   heading?: string;
   description?: string;
   showAllLink?: boolean;
+  headingLevel?: "h1" | "h2";
 }
 
 const {
@@ -18,7 +19,10 @@ const {
   heading = "Selected work",
   description = "Systems-oriented products with the engineering decisions surfaced, not hidden behind screenshots.",
   showAllLink = false,
+  headingLevel = "h2",
 } = Astro.props as Props;
+
+const Heading = headingLevel;
 
 const maturityLabels = {
   built: "Built",
@@ -36,9 +40,9 @@ const contextLabels = {
 <section id="projects" class="scroll-mt-28 py-24 sm:py-32">
   <div class="mb-16 grid gap-6 border-b border-(--border) pb-8 md:grid-cols-[1fr_auto] md:items-end">
     <div>
-      <h2 class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)">
+      <Heading class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)">
         {heading}
-      </h2>
+      </Heading>
       <p class="mt-5 max-w-xl text-base leading-7 text-(--text-muted)">
         {description}
       </p>

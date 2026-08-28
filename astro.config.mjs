@@ -54,7 +54,22 @@ export default defineConfig({
 
   integrations: [
     mdx(),
-    sitemap(),
+    sitemap({
+      serialize(item) {
+        if (item.url === `${site}/` || item.url === "https://wintkhantlin.com/") {
+          item.priority = 1.0;
+          item.changefreq = "weekly";
+        } else if (item.url.includes("/project/") || item.url.includes("/post/")) {
+          item.priority = 0.8;
+          item.changefreq = "monthly";
+        } else {
+          item.priority = 0.7;
+          item.changefreq = "monthly";
+        }
+        item.lastmod = new Date();
+        return item;
+      },
+    }),
     icon(),
     partytown({
       config: {

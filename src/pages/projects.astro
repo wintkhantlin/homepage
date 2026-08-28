@@ -3,8 +3,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectsSection from "../components/home/ProjectsSection.astro";
 import { getSortedProjects } from "../lib/content";
 import { createBreadcrumbSchema, siteConfig } from "../lib/seo";
+import profilePhoto from "../assets/img/happer.png";
+import { getImage } from "astro:assets";
 
-const projects = await getSortedProjects();
+const [projects, socialImage] = await Promise.all([
+  getSortedProjects(),
+  getImage({
+    src: profilePhoto,
+    width: 1200,
+    height: 630,
+    format: "webp",
+  }),
+]);
+
 const title = `Software Projects & Case Studies | ${siteConfig.siteName}`;
 const description =
   "Explore Wint Khant Lin's software projects, including backend systems, distributed architectures, open-source builds, and technical experiments.";
@@ -21,6 +32,8 @@ const structuredData = createBreadcrumbSchema(
   title={title}
   description={description}
   canonicalPath="/projects"
+  image={socialImage.src}
+  imageAlt="Wint Khant Lin software projects"
   keywords={["software projects", "backend case studies", "distributed systems portfolio"]}
   structuredData={structuredData}
 >
@@ -28,6 +41,7 @@ const structuredData = createBreadcrumbSchema(
     <ProjectsSection
       projects={projects}
       heading="Projects"
+      headingLevel="h1"
       description="Open-source builds, product experiments, and hackathon work, with maturity and architectural evidence made explicit."
     />
   </main>

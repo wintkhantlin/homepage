@@ -3,8 +3,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getSortedPosts } from "../lib/content";
 import PostCard from "../components/PostCard.astro";
 import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../lib/seo";
+import profilePhoto from "../assets/img/happer.png";
+import { getImage } from "astro:assets";
 
-const posts = await getSortedPosts();
+const [posts, socialImage] = await Promise.all([
+  getSortedPosts(),
+  getImage({
+    src: profilePhoto,
+    width: 1200,
+    height: 630,
+    format: "webp",
+  }),
+]);
+
 const title = `Software Engineering Notes & Articles | ${siteConfig.siteName}`;
 const description =
   "Read programming notes from Wint Khant Lin on algorithms, systems thinking, software goals, and learning in public as a Myanmar developer.";
@@ -43,6 +54,8 @@ const structuredData = [
   title={title}
   description={description}
   canonicalPath="/writing"
+  image={socialImage.src}
+  imageAlt="Wint Khant Lin programming notes"
   keywords={["programming writing", "software engineering notes", "developer blog"]}
   structuredData={structuredData}
 >

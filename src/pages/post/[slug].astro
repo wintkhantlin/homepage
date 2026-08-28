@@ -3,6 +3,8 @@ import { getSortedPosts, type PostEntry } from "../../lib/content";
 import { Icon } from "astro-icon/components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
+import profilePhoto from "../../assets/img/happer.png";
+import { getImage } from "astro:assets";
 
 export async function getStaticPaths() {
   const posts = await getSortedPosts();
@@ -22,12 +24,21 @@ const isMyanmar = /[\u1000-\u109F]/u.test(post.data.title);
 const language = post.data.lang ?? (isMyanmar ? "my" : "en");
 const canonicalPath = `/post/${post.id}`;
 const canonicalUrl = absoluteUrl(canonicalPath, Astro.site);
+
+const socialImage = await getImage({
+  src: profilePhoto,
+  width: 1200,
+  height: 630,
+  format: "webp",
+});
+
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.data.title,
     description: metaDescription,
+    image: absoluteUrl(socialImage.src, Astro.site),
     datePublished: publishedTime,
     dateModified: publishedTime,
     inLanguage: language,
@@ -64,6 +75,8 @@ const structuredData = [
   title={post.data.seoTitle ?? `${post.data.title} | ${siteConfig.siteName}`}
   description={metaDescription}
   canonicalPath={canonicalPath}
+  image={socialImage.src}
+  imageAlt={`${post.data.title} - ${siteConfig.author}`}
   keywords={[
     ...post.data.categories,
     "programming article",

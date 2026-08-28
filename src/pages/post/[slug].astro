@@ -121,9 +121,9 @@ const structuredData = [
       </h1>
 
       {
-        post.data.description && (
+        (post.data.description ?? post.data.summary) && (
           <p class="mt-4 max-w-2xl text-[15px] leading-7 text-(--text-muted)">
-            {post.data.description}
+            {post.data.description ?? post.data.summary}
           </p>
         )
       }

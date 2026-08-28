@@ -8,6 +8,14 @@ source: https://github.com/wintkhantlin/url2short
 img: ../../assets/img/url2short.png
 technologies: ["React", "TypeScript", "Go", "PostgreSQL", "ClickHouse", "Redis", "Kafka"]
 publishedDate: 2026-01-01
+featured: true
+featuredOrder: 2
+maturity: built
+context: open-source
+role: Backend and systems engineering
+proofPoints:
+  - Redis keeps destination lookups on a low-latency path without repeated database reads.
+  - Kafka and ClickHouse move click analytics entirely outside the redirect response.
 color: "#000"
 caseStudy:
   status: Open-source project

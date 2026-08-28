@@ -8,6 +8,14 @@ source: https://github.com/wintkhantlin/gencourse
 technologies: ["React", "TypeScript", "Hono", "Python", "Go", "PostgreSQL", "RabbitMQ", "Ory"]
 img: ../../assets/img/gencourse.png
 publishedDate: 2026-03-14
+featured: true
+featuredOrder: 1
+maturity: built
+context: open-source
+role: Product and systems engineering
+proofPoints:
+  - RabbitMQ separates long-running AI course generation from the learner-facing request path.
+  - A Go WebSocket service returns live progress while PostgreSQL remains the source of truth.
 color: "#e6abf4"
 caseStudy:
   status: Open-source project

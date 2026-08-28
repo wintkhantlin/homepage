@@ -1,16 +1,25 @@
 ---
+import { Icon } from "astro-icon/components";
+
 const tools = [
-  {
-    category: "Languages",
-    items: ["TypeScript", "JavaScript", "Python", "Go"],
-  },
-  {
-    category: "Backend",
-    items: ["Node.js", "NestJS", "Express.js", "REST APIs"],
-  },
-  { category: "Frontend", items: ["Vue.js", "React", "Astro", "TailwindCSS"] },
-  { category: "Data", items: ["PostgreSQL", "MongoDB", "Redis"] },
-  { category: "Infra", items: ["Docker", "Git", "Linux", "Microservices"] },
+  { name: "TypeScript", icon: "devicon:typescript" },
+  { name: "JavaScript", icon: "devicon:javascript" },
+  { name: "Python", icon: "devicon:python" },
+  { name: "Go", icon: "devicon:go" },
+  { name: "Node.js", icon: "devicon:nodejs" },
+  { name: "NestJS", icon: "devicon:nestjs" },
+  { name: "Express", icon: "devicon:express", monochrome: true },
+  { name: "Vue.js", icon: "devicon:vuejs" },
+  { name: "React", icon: "devicon:react" },
+  { name: "Astro", icon: "devicon:astro" },
+  { name: "Tailwind CSS", icon: "devicon:tailwindcss" },
+  { name: "PostgreSQL", icon: "devicon:postgresql" },
+  { name: "MongoDB", icon: "devicon:mongodb" },
+  { name: "Redis", icon: "devicon:redis" },
+  { name: "Docker", icon: "devicon:docker" },
+  { name: "Git", icon: "devicon:git" },
+  { name: "Linux", icon: "devicon:linux" },
+  { name: "RabbitMQ", icon: "devicon:rabbitmq" },
 ];
 ---
 
@@ -24,7 +33,7 @@ const tools = [
         Hey, I'm <strong class="text-(--text-heading)">Wint Khant Lin</strong>,
         also known as <strong class="text-(--text-heading)">Happer</strong>. I'm
         a college student from Myanmar who's deeply passionate about software
-        engineering — especially backend systems, distributed architectures, and
+        engineering, especially backend systems, distributed architectures, and
         building tools that solve real problems.
       </p>
 
@@ -38,7 +47,7 @@ const tools = [
       <p class="text-[15px] leading-7 text-(--text-muted)">
         When I'm not coding, I'm probably listening to music, reading about
         software architecture, or planning my next experiment. I believe in the
-        power of documenting the journey — sharing the process, not just the
+        power of documenting the journey: sharing the process, not just the
         results.
       </p>
 
@@ -51,27 +60,144 @@ const tools = [
 
     <!-- Tools & Technologies -->
     <div>
-      <h3 class="mb-6 text-lg font-semibold text-(--text-heading)">
+      <h3 class="mb-8 text-lg font-semibold text-(--text-heading)">
         Tools & Technologies
       </h3>
 
-      <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-5">
-        {
-          tools.map((group) => (
-            <div>
-              <h4 class="mb-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-(--text-faint)">
-                {group.category}
-              </h4>
-              <ul class="space-y-1.5">
-                {group.items.map((item) => (
-                  <li class="text-sm text-(--text-muted)">{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
+      <ul class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-(--border) bg-(--border) sm:hidden" aria-label="Technology stack">
+        {tools.map((tool) => (
+          <li class="flex min-h-14 items-center gap-3 bg-(--bg) px-3.5 py-3">
+            <span class:list={["tech-mobile-logo", { "tech-mobile-logo--monochrome": tool.monochrome }]}>
+              <Icon name={tool.icon} class="size-full" aria-hidden="true" />
+            </span>
+            <span class="text-xs font-medium text-(--text-muted)">{tool.name}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="tech-carousel hidden sm:block" aria-label="Technology stack">
+        <div class="tech-carousel-track">
+          {[false, true].map((duplicate) => (
+            <ul class="tech-carousel-set" aria-hidden={duplicate ? "true" : undefined}>
+              {tools.map((tool) => (
+                <li class="tech-carousel-item">
+                  <span class:list={["tech-carousel-logo", { "tech-carousel-logo--monochrome": tool.monochrome }]}>
+                    <Icon name={tool.icon} class="size-full" aria-hidden="true" />
+                  </span>
+                  <span class="sr-only">{tool.name}</span>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
       </div>
     </div>
 
   </div>
 </section>
+
+<style>
+  .tech-carousel {
+    width: 100%;
+    overflow: hidden;
+    border-block: 1px solid var(--border);
+    padding-block: clamp(1.5rem, 4vw, 2.5rem);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  }
+
+  .tech-carousel-track {
+    display: flex;
+    width: max-content;
+    animation: tech-carousel-scroll 38s linear infinite;
+    will-change: transform;
+  }
+
+  .tech-carousel-set {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: clamp(2.25rem, 5vw, 4.75rem);
+    padding-inline: clamp(1.125rem, 2.5vw, 2.375rem);
+  }
+
+  .tech-carousel-item {
+    display: grid;
+    width: clamp(2.75rem, 5vw, 4rem);
+    height: clamp(2.75rem, 5vw, 4rem);
+    flex: none;
+    place-items: center;
+  }
+
+  .tech-carousel-logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0.78;
+    filter: saturate(0.82);
+    transition: opacity 0.25s ease, filter 0.25s ease, transform 0.25s ease;
+  }
+
+  :global(html:not(.light)) .tech-carousel-logo--monochrome {
+    filter: invert(1);
+  }
+
+  .tech-mobile-logo {
+    display: block;
+    width: 1.35rem;
+    height: 1.35rem;
+    flex: none;
+    opacity: 0.84;
+    filter: saturate(0.82);
+  }
+
+  :global(html:not(.light)) .tech-mobile-logo--monochrome {
+    filter: invert(1);
+  }
+
+  @media (hover: hover) {
+    .tech-carousel:hover .tech-carousel-track {
+      animation-play-state: paused;
+    }
+
+    .tech-carousel-item:hover .tech-carousel-logo {
+      transform: translateY(-0.15rem);
+      opacity: 1;
+      filter: saturate(1);
+    }
+
+    :global(html:not(.light)) .tech-carousel-item:hover .tech-carousel-logo--monochrome {
+      filter: invert(1);
+    }
+  }
+
+  @keyframes tech-carousel-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tech-carousel {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .tech-carousel-track {
+      width: 100%;
+      animation: none;
+      will-change: auto;
+    }
+
+    .tech-carousel-set {
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 1.75rem;
+    }
+
+    .tech-carousel-set[aria-hidden="true"] {
+      display: none;
+    }
+  }
+</style>

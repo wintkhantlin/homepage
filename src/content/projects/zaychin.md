@@ -8,6 +8,14 @@ source: https://github.com/wintkhantlin/Zay-Chin
 img: ../../assets/img/zay_chin.png
 technologies: ["Flutter", "Dart", "Bun", "Fastify", "PostgreSQL", "PostGIS", "WebSocket"]
 publishedDate: 2026-01-01
+featured: true
+featuredOrder: 3
+maturity: built
+context: personal
+role: Full-stack product engineering
+proofPoints:
+  - WebSocket updates keep shared shopping carts synchronized across family members.
+  - PostgreSQL and PostGIS connect collaborative cart items with map-based locations.
 color: "#000"
 caseStudy:
   status: Cross-platform project

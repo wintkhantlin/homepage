@@ -2,15 +2,15 @@
 import { Icon } from "astro-icon/components";
 
 const links = [
-  { label: "Work", href: "/#projects" },
+  { label: "Work", href: "/projects" },
   { label: "Notes", href: "/writing" },
-  { label: "Story", href: "/#about" },
+  { label: "Story", href: "/#about", mobileHidden: true },
 ];
 
 const pathname = Astro.url.pathname;
 const isActive = (href: string) => {
   if (href === "/writing") return pathname === "/writing" || pathname.startsWith("/post/");
-  if (href === "/#projects") return pathname.startsWith("/project/");
+  if (href === "/projects") return pathname === "/projects" || pathname.startsWith("/project/");
   return false;
 };
 ---
@@ -37,6 +37,7 @@ const isActive = (href: string) => {
             aria-current={isActive(link.href) ? "page" : undefined}
             class:list={[
               "inline-flex min-h-11 items-center text-[13px] text-(--text-muted) transition-colors hover:text-(--text-heading) active:text-(--text-heading) sm:text-[14px]",
+              { "max-sm:hidden": link.mobileHidden },
               { "text-(--text-heading) underline decoration-(--text-faint) underline-offset-8": isActive(link.href) },
             ]}
           >
@@ -47,9 +48,10 @@ const isActive = (href: string) => {
 
       <a
         href="mailto:hello@wintkhantlin.com"
-        class="hidden min-h-10 items-center rounded-full bg-(--text-heading) px-4 text-[13px] font-semibold text-(--bg) transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:inline-flex"
+        class="inline-flex min-h-10 items-center rounded-full bg-(--text-heading) px-3 text-[12px] font-semibold text-(--bg) transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:px-4 sm:text-[13px]"
       >
-        Let's talk
+        <span class="sm:hidden">Email</span>
+        <span class="hidden sm:inline">Let's talk</span>
       </a>
 
       <button

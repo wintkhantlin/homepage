@@ -8,27 +8,49 @@ type Project = Awaited<
 
 interface Props {
   projects: Project[];
+  heading?: string;
+  description?: string;
+  showAllLink?: boolean;
 }
 
-const { projects } = Astro.props as Props;
+const {
+  projects,
+  heading = "Selected work",
+  description = "Systems-oriented products with the engineering decisions surfaced, not hidden behind screenshots.",
+  showAllLink = false,
+} = Astro.props as Props;
+
+const maturityLabels = {
+  built: "Built",
+  prototype: "Prototype",
+  "work-in-progress": "Work in progress",
+} as const;
+
+const contextLabels = {
+  "open-source": "Open source",
+  personal: "Personal project",
+  hackathon: "Hackathon",
+} as const;
 ---
 
-<section id="projects" class="scroll-mt-28 py-32">
+<section id="projects" class="scroll-mt-28 py-24 sm:py-32">
   <div class="mb-16 grid gap-6 border-b border-(--border) pb-8 md:grid-cols-[1fr_auto] md:items-end">
     <div>
       <h2 class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)">
-        Selected work
+        {heading}
       </h2>
       <p class="mt-5 max-w-xl text-base leading-7 text-(--text-muted)">
-        Product experiments shaped through backend architecture, interface work, and a habit of learning by shipping.
+        {description}
       </p>
     </div>
-    <p class="text-sm text-(--text-faint)">{projects.length} projects documented</p>
+    <p class="text-sm text-(--text-faint)">
+      {projects.length} {projects.length === 1 ? "project" : "projects"} documented
+    </p>
   </div>
 
   <div>
     {projects.length > 0 ? projects.map((project) => (
-      <article class="grid gap-7 border-b border-(--border) py-10 md:grid-cols-12 md:items-start md:gap-10 lg:py-14">
+      <article class="grid gap-7 border-b border-(--border) py-9 md:grid-cols-12 md:items-start md:gap-10 lg:py-14">
         <a
           href={`/project/${project.id}`}
           class="group overflow-hidden rounded-xl bg-(--border) md:col-span-7"
@@ -44,8 +66,11 @@ const { projects } = Astro.props as Props;
         </a>
 
         <div class="md:col-span-5">
-          <div class="flex items-center justify-between gap-5 text-xs font-semibold uppercase tracking-[0.14em] text-(--text-faint)">
-            <span>{project.data.type || "Product"}</span>
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold uppercase tracking-[0.12em] text-(--text-faint)">
+            <span>{maturityLabels[project.data.maturity]}</span>
+            <span aria-hidden="true">·</span>
+            <span>{contextLabels[project.data.context]}</span>
+            <span aria-hidden="true">·</span>
             <time datetime={project.data.publishedDate.toISOString()} class="tabular-nums">{project.data.publishedDate.getFullYear()}</time>
           </div>
 
@@ -58,6 +83,16 @@ const { projects } = Astro.props as Props;
           <p class="mt-4 max-w-xl text-[15px] leading-7 text-(--text-muted)">
             {project.data.description}
           </p>
+
+          <p class="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-(--text-faint)">
+            Role · <span class="normal-case tracking-normal text-(--text-muted)">{project.data.role}</span>
+          </p>
+
+          <ul class="mt-5 space-y-3 border-l border-(--border) pl-4" aria-label={`${project.data.name} engineering evidence`}>
+            {project.data.proofPoints.map((point) => (
+              <li class="text-sm leading-6 text-(--text-muted)">{point}</li>
+            ))}
+          </ul>
 
           {project.data.technologies && (
             <ul class="mt-6 flex flex-wrap gap-x-4 gap-y-2" aria-label={`${project.data.name} technologies`}>
@@ -93,4 +128,16 @@ const { projects } = Astro.props as Props;
       </p>
     )}
   </div>
+
+  {showAllLink && (
+    <div class="flex justify-end pt-8">
+      <a
+        href="/projects"
+        class="group inline-flex min-h-11 items-center gap-3 text-sm font-semibold text-(--text-muted) transition-colors hover:text-(--text-heading)"
+      >
+        View all projects
+        <Icon name="lucide:arrow-right" class="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+      </a>
+    </div>
+  )}
 </section>

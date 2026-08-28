@@ -8,6 +8,13 @@ source: https://github.com/wintkhantlin/chate-sat
 technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Leaflet", "Better Auth"]
 img: ../../assets/img/chatesat.png
 publishedDate: 2025-11-09
+featured: false
+maturity: prototype
+context: hackathon
+role: Product and application engineering
+proofPoints:
+  - A shared Leaflet map brings relief centers, requests, volunteer groups, and disaster zones into one view.
+  - Admin verification workflows distinguish trusted operational information from community submissions.
 color: "#e6abf4"
 caseStudy:
   status: 2025 hackathon project

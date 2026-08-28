@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components";
 const pathname = Astro.url.pathname;
 const dockItems = [
   { label: "Home", href: "/", icon: "lucide:house", tone: "slate" },
-  { label: "Work", href: "/#projects", icon: "lucide:panels-top-left", tone: "blue" },
+  { label: "Work", href: "/projects", icon: "lucide:panels-top-left", tone: "blue" },
   { label: "Notes", href: "/writing", icon: "lucide:notebook-pen", tone: "amber" },
   { label: "Story", href: "/#about", icon: "lucide:user-round", tone: "green" },
   { label: "GitHub", href: "https://github.com/wintkhantlin", icon: "lucide:github", tone: "ink", external: true, separator: true },
@@ -15,7 +15,7 @@ const dockItems = [
 const isActive = (href: string) => {
   if (href === "/") return pathname === "/";
   if (href === "/writing") return pathname === "/writing" || pathname.startsWith("/post/");
-  if (href === "/#projects") return pathname.startsWith("/project/");
+  if (href === "/projects") return pathname === "/projects" || pathname.startsWith("/project/");
   return false;
 };
 ---
@@ -39,7 +39,24 @@ const isActive = (href: string) => {
       Navigate the site
     </p>
 
-    <nav class="dock-shell" aria-label="Footer navigation">
+    <nav class="grid w-full grid-cols-2 gap-px overflow-hidden rounded-xl border border-(--border) bg-(--border) sm:hidden" aria-label="Footer navigation">
+      {
+        dockItems.map((item) => (
+          <a
+            href={item.href}
+            target={item.external ? "_blank" : undefined}
+            rel={item.external ? "noopener noreferrer" : undefined}
+            aria-current={isActive(item.href) ? "page" : undefined}
+            class="flex min-h-12 items-center justify-between gap-3 bg-(--bg) px-4 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
+          >
+            <span>{item.label}</span>
+            <Icon name={item.external ? "lucide:arrow-up-right" : item.icon} class="size-4" aria-hidden="true" />
+          </a>
+        ))
+      }
+    </nav>
+
+    <nav class="dock-shell hidden sm:block" aria-label="Footer navigation">
       <div class="dock" data-dock>
         {
           dockItems.map((item) => (

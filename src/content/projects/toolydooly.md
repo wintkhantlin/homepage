@@ -8,6 +8,13 @@ source: https://github.com/wintkhantlin/toolydooly
 img: ../../assets/img/toolydooly.png
 technologies: ["Vue", "NestJS", "Express", "PostgreSQL", "MongoDB", "Redis", "RabbitMQ", "Docker"]
 publishedDate: 2025-11-05
+featured: false
+maturity: work-in-progress
+context: personal
+role: Backend architecture and application engineering
+proofPoints:
+  - Separate gateway, authentication, and todo services make service boundaries explicit.
+  - PostgreSQL, MongoDB, Redis, and RabbitMQ provide a practical multi-store learning environment.
 color: "#b1badc"
 caseStudy:
   status: Work in progress

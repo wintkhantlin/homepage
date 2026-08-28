@@ -24,6 +24,12 @@ type ProjectFrontmatter = {
   publishedDate: string | Date;
   img: string;
   technologies?: string[];
+  featured: boolean;
+  featuredOrder?: number;
+  maturity: "built" | "prototype" | "work-in-progress";
+  context: "open-source" | "personal" | "hackathon";
+  role: string;
+  proofPoints: [string, string];
   color: string;
   caseStudy?: {
     status: string;
@@ -137,4 +143,15 @@ export async function getSortedProjects() {
   return (await mapProjects()).sort(
     (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
   );
+}
+
+export async function getFeaturedProjects() {
+  return (await mapProjects())
+    .filter((project) => project.data.featured)
+    .sort(
+      (a, b) =>
+        (a.data.featuredOrder ?? Number.MAX_SAFE_INTEGER) -
+          (b.data.featuredOrder ?? Number.MAX_SAFE_INTEGER) ||
+        b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+    );
 }

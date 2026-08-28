@@ -116,6 +116,8 @@ const structuredData = [
       <Image
         src={project.data.img}
         alt={`${project.data.name} product interface`}
+        widths={[400, 720, 1024, 1280]}
+        sizes="(max-width: 1280px) 100vw, 1280px"
         class="aspect-video h-auto w-full object-contain"
       />
     </figure>

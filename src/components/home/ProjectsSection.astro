@@ -60,6 +60,8 @@ const contextLabels = {
           <Image
             src={project.data.img}
             alt={`${project.data.name} product interface`}
+            widths={[360, 640, 960, 1280]}
+            sizes="(min-width: 1024px) 58vw, (min-width: 768px) 50vw, 100vw"
             width={1280}
             height={720}
             class="aspect-video h-auto w-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.025]"

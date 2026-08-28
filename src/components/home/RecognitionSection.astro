@@ -1,0 +1,59 @@
+---
+const recognitions = [
+  {
+    result: "First runner-up",
+    event: "GUSTO Innovation Awards & Forum 2026",
+    datetime: "2026-08",
+    date: "August 2026",
+  },
+  {
+    result: "Winner",
+    event: "Let's Tech 2026: Agentic Edition",
+    datetime: "2026-07",
+    date: "July 2026",
+  },
+  {
+    result: "Winner",
+    event: "GUSTO Technical Competition 2026",
+    datetime: "2026-01",
+    date: "January 2026",
+  },
+] as const;
+---
+
+<section aria-labelledby="recognition-heading" class="pb-24 sm:pb-32">
+  <div class="grid gap-6 border-b border-(--border) pb-8 md:grid-cols-[1fr_auto] md:items-end">
+    <div>
+      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-(--text-faint)">
+        Recognition
+      </p>
+      <h2
+        id="recognition-heading"
+        class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)"
+      >
+        Competition results
+      </h2>
+    </div>
+    <p class="font-mono text-sm tabular-nums text-(--text-faint)">2026</p>
+  </div>
+
+  <ol>
+    {
+      recognitions.map((recognition, index) => (
+        <li class="grid gap-4 border-b border-(--border) py-7 sm:py-8 md:grid-cols-[2.5rem_minmax(9rem,0.7fr)_minmax(0,1.8fr)_auto] md:items-baseline md:gap-6">
+          <span class="font-mono text-xs tabular-nums text-(--text-faint)" aria-hidden="true">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <p class="text-sm font-semibold text-(--text-heading)">{recognition.result}</p>
+          <p class="max-w-2xl text-base leading-7 text-(--text-muted)">{recognition.event}</p>
+          <time
+            datetime={recognition.datetime}
+            class="font-mono text-xs tabular-nums text-(--text-faint) md:text-right"
+          >
+            {recognition.date}
+          </time>
+        </li>
+      ))
+    }
+  </ol>
+</section>

@@ -25,6 +25,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@iconify-json/devicon": "^1.2.62",
+    "@iconify-json/logos": "^1.2.13",
     "@iconify-json/lucide": "1.2.105",
     "@iconify-json/simple-icons": "^1.2.93",
     "@tailwindcss/typography": "0.5.19",

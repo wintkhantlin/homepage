@@ -4,9 +4,9 @@ import { Icon } from "astro-icon/components";
 const tools = [
   { name: "TypeScript", icon: "devicon:typescript" },
   { name: "JavaScript", icon: "devicon:javascript" },
-  { name: "Python", icon: "devicon:python" },
+  { name: "Python", icon: "devicon:python-wordmark" },
   { name: "Go", icon: "devicon:go" },
-  { name: "Node.js", icon: "devicon:nodejs" },
+  { name: "Node.js", icon: "devicon:nodejs-wordmark" },
   { name: "NestJS", icon: "devicon:nestjs" },
   { name: "Express", icon: "devicon:express", monochrome: true },
   { name: "Vue.js", icon: "devicon:vuejs" },
@@ -18,7 +18,7 @@ const tools = [
   { name: "Redis", icon: "devicon:redis" },
   { name: "Docker", icon: "devicon:docker" },
   { name: "Git", icon: "devicon:git" },
-  { name: "Linux", icon: "simple-icons:linux" },
+  { name: "Linux", icon: "devicon:linux" },
   { name: "RabbitMQ", icon: "devicon:rabbitmq" },
 ];
 ---
@@ -68,7 +68,7 @@ const tools = [
         {tools.map((tool) => (
           <li class="flex min-h-14 items-center gap-3 bg-(--bg) px-3.5 py-3">
             <span class:list={["tech-mobile-logo", { "tech-mobile-logo--monochrome": tool.monochrome }]}>
-              <Icon name={tool.icon} class="size-full" aria-hidden="true" />
+              <Icon name={tool.icon} class="size-full" is:inline aria-hidden="true" />
             </span>
             <span class="text-xs font-medium text-(--text-muted)">{tool.name}</span>
           </li>
@@ -82,7 +82,7 @@ const tools = [
               {tools.map((tool) => (
                 <li class="tech-carousel-item">
                   <span class:list={["tech-carousel-logo", { "tech-carousel-logo--monochrome": tool.monochrome }]}>
-                    <Icon name={tool.icon} class="size-full" aria-hidden="true" />
+                    <Icon name={tool.icon} class="size-full" is:inline aria-hidden="true" />
                   </span>
                   <span class="sr-only">{tool.name}</span>
                 </li>

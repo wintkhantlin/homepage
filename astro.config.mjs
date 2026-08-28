@@ -1,4 +1,4 @@
-import { defineConfig, fontProviders, svgoOptimizer } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
@@ -71,11 +71,5 @@ export default defineConfig({
         },
       }),
     ],
-  },
-
-  experimental: {
-    svgOptimizer: svgoOptimizer({
-      plugins: ["preset-default", { name: "removeViewBox" }],
-    }),
   },
 });

@@ -175,7 +175,7 @@ body {
 
 ::view-transition-new(root) {
     mask: url('/animation.gif') center / 150px no-repeat;
-    animation: gif-then-expand 1.4s ease-in-out both;
+    animation: gif-then-expand 0.6s ease-in-out both;
 }
 
 ::view-transition-old(root) {

@@ -5,6 +5,7 @@
 @theme {
     --font-sans: var(--font-heading), "Plus Jakarta Sans", "Inter", "Segoe UI", sans-serif;
     --font-mono: var(--font-body), "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-serif: var(--font-display), "LT Superior Serif", Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 /* ── Dark theme (default) ── */

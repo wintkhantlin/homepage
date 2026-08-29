@@ -1,11 +1,11 @@
 ---
-title: "Idempotency Keys: Tutorial အများစုမှာ မပြောပြကြတဲ့ Concept"
-seoTitle: "Idempotency Keys: Tutorial အများစုမှာ မပြောပြတဲ့ အချက်များ | Wint Khant Lin"
-summary: "Idempotency key တွေ ဘယ်လိုအလုပ်လုပ်သလဲ၊ tutorial အများစုမှာ မပြောထားတဲ့ edge case တွေ၊ duplicate request တွေကို ဘယ်လိုကာကွယ်မလဲဆိုတာ လက်တွေ့ရှင်းပြထားပါတယ်။"
-seoDescription: "Production API တွေမှာ idempotency keys ကို ဘယ်လိုအသုံးပြုသင့်လဲ၊ retries, race conditions, request fingerprinting, storage strategy နဲ့ implementation mistakes တွေကို ရှင်းလင်းထားပါတယ်။"
+title: "Idempotency Keys ဆိုတာဘာလဲ"
+seoTitle: "Idempotency Keys ဆိုတာဘာလဲ | Wint Khant Lin"
+summary: "Idempotency Key တွေ ဘယ်လိုအလုပ်လုပ်သလဲ၊ duplicate payment နဲ့ retry request တွေကို ဘယ်လိုကာကွယ်မလဲ၊ key ကို ဘယ်လိုမှန်မှန်ပြန်သုံးရမလဲ ရှင်းပြထားပါတယ်။"
+seoDescription: "Idempotency Key ဆိုတာဘာလဲ၊ payment request retry ဖြစ်တဲ့အခါ duplicate processing ကို ဘယ်လိုကာကွယ်ပြီး same operation အတွက် same key ကို ဘာကြောင့်ပြန်သုံးရသလဲ ရှင်းပြထားပါတယ်။"
 categories: ["software-engineering", "backend"]
 publishedDate: 2026-08-29T12:00
-slug: "idempotency-keys-what-most-tutorials-dont-tell-you"
+slug: "what-are-idempotency-keys"
 ---
 
 Payment App တစ်ခုကနေ ငွေ 50,000 လောက်ပိုက်ဆံလွဲမယ်ဆိုပါစို့ App ထဲမှာ Pay ကိုနှိပ်လိုက်မယ် လိုင်းအခြေအနေကြောင့် Loading.. ဖြစ်နေမယ်။ နည်းနည်းကြာလာတာနဲ့ Request Timeout ဆိုပြီး Alert Dialog လေးနဲ့ပေါ်လာလိမ့်မယ်
@@ -90,21 +90,28 @@ Backend အမြင်မှာတော့ ဒီသုံးခုက operati
 ပိုမှန်တဲ့ design က payment operation စတဲ့အချိန် key တစ်ခုပဲ generate လုပ်ပြီး retry တွေအားလုံးမှာ ပြန်သုံးတာပါ:
 
 ```javascript
-const paymentKey = crypto.randomUUID();
+function createPaymentRequest() {
+    const idempotencyKey = crypto.randomUUID();
 
-async function sendPayment() {
-    await fetch("http://localhost:3000/payments", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Idempotency-Key": paymentKey
-        },
-        body: JSON.stringify({
-            amount: 50_000,
-            currency: "MMK"
-        })
-    });
+    return async function sendPayment() {
+        return fetch("http://localhost:3000/payments", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Idempotency-Key": idempotencyKey
+            },
+            body: JSON.stringify({
+                amount: 50_000,
+                currency: "MMK"
+            })
+        });
+    };
 }
+
+const sendPayment = createPaymentRequest();
+
+await sendPayment();
+await sendPayment();
 ```
 
 ## TL;DR

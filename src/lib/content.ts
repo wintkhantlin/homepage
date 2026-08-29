@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import type { ImageMetadata } from "astro";
+import type { ImageMetadata, MarkdownHeading } from "astro";
 
 type ContentComponent = (...args: any[]) => any;
 
@@ -45,6 +45,7 @@ type MarkdownModule<TFrontmatter> = {
   Content: ContentComponent;
   file?: string;
   frontmatter: TFrontmatter;
+  getHeadings: () => MarkdownHeading[];
 };
 
 type ImportedImageModule = {
@@ -55,6 +56,7 @@ export type PostEntry = {
   id: string;
   body?: string;
   Content: ContentComponent;
+  headings: MarkdownHeading[];
   data: Omit<PostFrontmatter, "publishedDate"> & {
     publishedDate: Date;
   };
@@ -101,6 +103,7 @@ async function mapPosts() {
       id: getIdFromPath(path),
       body: await readBody(mod.file),
       Content: mod.Content,
+      headings: mod.getHeadings(),
       data: {
         ...mod.frontmatter,
         publishedDate: new Date(mod.frontmatter.publishedDate),

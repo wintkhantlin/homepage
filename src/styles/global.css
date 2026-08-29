@@ -18,6 +18,9 @@
     --border: rgba(113, 113, 122, 0.5);
     --focus: #f4f4f5;
     --hero-glow: rgba(202, 255, 119, 0.09);
+    --code-inline: #202024;
+    --code-block: #171717;
+    --article-link: #a6b2ff;
     color-scheme: dark;
 }
 
@@ -31,6 +34,9 @@
     --border: rgba(161, 161, 170, 0.65);
     --focus: #18181b;
     --hero-glow: rgba(229, 255, 99, 0.3);
+    --code-inline: #eeeeef;
+    --code-block: #f5f5f5;
+    --article-link: #3b49df;
     color-scheme: light;
 }
 
@@ -110,6 +116,30 @@ body {
 :where(a, button, summary, [tabindex]):focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 4px;
+}
+
+/* Keep inline code chips out of fenced code blocks. */
+.article-body :not(pre) > code {
+    border-radius: 0.25rem;
+    background: var(--code-inline);
+    color: var(--text-heading);
+    padding: 0.12em 0.35em;
+    font-size: 0.88em;
+    font-weight: 600;
+}
+
+.article-body pre {
+    background: #24292e !important;
+}
+
+.article-body pre code {
+    display: block;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #f8f8f2 !important;
+    padding: 0 !important;
+    font-size: 0.95rem;
+    font-weight: 400;
 }
 
 ::selection {

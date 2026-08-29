@@ -1,0 +1,30 @@
+---
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props as Props;
+const entries = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+---
+
+{
+  entries.length > 0 && (
+    <nav class="article-toc mb-12 border-l-4 border-(--border) pl-5" aria-labelledby="toc-title">
+      <p id="toc-title" class="mb-3 font-bold text-(--text-heading)">Table of contents</p>
+      <ol class="m-0 list-none space-y-2 p-0 text-base leading-6">
+        {entries.map((heading) => (
+          <li class:list={[heading.depth === 3 && "pl-5"]}>
+            <a
+              href={`#${heading.slug}`}
+              class="text-(--article-link) underline decoration-current underline-offset-3 hover:no-underline"
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

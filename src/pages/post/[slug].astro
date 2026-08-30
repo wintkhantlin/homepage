@@ -5,6 +5,9 @@ import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
 import profilePhoto from "../../assets/img/happer.png";
 import { getImage, Image } from "astro:assets";
 import TableOfContents from "../../components/TableOfContents.astro";
+import ArticleImage from "../../components/mdx/ArticleImage.astro";
+import ArticleLink from "../../components/mdx/ArticleLink.astro";
+import ArticleEnhancements from "../../components/mdx/ArticleEnhancements.astro";
 
 export async function getStaticPaths() {
   const posts = await getSortedPosts();
@@ -20,13 +23,14 @@ const Content = post.Content;
 const description = post.data.description ?? post.data.summary ?? siteConfig.defaultDescription;
 const metaDescription = post.data.seoDescription ?? description;
 const publishedTime = post.data.publishedDate.toISOString();
+const modifiedTime = (post.data.updatedDate ?? post.data.publishedDate).toISOString();
 const isMyanmar = /[\u1000-\u109F]/u.test(post.data.title);
 const language = post.data.lang ?? (isMyanmar ? "my" : "en");
 const canonicalPath = `/post/${post.id}`;
 const canonicalUrl = absoluteUrl(canonicalPath, Astro.site);
 
 const socialImage = await getImage({
-  src: profilePhoto,
+  src: post.data.cover ?? profilePhoto,
   width: 1200,
   height: 630,
   format: "webp",
@@ -40,7 +44,7 @@ const structuredData = [
     description: metaDescription,
     image: absoluteUrl(socialImage.src, Astro.site),
     datePublished: publishedTime,
-    dateModified: publishedTime,
+    dateModified: modifiedTime,
     inLanguage: language,
     author: {
       "@type": "Person",
@@ -84,11 +88,12 @@ const structuredData = [
   ]}
   type="article"
   publishedTime={publishedTime}
-  modifiedTime={publishedTime}
+  modifiedTime={modifiedTime}
   structuredData={structuredData}
   lang={language}
   locale={language === "my" ? "my_MM" : siteConfig.locale}
 >
+  <ArticleEnhancements />
   <main id="main-content" tabindex="-1" class="mx-auto max-w-[50rem] px-5 pb-20 pt-32 sm:px-8 sm:pt-36">
     <nav class="mb-8" aria-label="Breadcrumb">
       <a
@@ -122,6 +127,20 @@ const structuredData = [
                   })
                 }
               </time>
+              {
+                post.data.updatedDate && (
+                  <>
+                    <span aria-hidden="true"> · </span>
+                    Updated <time datetime={modifiedTime}>
+                      {post.data.updatedDate.toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </time>
+                  </>
+                )
+              }
             </p>
           </div>
         </div>
@@ -148,6 +167,12 @@ const structuredData = [
         }
       </header>
 
+      {
+        post.data.cover && post.data.coverAlt && (
+          <ArticleImage src={post.data.cover} alt={post.data.coverAlt} eager fit="cover" />
+        )
+      }
+
       <TableOfContents headings={post.headings} />
 
       <div
@@ -172,7 +197,7 @@ const structuredData = [
       prose-ol:text-(--text)
       prose-li:my-2 prose-li:leading-[1.65]
 
-      prose-blockquote:border-l-4
+      prose-blockquote:border-l
       prose-blockquote:border-(--article-link)
       prose-blockquote:pl-5
       prose-blockquote:not-italic
@@ -186,40 +211,10 @@ const structuredData = [
       prose-code:before:content-none
       prose-code:after:content-none
 
-      prose-pre:overflow-x-auto
-      prose-pre:rounded-lg
-      prose-pre:px-5 prose-pre:py-4
-      prose-pre:code:leading-7"
+      prose-pre:overflow-x-auto"
       >
-        <Content />
+        <Content components={{ a: ArticleLink }} />
       </div>
     </article>
   </main>
-
-  <script is:inline>
-    document.addEventListener("DOMContentLoaded", () => {
-      const links = document.querySelectorAll(".prose a");
-
-      links.forEach((link) => {
-        const href = link.getAttribute("href");
-        if (!href) return;
-
-        const isInternal =
-          href.startsWith("/") ||
-          href.startsWith("#") ||
-          href.startsWith("./");
-
-        if (isInternal) return;
-
-        try {
-          const url = new URL(href, window.location.origin);
-
-          if (url.origin !== window.location.origin) {
-            link.setAttribute("target", "_blank");
-            link.setAttribute("rel", "noopener noreferrer");
-          }
-        } catch {}
-      });
-    });
-  </script>
 </BaseLayout>

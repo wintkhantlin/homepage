@@ -50,7 +50,7 @@ const isActive = (href: string) => {
             target={item.external ? "_blank" : undefined}
             rel={item.external ? "noopener noreferrer" : undefined}
             aria-current={isActive(item.href) ? "page" : undefined}
-            class="flex min-h-12 items-center justify-between gap-3 bg-(--bg) px-4 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
+            class="flex min-h-12 items-center justify-between gap-3 bg-(--surface) px-4 text-sm font-medium text-(--text-muted) transition-colors hover:bg-(--surface-raised) hover:text-(--text-heading)"
           >
             <span>{item.label}</span>
             <Icon name={item.external ? "lucide:arrow-up-right" : item.icon} class="size-4" aria-hidden="true" />

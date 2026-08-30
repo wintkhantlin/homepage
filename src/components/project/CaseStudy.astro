@@ -34,7 +34,7 @@ const { challenge, approach, architecture, highlights, diagram } = Astro.props a
       System architecture
     </h2>
     <div
-      class="mermaid-enhancement mt-7 overscroll-x-contain overflow-x-auto rounded-2xl border border-(--border) bg-(--bg) p-4 sm:p-8"
+      class="mermaid-enhancement mt-7 overscroll-x-contain overflow-x-auto rounded-2xl border border-(--border) bg-(--surface) p-4 sm:p-8"
       data-mermaid-diagram
       tabindex="0"
       aria-label="Scrollable system architecture diagram"
@@ -85,7 +85,7 @@ const { challenge, approach, architecture, highlights, diagram } = Astro.props a
     </h2>
     <ul class="mt-7 grid gap-px overflow-hidden rounded-xl border border-(--border) bg-(--border) sm:grid-cols-2">
       {highlights.map((item) => (
-        <li class="bg-(--bg) p-6 text-[15px] leading-7 text-(--text-muted)">{item}</li>
+        <li class="bg-(--surface) p-6 text-[15px] leading-7 text-(--text-muted)">{item}</li>
       ))}
     </ul>
   </section>

@@ -1,0 +1,157 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  type?: "note" | "tip" | "warning";
+  title?: string;
+  collapsible?: boolean;
+  open?: boolean;
+}
+
+const {
+  type = "note",
+  title,
+  collapsible = false,
+  open = true,
+} = Astro.props as Props;
+
+const defaultTitles = {
+  note: "Note",
+  tip: "Good to know",
+  warning: "Watch out",
+};
+
+const resolvedTitle = title ?? defaultTitles[type];
+---
+
+{
+  collapsible ? (
+    <details
+      class:list={["article-callout", "article-callout--collapsible", `article-callout--${type}`]}
+      open={open}
+    >
+      <summary class="article-callout__summary">
+        <span class="article-callout__marker" aria-hidden="true" />
+        <span>{resolvedTitle}</span>
+        <Icon name="lucide:chevron-down" class="article-callout__chevron" aria-hidden="true" />
+      </summary>
+      <div class="article-callout__body">
+        <slot />
+      </div>
+    </details>
+  ) : (
+    <aside
+      class:list={["article-callout", `article-callout--${type}`]}
+      aria-label={resolvedTitle}
+    >
+      <div class="article-callout__heading">
+        <span class="article-callout__marker" aria-hidden="true" />
+        <p class="article-callout__title">{resolvedTitle}</p>
+      </div>
+      <div class="article-callout__body">
+        <slot />
+      </div>
+    </aside>
+  )
+}
+
+<style>
+  .article-callout {
+    --callout-accent: var(--article-link);
+    margin-block: 2rem;
+    border: 1px solid color-mix(in srgb, var(--callout-accent) 36%, var(--border));
+    border-radius: 0.75rem;
+    background: color-mix(in srgb, var(--callout-accent) 6%, var(--surface));
+    padding: 1rem 1.1rem 1.1rem;
+  }
+
+  .article-callout--collapsible {
+    padding: 0;
+  }
+
+  .article-callout--tip {
+    --callout-accent: #7bbf65;
+  }
+
+  .article-callout--warning {
+    --callout-accent: #d3a24d;
+  }
+
+  .article-callout__heading,
+  .article-callout__summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--text-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .article-callout__heading {
+    margin-bottom: 0.4rem;
+  }
+
+  .article-callout__summary {
+    min-height: 2.75rem;
+    cursor: pointer;
+    padding: 0.75rem 1.1rem;
+    list-style: none;
+    user-select: none;
+  }
+
+  .article-callout__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .article-callout__summary:hover {
+    background: color-mix(in srgb, var(--callout-accent) 7%, transparent);
+  }
+
+  .article-callout__marker {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--callout-accent);
+  }
+
+  .article-callout__title {
+    margin: 0;
+    font: inherit;
+  }
+
+  .article-callout__chevron {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-callout--collapsible[open] .article-callout__chevron {
+    transform: rotate(180deg);
+  }
+
+  .article-callout__body {
+    color: var(--text);
+    font-size: 0.95em;
+  }
+
+  .article-callout--collapsible .article-callout__body {
+    border-top: 1px solid color-mix(in srgb, var(--callout-accent) 22%, var(--border));
+    padding: 0.95rem 1.1rem 1.1rem;
+  }
+
+  .article-callout__body :global(> :first-child) {
+    margin-top: 0;
+  }
+
+  .article-callout__body :global(> :last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .article-callout__chevron {
+      transition-duration: 0.01ms;
+    }
+  }
+</style>

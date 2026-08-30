@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   headings: MarkdownHeading[];
@@ -11,20 +12,170 @@ const entries = headings.filter((heading) => heading.depth === 2 || heading.dept
 
 {
   entries.length > 0 && (
-    <nav class="article-toc mb-12 border-l-4 border-(--border) pl-5" aria-labelledby="toc-title">
-      <p id="toc-title" class="mb-3 font-bold text-(--text-heading)">Table of contents</p>
-      <ol class="m-0 list-none space-y-2 p-0 text-base leading-6">
-        {entries.map((heading) => (
-          <li class:list={[heading.depth === 3 && "pl-5"]}>
-            <a
-              href={`#${heading.slug}`}
-              class="text-(--article-link) underline decoration-current underline-offset-3 hover:no-underline"
-            >
-              {heading.text}
-            </a>
-          </li>
-        ))}
-      </ol>
-    </nav>
+    <details class="article-toc mb-12" open data-article-toc>
+      <summary class="article-toc__summary">
+        <span>On this page</span>
+        <span class="article-toc__count">
+          {entries.length} {entries.length === 1 ? "section" : "sections"}
+        </span>
+        <Icon name="lucide:chevron-down" class="article-toc__chevron" aria-hidden="true" />
+      </summary>
+
+      <nav aria-label="Table of contents">
+        <ol class="article-toc__list">
+          {entries.map((heading) => (
+            <li class:list={["article-toc__item", heading.depth === 3 && "article-toc__item--nested"]}>
+              <a href={`#${heading.slug}`} data-toc-link={heading.slug}>
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </details>
   )
 }
+
+<script>
+  const setupTableOfContents = () => {
+    const toc = document.querySelector<HTMLElement>("[data-article-toc]");
+    if (!toc || toc.dataset.enhanced === "true") return;
+
+    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"));
+    const headings = links
+      .map((link) => document.getElementById(link.dataset.tocLink ?? ""))
+      .filter((heading): heading is HTMLElement => Boolean(heading));
+
+    if (headings.length === 0) return;
+
+    toc.dataset.enhanced = "true";
+    let frame = 0;
+
+    const updateCurrentSection = () => {
+      frame = 0;
+      const threshold = Math.min(window.innerHeight * 0.28, 180);
+      let current = headings[0];
+
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top <= threshold) current = heading;
+        else break;
+      }
+
+      for (const link of links) {
+        const isCurrent = link.dataset.tocLink === current.id;
+        if (isCurrent) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      }
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateCurrentSection);
+    };
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    updateCurrentSection();
+  };
+
+  setupTableOfContents();
+</script>
+
+<style>
+  .article-toc {
+    border-block: 1px solid var(--border);
+  }
+
+  .article-toc__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    cursor: pointer;
+    color: var(--text-heading);
+    font-size: 0.875rem;
+    font-weight: 700;
+    list-style: none;
+    user-select: none;
+  }
+
+  .article-toc__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .article-toc__count {
+    color: var(--text-faint);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .article-toc__chevron {
+    width: 1rem;
+    height: 1rem;
+    color: var(--text-muted);
+    transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-toc[open] .article-toc__chevron {
+    transform: rotate(180deg);
+  }
+
+  .article-toc__list {
+    display: grid;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0.25rem 0 0.85rem;
+    list-style: none;
+  }
+
+  .article-toc__item {
+    margin: 0;
+  }
+
+  .article-toc__item--nested {
+    padding-inline-start: 1.25rem;
+  }
+
+  .article-toc__item a {
+    position: relative;
+    display: block;
+    border-radius: 0.35rem;
+    color: var(--text-muted);
+    padding: 0.42rem 0.65rem;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    text-decoration: none;
+    transition: background-color 140ms ease-out, color 140ms ease-out;
+  }
+
+  .article-toc__item a:hover {
+    background: var(--surface);
+    color: var(--text-heading);
+  }
+
+  .article-toc__item a[aria-current="location"] {
+    background: var(--surface);
+    color: var(--text-heading);
+    font-weight: 650;
+  }
+
+  .article-toc__item a[aria-current="location"]::before {
+    position: absolute;
+    inset-block: 0.65rem;
+    inset-inline-start: 0;
+    width: 2px;
+    border-radius: 999px;
+    background: var(--focus);
+    content: "";
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .article-toc__chevron,
+    .article-toc__item a {
+      transition-duration: 0.01ms;
+    }
+  }
+</style>

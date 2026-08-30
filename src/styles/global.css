@@ -10,33 +10,45 @@
 
 /* ── Dark theme (default) ── */
 :root {
-    --bg: #0a0a0a;
-    --text: #e4e4e7;
-    --text-heading: #f4f4f5;
-    --text-muted: #a1a1aa;
-    --text-faint: #8b8b95;
-    --border: rgba(113, 113, 122, 0.5);
-    --focus: #f4f4f5;
-    --hero-glow: rgba(202, 255, 119, 0.09);
-    --code-inline: #202024;
-    --code-block: #171717;
-    --article-link: #a6b2ff;
+    --bg: #0c0d0c;
+    --surface: #131513;
+    --surface-raised: #191b19;
+    --surface-translucent: rgba(19, 21, 19, 0.82);
+    --text: #e7e6e2;
+    --text-heading: #faf9f6;
+    --text-muted: #aaa9a4;
+    --text-faint: #858780;
+    --border: rgba(232, 235, 227, 0.14);
+    --border-strong: rgba(232, 235, 227, 0.22);
+    --focus: #caff77;
+    --hero-glow: rgba(202, 255, 119, 0.065);
+    --code-inline: #1b1e1b;
+    --article-link: #bbc6ff;
+    --selection: #caff77;
+    --selection-text: #10130d;
+    --shadow-color: rgba(0, 0, 0, 0.48);
     color-scheme: dark;
 }
 
 /* ── Light theme ── */
 :root.light {
     --bg: #fafafa;
+    --surface: #f3f3f2;
+    --surface-raised: #ffffff;
+    --surface-translucent: rgba(250, 250, 250, 0.84);
     --text: #27272a;
     --text-heading: #18181b;
     --text-muted: #52525b;
     --text-faint: #71717a;
     --border: rgba(161, 161, 170, 0.65);
+    --border-strong: rgba(113, 113, 122, 0.72);
     --focus: #18181b;
     --hero-glow: rgba(229, 255, 99, 0.3);
     --code-inline: #eeeeef;
-    --code-block: #f5f5f5;
     --article-link: #3b49df;
+    --selection: #18181b;
+    --selection-text: #fafafa;
+    --shadow-color: rgba(24, 24, 27, 0.16);
     color-scheme: light;
 }
 
@@ -91,6 +103,7 @@
 
 html {
     min-width: 20rem;
+    background: var(--bg);
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
 }
@@ -100,7 +113,18 @@ body {
     overflow-x: clip;
     background-color: var(--bg);
     color: var(--text);
-    transition: background-color 0.3s, color 0.3s;
+}
+
+button,
+input,
+select,
+textarea {
+    accent-color: var(--focus);
+}
+
+input,
+textarea {
+    caret-color: var(--focus);
 }
 
 @layer base {
@@ -128,23 +152,40 @@ body {
     font-weight: 600;
 }
 
-.article-body pre {
-    background: #24292e !important;
+.article-body > img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 0.875rem;
+    background: var(--surface);
 }
 
-.article-body pre code {
+.article-body table {
     display: block;
-    border-radius: 0 !important;
-    background: transparent !important;
-    color: #f8f8f2 !important;
-    padding: 0 !important;
-    font-size: 0.95rem;
-    font-weight: 400;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    white-space: nowrap;
+}
+
+.article-body hr {
+    border-color: var(--border);
+}
+
+.article-body kbd {
+    border: 1px solid var(--border-strong);
+    border-radius: 0.3rem;
+    background: var(--surface-raised);
+    box-shadow: 0 1px 0 var(--border-strong);
+    color: var(--text-heading);
+    padding: 0.08em 0.38em;
+    font-family: var(--font-mono);
+    font-size: 0.82em;
 }
 
 ::selection {
-    background: var(--text-heading);
-    color: var(--bg);
+    background: var(--selection);
+    color: var(--selection-text);
 }
 
 * {
@@ -165,6 +206,10 @@ body {
     border: 3px solid var(--bg);
     border-radius: 999px;
     background: var(--text-faint);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }
 
 .skip-link {
@@ -269,5 +314,21 @@ body {
 @media (forced-colors: active) {
     :where(a, button, summary, [tabindex]):focus-visible {
         outline: 2px solid CanvasText;
+    }
+}
+
+@media (prefers-contrast: more) {
+    :root {
+        --text-muted: #cac9c4;
+        --text-faint: #b3b5ad;
+        --border: rgba(250, 249, 246, 0.34);
+        --border-strong: rgba(250, 249, 246, 0.52);
+    }
+
+    :root.light {
+        --text-muted: #3f3f46;
+        --text-faint: #52525b;
+        --border: rgba(63, 63, 70, 0.46);
+        --border-strong: rgba(39, 39, 42, 0.7);
     }
 }

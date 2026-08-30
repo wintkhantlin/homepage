@@ -5,14 +5,17 @@ summary: "Idempotency Key တွေ ဘယ်လိုအလုပ်လုပ�
 seoDescription: "Idempotency Key ဆိုတာဘာလဲ၊ payment request retry ဖြစ်တဲ့အခါ duplicate processing ကို ဘယ်လိုကာကွယ်ပြီး same operation အတွက် same key ကို ဘာကြောင့်ပြန်သုံးရသလဲ ရှင်းပြထားပါတယ်။"
 categories: ["software-engineering", "backend"]
 publishedDate: 2026-08-29T12:00
-slug: "what-are-idempotency-keys"
 ---
+
+import Callout from "../../components/mdx/Callout.astro";
 
 Payment App တစ်ခုကနေ ငွေ 50,000 လောက်ပိုက်ဆံလွဲမယ်ဆိုပါစို့ App ထဲမှာ Pay ကိုနှိပ်လိုက်မယ် လိုင်းအခြေအနေကြောင့် Loading.. ဖြစ်နေမယ်။ နည်းနည်းကြာလာတာနဲ့ Request Timeout ဆိုပြီး Alert Dialog လေးနဲ့ပေါ်လာလိမ့်မယ်
 
 အဲ့လိုအခြေအနေကြရင်မေးစရာတစ်ခုရှိလာတာက 
 
-> ငွေက တကယ်ရော ထွက်သွားပြီလား?
+<Callout type="warning" title="မသေချာသေးတဲ့ payment state" collapsible open>
+  ငွေက တကယ်ရော ထွက်သွားပြီလား?
+</Callout>
 
 အဲ့လိုအခြေအနေမျိုးမှာ Pay ကိုနောက်တစ်ကြိမ်နှိပ်ကြတဲ့ အခါ
 
@@ -120,4 +123,4 @@ Client ကတော့ same key နဲ့ request တွေပို့လိမ
 
 ## References
 
-- https://dev.to/highflyer910/idempotency-keys-what-most-tutorials-dont-tell-you-1ncc
+- [Original idempotency keys article on DEV Community](https://dev.to/highflyer910/idempotency-keys-what-most-tutorials-dont-tell-you-1ncc)

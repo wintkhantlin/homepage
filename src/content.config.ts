@@ -1,22 +1,52 @@
 import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const posts = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string().trim().min(1),
-    seoTitle: z.string().trim().min(1).optional(),
-    summary: z.string().trim().min(1).optional(),
-    description: z.string().trim().min(1).optional(),
-    seoDescription: z.string().trim().min(1).optional(),
-    categories: z.array(z.string().trim().min(1)).min(1),
-    publishedDate: z.coerce.date(),
-    lang: z.enum(["en", "my"]).optional(),
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "./src/content/posts",
   }),
+  schema: ({ image }) =>
+    z
+      .object({
+        title: z.string().trim().min(1),
+        seoTitle: z.string().trim().min(1).optional(),
+        summary: z.string().trim().min(1).optional(),
+        description: z.string().trim().min(1).optional(),
+        seoDescription: z.string().trim().min(1).optional(),
+        categories: z.array(z.string().trim().min(1)).min(1),
+        publishedDate: z.coerce.date(),
+        updatedDate: z.coerce.date().optional(),
+        lang: z.enum(["en", "my"]).optional(),
+        draft: z.boolean().default(false),
+        cover: image().optional(),
+        coverAlt: z.string().trim().min(1).optional(),
+      })
+      .superRefine((data, context) => {
+        if (data.cover && !data.coverAlt) {
+          context.addIssue({
+            code: "custom",
+            path: ["coverAlt"],
+            message: "coverAlt is required when cover is set",
+          });
+        }
+
+        if (data.updatedDate && data.updatedDate < data.publishedDate) {
+          context.addIssue({
+            code: "custom",
+            path: ["updatedDate"],
+            message: "updatedDate cannot be earlier than publishedDate",
+          });
+        }
+      }),
 });
 
 const projects = defineCollection({
-  type: "content",
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "./src/content/projects",
+  }),
   schema: ({ image }) =>
     z.object({
       name: z.string().trim().min(1),

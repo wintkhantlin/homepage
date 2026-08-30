@@ -1,0 +1,144 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  width?: number;
+  height?: number;
+  caption?: string;
+  credit?: string;
+  sourceUrl?: string;
+  eager?: boolean;
+  fit?: "cover" | "contain";
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  caption,
+  credit,
+  sourceUrl,
+  eager = false,
+  fit = "contain",
+} = Astro.props as Props;
+
+const isRemote = typeof src === "string";
+
+if (isRemote && (!width || !height)) {
+  throw new Error("ArticleImage requires width and height for remote images.");
+}
+---
+
+<figure class="article-figure">
+  <div class="article-figure__media">
+    {
+      isRemote ? (
+        <Image
+          src={src}
+          alt={alt}
+          width={width!}
+          height={height!}
+          format="webp"
+          loading={eager ? "eager" : "lazy"}
+          fetchpriority={eager ? "high" : "auto"}
+          class:list={["article-figure__image", `article-figure__image--${fit}`]}
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          widths={[480, 720, 960, 1200]}
+          sizes="(max-width: 1024px) calc(100vw - 2.5rem), 64rem"
+          loading={eager ? "eager" : "lazy"}
+          fetchpriority={eager ? "high" : "auto"}
+          class:list={["article-figure__image", `article-figure__image--${fit}`]}
+        />
+      )
+    }
+  </div>
+
+  {
+    (caption || credit) && (
+      <figcaption class="article-figure__caption">
+        {caption && <span>{caption}</span>}
+        {credit && (
+          <span class="article-figure__credit">
+            {sourceUrl ? (
+              <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+                {credit}
+              </a>
+            ) : (
+              credit
+            )}
+          </span>
+        )}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .article-figure {
+    width: min(calc(100vw - 2.5rem), 64rem);
+    margin-block: 2.75rem;
+    margin-inline: 50%;
+    transform: translateX(-50%);
+  }
+
+  .article-figure__media {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 0.875rem;
+    background: var(--surface);
+  }
+
+  .article-figure__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .article-figure__image--cover {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .article-figure__image--contain {
+    object-fit: contain;
+  }
+
+  .article-figure__caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.35rem 1.5rem;
+    margin-top: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.55;
+  }
+
+  .article-figure__credit {
+    margin-inline-start: auto;
+  }
+
+  .article-figure__credit a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (max-width: 639px) {
+    .article-figure {
+      margin-block: 2.25rem;
+    }
+
+    .article-figure__credit {
+      width: 100%;
+      margin-inline-start: 0;
+    }
+  }
+</style>

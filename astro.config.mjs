@@ -1,4 +1,5 @@
 import { defineConfig, fontProviders } from "astro/config";
+import expressiveCode from "astro-expressive-code";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
@@ -53,6 +54,10 @@ export default defineConfig({
   ],
 
   integrations: [
+    expressiveCode({
+      themes: ["github-dark-high-contrast", "github-light-high-contrast"],
+      useDarkModeMediaQuery: false,
+    }),
     mdx(),
     sitemap({
       serialize(item) {

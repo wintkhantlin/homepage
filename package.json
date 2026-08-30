@@ -17,6 +17,7 @@
     "@astrojs/ts-plugin": "^1.10.11",
     "@tailwindcss/vite": "4.2.4",
     "astro": "^7.2.9",
+    "astro-expressive-code": "^0.44.1",
     "astro-icon": "1.1.5",
     "mermaid": "^11.17.2",
     "tailwindcss": "4.2.4",

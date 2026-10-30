@@ -55,6 +55,7 @@ const projects = defineCollection({
       seoTitle: z.string().trim().min(1).optional(),
       seoDescription: z.string().trim().min(1).optional(),
       source: z.url(),
+      demo: z.url().optional(),
       publishedDate: z.coerce.date(),
       img: image(),
       technologies: z.array(z.string().trim().min(1)).min(1).optional(),
@@ -63,7 +64,14 @@ const projects = defineCollection({
       maturity: z.enum(["built", "prototype", "work-in-progress"]),
       context: z.enum(["open-source", "personal", "hackathon"]),
       role: z.string().trim().min(1),
-      proofPoints: z.array(z.string().trim().min(1)).length(2),
+      proofPoints: z
+        .array(
+          z.object({
+            title: z.string().trim().min(1),
+            detail: z.string().trim().min(1),
+          }),
+        )
+        .length(2),
       color: z.string().regex(/^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i),
       caseStudy: z.object({
         status: z.string().trim().min(1),

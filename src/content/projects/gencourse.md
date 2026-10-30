@@ -5,7 +5,7 @@ description: GenCourse, an AI web app that turns your learning prompts into stru
 seoTitle: GenCourse AI Learning Platform Case Study | Wint Khant Lin
 seoDescription: Explore GenCourse, an AI learning platform that turns prompts into structured courses using React, Hono, Python, Go, RabbitMQ, and PostgreSQL.
 source: https://github.com/wintkhantlin/gencourse
-technologies: ["React", "TypeScript", "Hono", "Python", "Go", "PostgreSQL", "RabbitMQ", "Ory"]
+technologies: ["RabbitMQ", "Go", "Python", "PostgreSQL", "Hono", "TypeScript", "React", "Ory"]
 img: ../../assets/img/gencourse.png
 publishedDate: 2026-03-14
 featured: true
@@ -14,8 +14,10 @@ maturity: built
 context: open-source
 role: Product and systems engineering
 proofPoints:
-  - RabbitMQ separates long-running AI course generation from the learner-facing request path.
-  - A Go WebSocket service returns live progress while PostgreSQL remains the source of truth.
+  - title: Asynchronous processing
+    detail: "RabbitMQ isolates long-running AI course generation from learner-facing requests."
+  - title: Real-time communication
+    detail: "A Go WebSocket service streams generation progress while PostgreSQL maintains persistent state."
 color: "#e6abf4"
 caseStudy:
   status: Open-source project

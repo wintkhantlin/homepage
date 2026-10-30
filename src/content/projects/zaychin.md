@@ -6,7 +6,7 @@ seoTitle: Zay Chin Collaborative Shopping Case Study | Wint Khant Lin
 seoDescription: Explore Zay Chin, a collaborative shopping app with family groups, shared carts, real-time updates, and map-based locations built in Flutter.
 source: https://github.com/wintkhantlin/Zay-Chin
 img: ../../assets/img/zay_chin.png
-technologies: ["Flutter", "Dart", "Bun", "Fastify", "PostgreSQL", "PostGIS", "WebSocket"]
+technologies: ["Bun", "Fastify", "WebSocket", "PostGIS", "PostgreSQL", "Flutter", "Dart"]
 publishedDate: 2026-01-01
 featured: true
 featuredOrder: 3
@@ -14,8 +14,10 @@ maturity: built
 context: personal
 role: Full-stack product engineering
 proofPoints:
-  - WebSocket updates keep shared shopping carts synchronized across family members.
-  - PostgreSQL and PostGIS connect collaborative cart items with map-based locations.
+  - title: Real-time collaboration
+    detail: "WebSocket updates keep shared shopping carts synchronized across family members."
+  - title: Location-aware data
+    detail: "PostgreSQL and PostGIS connect collaborative cart items with map-based locations."
 color: "#000"
 caseStudy:
   status: Cross-platform project

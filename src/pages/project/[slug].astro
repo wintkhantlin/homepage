@@ -26,6 +26,11 @@ export async function getStaticPaths() {
 const { project, nextProject } = Astro.props as Props;
 const Content = project.Content;
 const caseStudy = project.data.caseStudy;
+const maturityLabels = {
+  built: "Built",
+  prototype: "Prototype",
+  "work-in-progress": "Work in progress",
+} as const;
 const canonicalPath = `/project/${project.id}`;
 const metaTitle = project.data.seoTitle ?? `${project.data.name} Case Study | ${siteConfig.siteName}`;
 const metaDescription = project.data.seoDescription ?? project.data.description;
@@ -90,26 +95,60 @@ const structuredData = [
             <span>{caseStudy.status}</span>
           </>
         )}
+        <span aria-hidden="true">·</span>
+        <span>{maturityLabels[project.data.maturity]}</span>
       </div>
 
-      <h1 class="mt-7 max-w-5xl font-serif text-[clamp(3.5rem,9vw,6rem)] font-normal leading-[0.95] tracking-[-0.04em] text-(--text-heading)">
+      <p class="mt-4 text-sm text-(--text-muted)">
+        <span class="text-(--text-faint)">My role</span>
+        <span class="ml-2 text-(--text-heading)">{project.data.role}</span>
+      </p>
+
+      <h1 class="mt-7 max-w-5xl font-sans text-[clamp(3rem,6.4vw,4.5rem)] font-semibold leading-[1] tracking-[-0.04em] text-(--text-heading)">
         {project.data.name}
       </h1>
 
-      <div class="mt-9 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
-        <p class="max-w-3xl text-lg leading-8 text-(--text-muted) sm:text-xl">
-          {project.data.description}
-        </p>
+      <p class="mt-9 max-w-3xl text-lg leading-relaxed text-(--text-muted)">
+        {project.data.description}
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
         <a
           href={project.data.source}
           target="_blank"
           rel="noopener noreferrer"
-          class="group inline-flex min-h-12 w-fit items-center gap-3 rounded-full bg-(--text-heading) px-6 text-sm font-semibold text-(--bg) transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0"
+          class="group inline-flex min-h-12 w-fit items-center gap-3 rounded-full bg-(--text-heading) px-6 text-sm font-semibold text-(--bg) transition-colors duration-300 hover:bg-(--text)"
         >
-          <span>View source</span>
-          <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          GitHub repository<span class="sr-only"> (opens in a new tab)</span>
+          <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
         </a>
+        {project.data.demo && (
+          <a
+            href={project.data.demo}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex min-h-11 items-center gap-2 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
+          >
+            Live demo<span class="sr-only"> (opens in a new tab)</span>
+            <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+          </a>
+        )}
       </div>
+
+      <section class="mt-16 border-t border-(--border) pt-6" aria-labelledby="engineering-highlights">
+        <h2 id="engineering-highlights" class="text-sm font-semibold text-(--text-heading)">Engineering highlights</h2>
+        <ol class="mt-6 grid gap-8 md:grid-cols-2 md:gap-10">
+          {project.data.proofPoints.map((point, index) => (
+            <li>
+              <h3 class="text-xl font-semibold tracking-[-0.02em] text-(--text-heading)">
+                <span class="mr-2 font-mono text-sm font-normal tabular-nums text-(--text-faint)">{String(index + 1).padStart(2, "0")} /</span>
+                {point.title}
+              </h3>
+              <p class="mt-2 max-w-[52ch] text-base leading-relaxed text-(--text-muted)">{point.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
     </header>
 
     <figure class="overflow-hidden rounded-2xl bg-(--border)">
@@ -175,7 +214,7 @@ const structuredData = [
       <a href={`/project/${nextProject.id}`} class="group block border-y border-(--border) py-12 sm:py-16">
         <span class="text-sm text-(--text-faint)">Next case study</span>
         <div class="mt-4 flex items-end justify-between gap-8">
-          <h2 class="font-serif text-[clamp(3.25rem,7vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)">
+          <h2 class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)">
             {nextProject.data.name}
           </h2>
           <Icon name="lucide:arrow-right" class="mb-1 size-6 shrink-0 text-(--text-heading) transition-transform duration-300 group-hover:translate-x-2" />

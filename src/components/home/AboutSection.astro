@@ -1,204 +1,109 @@
 ---
 import { Icon } from "astro-icon/components";
+import { siteConfig } from "../../lib/seo";
 
-const tools = [
-  { name: "TypeScript", icon: "devicon:typescript" },
-  { name: "JavaScript", icon: "devicon:javascript" },
-  { name: "Python", icon: "devicon:python-wordmark" },
-  { name: "Go", icon: "devicon:go" },
-  { name: "Node.js", icon: "devicon:nodejs-wordmark" },
-  { name: "NestJS", icon: "devicon:nestjs" },
-  { name: "Express", icon: "devicon:express", monochrome: true },
-  { name: "Vue.js", icon: "devicon:vuejs" },
-  { name: "React", icon: "devicon:react" },
-  { name: "Astro", icon: "devicon:astro" },
-  { name: "Tailwind CSS", icon: "devicon:tailwindcss" },
-  { name: "PostgreSQL", icon: "devicon:postgresql" },
-  { name: "MongoDB", icon: "devicon:mongodb" },
-  { name: "Redis", icon: "devicon:redis" },
-  { name: "Docker", icon: "devicon:docker" },
-  { name: "Git", icon: "devicon:git" },
-  { name: "Linux", icon: "devicon:linux" },
-  { name: "RabbitMQ", icon: "devicon:rabbitmq" },
+const facts = [
+  { label: "Based in", value: "Myanmar" },
+  { label: "Currently", value: "College student" },
+  { label: "Focus", value: "Backend systems and distributed architecture" },
+  { label: "Writes in", value: "English and Burmese" },
+];
+
+const stack = [
+  { group: "Languages", tools: ["TypeScript", "JavaScript", "Python", "Go"] },
+  { group: "Backend", tools: ["Node.js", "NestJS", "Express"] },
+  { group: "Data & messaging", tools: ["PostgreSQL", "MongoDB", "Redis", "RabbitMQ"] },
+  { group: "Frontend", tools: ["React", "Vue.js", "Astro", "Tailwind CSS"] },
+  { group: "Tooling", tools: ["Docker", "Git", "Linux"] },
+];
+
+const profiles = [
+  { label: "GitHub", href: siteConfig.social.github },
+  { label: "LinkedIn", href: siteConfig.social.linkedin },
 ];
 ---
 
-<section id="about" class="scroll-mt-28 pb-32">
-  <div>
-    <h2 class="sr-only">About Wint Khant Lin</h2>
+<section id="about" class="scroll-mt-28 pb-24 pt-12 sm:pb-32 sm:pt-16">
+  <div class="mb-10 border-b border-(--border) pb-6">
+    <h2 class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)">
+      About
+    </h2>
+  </div>
 
-    <!-- Bio -->
-    <div class="mb-20 max-w-[68ch] space-y-5">
-      <p class="text-[15px] leading-7 text-(--text-muted)">
-        Hey, I'm <strong class="text-(--text-heading)">Wint Khant Lin</strong>,
-        also known as <strong class="text-(--text-heading)">Happer</strong>. I'm
-        a college student from Myanmar who's deeply passionate about software
-        engineering, especially backend systems, distributed architectures, and
+  <div class="grid gap-12 md:grid-cols-12 md:gap-10">
+    <aside class="md:col-span-4" aria-label="Quick facts">
+      <dl class="-mt-3.5 divide-y divide-(--border) border-b border-(--border)">
+        {facts.map((fact) => (
+          <div class="grid grid-cols-[7rem_1fr] gap-4 py-3.5">
+            <dt class="text-sm text-(--text-faint)">{fact.label}</dt>
+            <dd class="text-sm text-(--text-heading)">{fact.value}</dd>
+          </div>
+        ))}
+        <div class="grid grid-cols-[7rem_1fr] gap-4 py-3.5">
+          <dt class="text-sm text-(--text-faint)">Elsewhere</dt>
+          <dd class="flex flex-wrap gap-x-4">
+            {profiles.map((profile) => (
+              <a
+                href={profile.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group -my-3 inline-flex min-h-11 items-center gap-1 text-sm text-(--text-heading) underline decoration-(--border-strong) underline-offset-4 transition-colors hover:decoration-(--text-heading)"
+              >
+                {profile.label}<span class="sr-only"> (opens in a new tab)</span>
+                <Icon name="lucide:arrow-up-right" class="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+              </a>
+            ))}
+          </dd>
+        </div>
+      </dl>
+    </aside>
+
+    <div class="max-w-[65ch] space-y-5 md:col-span-7 md:col-start-6">
+      <p class="text-lg leading-relaxed text-(--text-heading)">
+        Hey, I'm Wint Khant Lin, also known as Happer. I'm a college student from Myanmar who's deeply
+        passionate about software engineering, especially backend systems, distributed architectures, and
         building tools that solve real problems.
       </p>
 
-      <p class="text-[15px] leading-7 text-(--text-muted)">
-        I started coding because I was curious about how things work under the
-        hood. That curiosity turned into a love for over-engineering side
-        projects, exploring system design, and learning in public. Every project
-        I ship teaches me something new.
+      <p class="text-base leading-relaxed text-(--text-muted)">
+        I started coding because I was curious about how things work under the hood. That curiosity turned
+        into a love for over-engineering side projects, exploring system design, and learning in public.
+        Every project I ship teaches me something new.
       </p>
 
-      <p class="text-[15px] leading-7 text-(--text-muted)">
-        When I'm not coding, I'm probably listening to music, reading about
-        software architecture, or planning my next experiment. I believe in the
-        power of documenting the journey: sharing the process, not just the
-        results.
+      <p class="text-base leading-relaxed text-(--text-muted)">
+        When I'm not coding, I'm probably listening to music, reading about software architecture, or
+        planning my next experiment. I believe in the power of documenting the journey: sharing the
+        process, not just the results.
       </p>
 
-      <p class="text-[15px] leading-7 text-(--text-muted)">
-        I'm always open to connecting with fellow developers, collaborating on
-        interesting projects, or just having a conversation about tech. Feel
-        free to reach out.
+      <p class="text-base leading-relaxed text-(--text-muted)">
+        I'm always open to connecting with fellow developers, collaborating on interesting projects, or
+        just having a conversation about tech. Feel free to reach out.
       </p>
     </div>
+  </div>
 
-    <!-- Tools & Technologies -->
-    <div>
-      <h3 class="mb-8 text-lg font-semibold text-(--text-heading)">
-        Tools & Technologies
-      </h3>
+  <div class="mt-20">
+    <h3 class="border-b border-(--border) pb-4 text-xl font-semibold tracking-[-0.02em] text-(--text-heading) sm:text-2xl">
+      Tools & technologies
+    </h3>
 
-      <ul class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-(--border) bg-(--border) sm:hidden" aria-label="Technology stack">
-        {tools.map((tool) => (
-          <li class="flex min-h-14 items-center gap-3 bg-(--surface) px-3.5 py-3">
-            <span class:list={["tech-mobile-logo", { "tech-mobile-logo--monochrome": tool.monochrome }]}>
-              <Icon name={tool.icon} class="size-full" is:inline aria-hidden="true" />
-            </span>
-            <span class="text-xs font-medium text-(--text-muted)">{tool.name}</span>
-          </li>
-        ))}
-      </ul>
-
-      <div class="tech-carousel hidden sm:block" aria-label="Technology stack">
-        <div class="tech-carousel-track">
-          {[false, true].map((duplicate) => (
-            <ul class="tech-carousel-set" aria-hidden={duplicate ? "true" : undefined}>
-              {tools.map((tool) => (
-                <li class="tech-carousel-item">
-                  <span class:list={["tech-carousel-logo", { "tech-carousel-logo--monochrome": tool.monochrome }]}>
-                    <Icon name={tool.icon} class="size-full" is:inline aria-hidden="true" />
-                  </span>
-                  <span class="sr-only">{tool.name}</span>
-                </li>
-              ))}
-            </ul>
-          ))}
+    <dl>
+      {stack.map((row) => (
+        <div class="grid gap-1 border-b border-(--border) py-4 md:grid-cols-12 md:items-baseline md:gap-10">
+          <dt class="text-sm text-(--text-faint) md:col-span-4">{row.group}</dt>
+          <dd class="flex flex-wrap items-baseline text-base text-(--text-heading) md:col-span-8">
+            {row.tools.map((tool, index) => (
+              <>
+                {index > 0 && <span class="mx-2 text-(--text-faint)" aria-hidden="true">/</span>}
+                <span class="whitespace-nowrap">{tool}</span>
+                {index < row.tools.length - 1 && <span class="sr-only">, </span>}
+              </>
+            ))}
+          </dd>
         </div>
-      </div>
-    </div>
-
+      ))}
+    </dl>
   </div>
 </section>
-
-<style>
-  .tech-carousel {
-    width: 100%;
-    overflow: hidden;
-    border-block: 1px solid var(--border);
-    padding-block: clamp(1.5rem, 4vw, 2.5rem);
-    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-  }
-
-  .tech-carousel-track {
-    display: flex;
-    width: max-content;
-    animation: tech-carousel-scroll 38s linear infinite;
-    will-change: transform;
-  }
-
-  .tech-carousel-set {
-    display: flex;
-    flex: none;
-    align-items: center;
-    gap: clamp(2.25rem, 5vw, 4.75rem);
-    padding-inline: clamp(1.125rem, 2.5vw, 2.375rem);
-  }
-
-  .tech-carousel-item {
-    display: grid;
-    width: clamp(2.75rem, 5vw, 4rem);
-    height: clamp(2.75rem, 5vw, 4rem);
-    flex: none;
-    place-items: center;
-  }
-
-  .tech-carousel-logo {
-    display: block;
-    width: 100%;
-    height: 100%;
-    opacity: 0.78;
-    filter: saturate(0.82);
-    transition: opacity 0.25s ease, filter 0.25s ease, transform 0.25s ease;
-  }
-
-  :global(html:not(.light)) .tech-carousel-logo--monochrome {
-    filter: invert(1);
-  }
-
-  .tech-mobile-logo {
-    display: block;
-    width: 1.35rem;
-    height: 1.35rem;
-    flex: none;
-    opacity: 0.84;
-    filter: saturate(0.82);
-  }
-
-  :global(html:not(.light)) .tech-mobile-logo--monochrome {
-    filter: invert(1);
-  }
-
-  @media (hover: hover) {
-    .tech-carousel:hover .tech-carousel-track {
-      animation-play-state: paused;
-      will-change: auto;
-    }
-
-    .tech-carousel-item:hover .tech-carousel-logo {
-      transform: translateY(-0.15rem);
-      opacity: 1;
-      filter: saturate(1);
-    }
-
-    :global(html:not(.light)) .tech-carousel-item:hover .tech-carousel-logo--monochrome {
-      filter: invert(1);
-    }
-  }
-
-  @keyframes tech-carousel-scroll {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .tech-carousel {
-      -webkit-mask-image: none;
-      mask-image: none;
-    }
-
-    .tech-carousel-track {
-      width: 100%;
-      animation: none;
-      will-change: auto;
-    }
-
-    .tech-carousel-set {
-      width: 100%;
-      flex-wrap: wrap;
-      justify-content: center;
-      row-gap: 1.75rem;
-    }
-
-    .tech-carousel-set[aria-hidden="true"] {
-      display: none;
-    }
-  }
-</style>

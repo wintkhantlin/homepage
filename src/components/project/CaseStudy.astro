@@ -73,7 +73,7 @@ const { challenge, approach, architecture, highlights, diagram } = Astro.props a
       {architecture.map((item, index) => (
         <li class="grid gap-4 border-b border-(--border) py-5 sm:grid-cols-[2rem_1fr]">
           <span class="font-mono text-xs text-(--text-faint)">{String(index + 1).padStart(2, "0")}</span>
-          <span class="text-[15px] leading-7 text-(--text-muted)">{item}</span>
+          <span class="text-base leading-relaxed text-(--text-muted)">{item}</span>
         </li>
       ))}
     </ol>
@@ -85,7 +85,7 @@ const { challenge, approach, architecture, highlights, diagram } = Astro.props a
     </h2>
     <ul class="mt-7 grid gap-px overflow-hidden rounded-xl border border-(--border) bg-(--border) sm:grid-cols-2">
       {highlights.map((item) => (
-        <li class="bg-(--surface) p-6 text-[15px] leading-7 text-(--text-muted)">{item}</li>
+        <li class="bg-(--surface) p-6 text-base leading-relaxed text-(--text-muted)">{item}</li>
       ))}
     </ul>
   </section>

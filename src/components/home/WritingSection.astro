@@ -13,26 +13,25 @@ interface Props {
 const { posts } = Astro.props as Props;
 ---
 
-<section id="writing" class="scroll-mt-28 py-24 sm:py-32">
-  <div
-    class="mb-4 flex flex-col justify-between gap-7 border-b border-(--border) pb-8 sm:flex-row sm:items-end"
-  >
+<section id="writing" class="scroll-mt-28 py-12 sm:py-16">
+  <div class="mb-6 grid gap-5 border-b border-(--border) pb-6 md:grid-cols-[1fr_auto] md:items-end">
     <div>
-      <h2 class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)">
+      <h2 class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)">
         Notes & writing
       </h2>
-      <p class="mt-5 max-w-xl text-base leading-7 text-(--text-muted)">
-        Ideas about software, systems, algorithms, and the process of learning in public.
+      <p class="mt-4 max-w-xl text-base leading-relaxed text-(--text-muted)">
+        Ideas about software, systems, algorithms, and the process of learning in public, in English and Burmese.
       </p>
     </div>
     <a
       href="/writing"
-      class="group flex items-center gap-2 text-sm font-semibold text-(--text-muted) transition-colors hover:text-(--text-heading)"
+      class="group inline-flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-(--text-muted) transition-colors hover:text-(--text-heading)"
     >
-      <span>View all notes</span>
+      View all notes
       <Icon
         name="lucide:arrow-right"
-        class="size-3 transition-transform duration-300 group-hover:translate-x-1"
+        class="size-4 transition-transform duration-300 group-hover:translate-x-1"
+        aria-hidden="true"
       />
     </a>
   </div>
@@ -42,7 +41,7 @@ const { posts } = Astro.props as Props;
       posts.length > 0 ? (
         posts.map((post) => <PostCard post={post} headingLevel="h3" />)
       ) : (
-        <p class="border-b border-(--border) px-1 py-12 text-base leading-7 text-(--text-muted)">
+        <p class="border-b border-(--border) px-1 py-12 text-base leading-relaxed text-(--text-muted)">
           No notes are published yet. Check back soon.
         </p>
       )

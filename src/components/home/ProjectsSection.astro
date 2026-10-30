@@ -24,26 +24,31 @@ const {
 
 const Heading = headingLevel;
 
+const contextLabels = {
+  "open-source": "Open source",
+  personal: "Personal project",
+  hackathon: "Hackathon",
+} as const;
+
 const maturityLabels = {
   built: "Built",
   prototype: "Prototype",
   "work-in-progress": "Work in progress",
 } as const;
 
-const contextLabels = {
-  "open-source": "Open source",
-  personal: "Personal project",
-  hackathon: "Hackathon",
-} as const;
+const projectKind = (project: Project) => {
+  const type = project.data.type;
+  return type ? type.charAt(0).toUpperCase() + type.slice(1) : contextLabels[project.data.context];
+};
 ---
 
-<section id="projects" class="scroll-mt-28 py-24 sm:py-32">
-  <div class="mb-16 grid gap-6 border-b border-(--border) pb-8 md:grid-cols-[1fr_auto] md:items-end">
+<section id="projects" class="scroll-mt-28 py-12 sm:py-16">
+  <div class="mb-6 grid gap-5 border-b border-(--border) pb-6 md:grid-cols-[1fr_auto] md:items-end">
     <div>
-      <Heading class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)">
+      <Heading class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)">
         {heading}
       </Heading>
-      <p class="mt-5 max-w-xl text-base leading-7 text-(--text-muted)">
+      <p class="mt-4 max-w-xl text-base leading-relaxed text-(--text-muted)">
         {description}
       </p>
     </div>
@@ -52,91 +57,53 @@ const contextLabels = {
     </p>
   </div>
 
-  <div>
-    {projects.length > 0 ? projects.map((project) => (
-      <article class="grid gap-7 border-b border-(--border) py-9 md:grid-cols-12 md:items-start md:gap-10 lg:py-14">
-        <a
-          href={`/project/${project.id}`}
-          class="group overflow-hidden rounded-xl bg-(--border) md:col-span-7"
-          aria-hidden="true"
-          tabindex="-1"
-        >
-          <Image
-            src={project.data.img}
-            alt={`${project.data.name} product interface`}
-            widths={[360, 640, 960, 1280]}
-            sizes="(min-width: 1024px) 58vw, (min-width: 768px) 50vw, 100vw"
-            width={1280}
-            height={720}
-            class="aspect-video h-auto w-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-          />
-        </a>
+  {projects.length > 0 ? (
+    <ul class="work-list" aria-label={heading}>
+      {projects.map((project) => (
+        <li>
+          <a href={`/project/${project.id}`} class="work-row group">
+            <div class="work-main">
+              <h3 class="work-name text-xl font-semibold tracking-[-0.02em] sm:text-2xl">
+                {project.data.name}
+              </h3>
+              <p class="work-highlights mt-1 text-sm">
+                {project.data.proofPoints.map((point) => point.title).join(" · ")}
+              </p>
+            </div>
 
-        <div class="md:col-span-5">
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold uppercase tracking-[0.12em] text-(--text-faint)">
-            <span>{maturityLabels[project.data.maturity]}</span>
-            <span aria-hidden="true">·</span>
-            <span>{contextLabels[project.data.context]}</span>
-            <span aria-hidden="true">·</span>
-            <time datetime={project.data.publishedDate.toISOString()} class="tabular-nums">{project.data.publishedDate.getFullYear()}</time>
-          </div>
+            <p class="work-stack text-base leading-relaxed">
+              <span class="sr-only">Built with </span>
+              {project.data.technologies?.slice(0, 4).join(" / ")}
+            </p>
 
-          <h3 class="mt-5 text-4xl font-semibold tracking-[-0.04em] text-(--text-heading) sm:text-5xl">
-            <a href={`/project/${project.id}`} class="transition-opacity duration-300 hover:opacity-60">
-              {project.data.name}
-            </a>
-          </h3>
+            <p class="work-kind text-sm sm:text-base">
+              <span class="work-kind-text">
+                <span>{projectKind(project)}</span>
+                <span class="work-maturity text-sm">{maturityLabels[project.data.maturity]}</span>
+              </span>
+              <Icon name="lucide:arrow-right" class="work-arrow size-4" aria-hidden="true" />
+            </p>
 
-          <p class="mt-4 max-w-xl text-[15px] leading-7 text-(--text-muted)">
-            {project.data.description}
-          </p>
-
-          <p class="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-(--text-faint)">
-            Role · <span class="normal-case tracking-normal text-(--text-muted)">{project.data.role}</span>
-          </p>
-
-          <ul class="mt-5 space-y-3 border-l border-(--border) pl-4" aria-label={`${project.data.name} engineering evidence`}>
-            {project.data.proofPoints.map((point) => (
-              <li class="text-sm leading-6 text-(--text-muted)">{point}</li>
-            ))}
-          </ul>
-
-          {project.data.technologies && (
-            <ul class="mt-6 flex flex-wrap gap-x-4 gap-y-2" aria-label={`${project.data.name} technologies`}>
-              {project.data.technologies.slice(0, 5).map((technology) => (
-                <li class="text-xs text-(--text-faint)">{technology}</li>
-              ))}
-            </ul>
-          )}
-
-          <div class="mt-8 flex flex-wrap items-center gap-5">
-            <a
-              href={`/project/${project.id}`}
-              class="group inline-flex min-h-11 items-center gap-3 rounded-full bg-(--text-heading) px-5 text-sm font-semibold text-(--bg) transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0"
-              aria-hidden="true"
-              tabindex="-1"
-            >
-              Read case study
-              <Icon name="lucide:arrow-right" class="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-            <a
-              href={project.data.source}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group inline-flex min-h-11 items-center gap-2 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
-            >
-              Source
-              <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </div>
-        </div>
-      </article>
-    )) : (
-      <p class="border-y border-(--border) py-12 text-base leading-7 text-(--text-muted)">
-        No project case studies are published yet. Check back soon.
-      </p>
-    )}
-  </div>
+            <span class="work-thumb" aria-hidden="true">
+              <Image
+                src={project.data.img}
+                alt=""
+                widths={[240, 480]}
+                sizes="160px"
+                width={480}
+                height={270}
+                class="h-full w-full object-cover object-top"
+              />
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="border-b border-(--border) py-12 text-base leading-relaxed text-(--text-muted)">
+      No project case studies are published yet. Check back soon.
+    </p>
+  )}
 
   {showAllLink && (
     <div class="flex justify-end pt-8">
@@ -150,3 +117,152 @@ const contextLabels = {
     </div>
   )}
 </section>
+
+<style>
+  .work-list > li {
+    border-bottom: 1px solid var(--border);
+    padding-block: 0.25rem;
+  }
+
+  .work-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 1.5rem;
+    align-items: start;
+    border-radius: 0.5rem;
+    padding: 1.25rem 0.75rem;
+    margin-inline: -0.75rem;
+    color: var(--text-heading);
+    transition: background-color 240ms ease;
+  }
+
+  .work-name {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.2em;
+    transition: color 240ms ease, text-decoration-color 240ms ease;
+  }
+
+  .work-highlights,
+  .work-maturity {
+    color: var(--text-faint);
+  }
+
+  .work-stack {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    color: var(--text-muted);
+  }
+
+  .work-kind {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    justify-self: end;
+    color: var(--text-muted);
+  }
+
+  .work-kind-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.125rem;
+    text-align: right;
+  }
+
+  .work-arrow {
+    margin-top: 0.3em;
+    transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .work-thumb {
+    display: none;
+  }
+
+  .work-row:hover,
+  .work-row:focus-visible {
+    background: var(--surface);
+  }
+
+  .work-row:hover .work-name,
+  .work-row:focus-visible .work-name {
+    text-decoration-color: currentColor;
+  }
+
+  .work-row:hover .work-arrow,
+  .work-row:focus-visible .work-arrow {
+    transform: translateX(0.25rem);
+  }
+
+  @media (min-width: 768px) {
+    .work-row {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr);
+      align-items: center;
+      min-height: 6.5rem;
+      padding-block: 1.25rem;
+    }
+
+    .work-stack {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+
+  /* Wide pointer screens give the screenshot its own slot, so revealing it never hides the row's text. */
+  @media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
+    .work-row {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr) 9rem;
+    }
+
+    .work-thumb {
+      display: block;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      background: var(--border);
+      opacity: 0;
+      transform: scale(0.94);
+      transition:
+        opacity 220ms ease,
+        transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .work-row:hover .work-thumb,
+    .work-row:focus-visible .work-thumb {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Pointer devices: names rest one step down and the rest of the row stays faint;
+     the row under the pointer or focus comes to full contrast. Touch keeps full contrast. */
+  @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+    .work-name {
+      color: var(--text-muted);
+    }
+
+    .work-row :is(.work-stack, .work-kind) {
+      color: var(--text-faint);
+      transition: color 240ms ease;
+    }
+
+    .work-row:hover .work-name,
+    .work-row:focus-visible .work-name {
+      color: var(--text-heading);
+    }
+
+    .work-row:hover :is(.work-stack, .work-kind),
+    .work-row:focus-visible :is(.work-stack, .work-kind) {
+      color: var(--text-muted);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .work-thumb {
+      transform: none;
+    }
+  }
+</style>

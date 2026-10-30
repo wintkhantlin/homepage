@@ -66,20 +66,16 @@ const recognitions: Recognition[] = [
 ];
 ---
 
-<section aria-labelledby="recognition-heading" class="pb-24 sm:pb-32">
+<section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-28 py-12 sm:py-16">
   <div class="grid gap-6 border-b border-(--border) pb-8 md:grid-cols-[1fr_auto] md:items-end">
     <div>
-      <p class="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-(--text-faint)">
-        Recognition
-      </p>
       <h2
         id="recognition-heading"
-        class="font-serif text-[clamp(3.25rem,6vw,5.75rem)] font-normal leading-none tracking-[-0.04em] text-(--text-heading)"
+        class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)"
       >
         Competition results
       </h2>
     </div>
-    <p class="font-mono text-sm tabular-nums text-(--text-faint)">2026</p>
   </div>
 
   <ol>
@@ -92,7 +88,7 @@ const recognitions: Recognition[] = [
             {String(index + 1).padStart(2, "0")}
           </span>
           <p class="text-sm font-semibold text-(--text-heading)">{recognition.result}</p>
-          <p class="max-w-2xl text-base leading-7 text-(--text-muted)">{recognition.event}</p>
+          <p class="max-w-2xl text-base leading-relaxed text-(--text-muted)">{recognition.event}</p>
           <time
             datetime={recognition.datetime}
             class="font-mono text-xs tabular-nums text-(--text-faint) md:text-right"
@@ -165,107 +161,34 @@ const recognitions: Recognition[] = [
     }
   }
 
-  .award-preview {
-    display: none;
-  }
-
   @media (min-width: 768px) {
     .recognition-row {
-      grid-template-columns: 2.5rem minmax(9rem, 0.7fr) minmax(0, 1.8fr) auto;
+      grid-template-columns: 2.5rem minmax(9rem, 0.7fr) minmax(0, 1.8fr) 8rem;
       align-items: baseline;
       gap: 1.5rem;
       padding-block: 2rem;
     }
-  }
 
-  @media (min-width: 900px) and (hover: hover) and (pointer: fine) {
-    .recognition-row--preview {
-      cursor: default;
-    }
-
-    .award-preview {
-      position: absolute;
-      z-index: 3;
-      top: 50%;
-      right: 3.75rem;
-      display: block;
-      width: 7.5rem;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      border: 1px solid color-mix(in srgb, var(--text-heading) 20%, var(--border));
-      border-radius: 0.5rem;
-      background: var(--bg);
-      box-shadow: 0 1rem 3rem color-mix(in srgb, var(--bg) 70%, transparent);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-46%) scale(0.96);
-      transition:
-        opacity 220ms ease,
-        transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
-        visibility 220ms;
-      visibility: hidden;
-    }
-
-    .award-preview figure {
-      height: 100%;
-      min-width: 0;
-      overflow: hidden;
-    }
-
-    .award-preview--gallery {
-      display: grid;
-      grid-template-columns: 1fr 0.563fr 0.75fr;
-      width: min(24rem, 34vw);
-      aspect-ratio: 2.313 / 1;
-      gap: 0.3rem;
-      padding: 0.3rem;
-    }
-
-    .recognition-row--preview:hover .award-preview {
-      opacity: 1;
-      transform: translateY(-50%) scale(1);
-      visibility: visible;
+    .recognition-row > .award-preview {
+      grid-column: 3 / -1;
     }
   }
 
-  /* Mobile / touch thumbnail strip — static, below text row */
-  @media (max-width: 899px) {
-    .award-preview {
-      display: flex;
-      position: static;
-      grid-column: 1 / -1;
-      width: 100%;
-      height: 5rem;
-      gap: 0.3rem;
-      overflow: hidden;
-      border-radius: 0.375rem;
-    }
-
-    .award-preview figure {
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-      border-radius: 0.25rem;
-    }
-
-    .award-preview figure:only-child {
-      flex: none;
-      height: 100%;
-      aspect-ratio: 3 / 4;
-    }
-
-    /* Gallery variant: render as flex strip, not grid tooltip */
-    .award-preview--gallery {
-      display: flex;
-      width: 100%;
-      aspect-ratio: unset;
-      padding: 0;
-    }
+  /* Award photos sit inline on every screen size: they are proof, not a hover surprise. */
+  .award-preview {
+    display: flex;
+    gap: 0.375rem;
+    height: 5.5rem;
+    margin-top: 0.25rem;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .award-preview {
-      transition: none;
-    }
+  .award-preview figure {
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    flex: none;
+    overflow: hidden;
+    border-radius: 0.375rem;
+    background: var(--border);
   }
+
 </style>

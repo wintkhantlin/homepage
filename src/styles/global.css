@@ -5,7 +5,6 @@
 @theme {
     --font-sans: var(--font-heading), "Plus Jakarta Sans", "Inter", "Segoe UI", sans-serif;
     --font-mono: var(--font-body), "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --font-serif: var(--font-display), "LT Superior Serif", Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 /* ── Dark theme (default) ── */
@@ -22,6 +21,8 @@
     --border-strong: rgba(232, 235, 227, 0.22);
     --focus: #caff77;
     --hero-glow: rgba(202, 255, 119, 0.065);
+    --status-prototype: #bbc6ff;
+    --status-wip: #f0b35a;
     --code-inline: #1b1e1b;
     --article-link: #bbc6ff;
     --selection: #caff77;
@@ -44,6 +45,8 @@
     --border-strong: rgba(113, 113, 122, 0.72);
     --focus: #18181b;
     --hero-glow: rgba(229, 255, 99, 0.3);
+    --status-prototype: #3b49df;
+    --status-wip: #a85d00;
     --code-inline: #eeeeef;
     --article-link: #3b49df;
     --selection: #18181b;
@@ -57,48 +60,37 @@
 }
 
 .hero-cta {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: linear-gradient(180deg, #424242 0%, #181818 48%, #292929 100%);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.52),
-        inset 0 -9px 13px rgba(0, 0, 0, 0.42),
-        0 4px 0 #3b3b3b,
-        0 14px 22px -8px rgba(0, 0, 0, 0.68);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
-}
-
-.hero-cta::before {
-    position: absolute;
-    inset: 1px 1px auto;
-    height: 48%;
-    border-radius: inherit;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.08) 70%, transparent);
-    content: "";
-    pointer-events: none;
+    background: var(--text-heading);
+    color: var(--bg);
+    transition-property: transform, background-color;
 }
 
 .hero-cta:hover {
-    filter: brightness(1.06);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.58),
-        inset 0 -9px 13px rgba(0, 0, 0, 0.38),
-        0 4px 0 #3b3b3b,
-        0 15px 23px -8px rgba(0, 0, 0, 0.72);
+    background: color-mix(in oklch, var(--text-heading) 86%, var(--bg));
 }
 
-.hero-cta:active {
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.42),
-        inset 0 -7px 11px rgba(0, 0, 0, 0.46),
-        0 1px 0 #343434,
-        0 7px 13px -7px rgba(0, 0, 0, 0.7);
+.hero-cta:focus-visible {
+    outline-offset: 4px;
 }
 
-.hero-cta-icon {
-    color: #bdbdbd;
+/* The name settles into its stagger, one line after another. */
+.hero-name-line {
+    animation: hero-name-settle 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-name-line:nth-child(2) {
+    animation-delay: 60ms;
+}
+
+.hero-name-line:nth-child(3) {
+    animation-delay: 120ms;
+}
+
+@keyframes hero-name-settle {
+    from {
+        transform: translateX(-0.3em);
+        filter: blur(4px);
+    }
 }
 
 html {
@@ -128,6 +120,11 @@ textarea {
 }
 
 @layer base {
+    /* Set the ring colour up front so focus never animates in from the link's own text colour. */
+    :where(a, button, summary, [tabindex]) {
+        outline-color: var(--focus);
+    }
+
     :where(main, section, article, aside, header, footer, nav, div) {
         min-width: 0;
     }
@@ -274,21 +271,6 @@ textarea {
         mask-size: 300vmax;
         mask-position: center;
     }
-}
-
-/* ── Structural Hover Inversion ── */
-.invert-on-hover {
-    transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.invert-on-hover:hover {
-    background-color: var(--text-heading);
-    color: var(--bg);
-}
-
-.invert-on-hover:hover * {
-    color: var(--bg) !important;
-    border-color: var(--bg) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

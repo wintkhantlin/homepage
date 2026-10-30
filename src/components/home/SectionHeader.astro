@@ -1,0 +1,44 @@
+---
+interface Props {
+  heading: string;
+  headingLevel?: "h1" | "h2";
+  headingId?: string;
+  count?: number;
+  description?: string;
+}
+
+const { heading, headingLevel = "h2", headingId, count, description } = Astro.props as Props;
+
+const Heading = headingLevel;
+const hasAside = Boolean(description) || Astro.slots.has("default");
+---
+
+<header class="border-t border-(--text-heading) pt-5">
+  <div class="flex items-baseline justify-between gap-6">
+    <Heading
+      id={headingId}
+      class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)"
+    >
+      {heading}
+    </Heading>
+    {count !== undefined && (
+      <p class="font-sans text-[clamp(1.125rem,1.8vw,1.5rem)] font-medium tabular-nums text-(--text-faint)">
+        <span class="sr-only">{count} entries</span>
+        <span aria-hidden="true">({String(count).padStart(2, "0")})</span>
+      </p>
+    )}
+  </div>
+
+  {hasAside && (
+    <div class="mt-5 md:mt-8 md:grid md:grid-cols-12">
+      <div class="flex flex-col items-start gap-4 md:col-span-6 md:col-start-7">
+        {description && (
+          <p class="max-w-md text-base leading-relaxed text-(--text-muted)">
+            {description}
+          </p>
+        )}
+        <slot />
+      </div>
+    </div>
+  )}
+</header>

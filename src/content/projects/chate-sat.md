@@ -5,16 +5,19 @@ description: Chate Sat is an application designed to facilitate the coordination
 seoTitle: Chate Sat Disaster Relief App Case Study | Wint Khant Lin
 seoDescription: Explore Chate Sat, a disaster relief app connecting volunteers, aid requests, relief centers, donors, and verified information on a shared map.
 source: https://github.com/wintkhantlin/chate-sat
-technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Leaflet", "Better Auth"]
+technologies: ["PostgreSQL", "Next.js", "Leaflet", "Better Auth", "TypeScript", "Tailwind CSS"]
 img: ../../assets/img/chatesat.png
 publishedDate: 2025-11-09
-featured: false
+featured: true
+featuredOrder: 4
 maturity: prototype
 context: hackathon
 role: Product and application engineering
 proofPoints:
-  - A shared Leaflet map brings relief centers, requests, volunteer groups, and disaster zones into one view.
-  - Admin verification workflows distinguish trusted operational information from community submissions.
+  - title: Unified relief map
+    detail: "A shared Leaflet map brings relief centers, requests, volunteer groups, and disaster zones into one view."
+  - title: Trusted information
+    detail: "Admin verification workflows distinguish trusted operational information from community submissions."
 color: "#e6abf4"
 caseStudy:
   status: 2025 hackathon project

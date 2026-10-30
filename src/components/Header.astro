@@ -2,12 +2,14 @@
 import { Icon } from "astro-icon/components";
 
 const links = [
-  { label: "Work", href: "/projects" },
-  { label: "Notes", href: "/writing" },
-  { label: "Story", href: "/#about", mobileHidden: true },
+  { label: "Work", href: "/projects", section: "projects" },
+  { label: "Notes", href: "/writing", section: "writing" },
+  { label: "Story", href: "/#about", section: "about" },
 ];
 
 const pathname = Astro.url.pathname;
+// On the homepage the nav scrolls to its sections, so the scroll-spy highlight and the click agree.
+const isHome = pathname === "/";
 const isActive = (href: string) => {
   if (href === "/writing") return pathname === "/writing" || pathname.startsWith("/post/");
   if (href === "/projects") return pathname === "/projects" || pathname.startsWith("/project/");
@@ -15,30 +17,26 @@ const isActive = (href: string) => {
 };
 ---
 
-<header
-  class="fixed inset-x-0 top-5 z-50 mx-auto flex w-full max-w-205 justify-center px-4 sm:top-6"
->
-  <div
-    class="flex w-full items-center justify-between rounded-full border border-(--border-strong) bg-(--surface-translucent) px-4 py-1.5 shadow-[0_12px_40px_var(--shadow-color)] backdrop-blur-xl sm:px-6"
-  >
+<header class="fixed inset-x-0 top-0 z-50 border-b border-(--border) bg-(--surface-translucent) backdrop-blur-xl">
+  <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-2 sm:px-6 md:px-8">
     <a
       href="/"
-      class="inline-flex min-h-11 items-center text-sm font-extrabold tracking-tight text-(--text-heading) transition-opacity duration-200 hover:opacity-60 active:opacity-45 sm:text-base"
+      class="inline-flex min-h-11 items-center text-sm font-bold tracking-tight text-(--text-heading) transition-opacity duration-200 hover:opacity-60 active:opacity-45 sm:text-base"
     >
       <span class="sm:hidden">WK</span>
       <span class="hidden sm:inline">WINT KHANT LIN</span>
     </a>
 
-    <nav class="flex items-center gap-3 sm:gap-6" aria-label="Primary navigation">
+    <nav class="flex items-center gap-3 sm:gap-8" aria-label="Primary navigation">
       {
         links.map((link) => (
           <a
-            href={link.href}
+            href={isHome ? `#${link.section}` : link.href}
             aria-current={isActive(link.href) ? "page" : undefined}
+            data-nav-section={link.section}
             class:list={[
-              "inline-flex min-h-11 items-center text-[13px] text-(--text-muted) transition-colors hover:text-(--text-heading) active:text-(--text-heading) sm:text-[14px]",
-              { "max-sm:hidden": link.mobileHidden },
-              { "text-(--text-heading) underline decoration-(--text-faint) underline-offset-8": isActive(link.href) },
+              "inline-flex min-h-11 items-center text-[13px] text-(--text-muted) underline decoration-transparent underline-offset-8 transition-[color,text-decoration-color] duration-300 hover:text-(--text-heading) active:text-(--text-heading) data-[current]:text-(--text-heading) data-[current]:decoration-(--text-faint) sm:text-[14px]",
+              { "text-(--text-heading) decoration-(--text-faint)": isActive(link.href) },
             ]}
           >
             {link.label}
@@ -49,10 +47,10 @@ const isActive = (href: string) => {
       <!--email_off-->
       <a
         href="mailto:hello@wintkhantlin.com"
-        class="inline-flex min-h-10 items-center rounded-full bg-(--text-heading) px-3 text-[12px] font-semibold text-(--bg) transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:px-4 sm:text-[13px]"
+        class="inline-flex min-h-11 items-center text-[13px] font-medium text-(--text-heading) underline decoration-(--border-strong) underline-offset-8 transition-[text-decoration-color] duration-300 hover:decoration-(--text-heading) sm:text-[14px]"
       >
         <span class="sm:hidden">Email</span>
-        <span class="hidden sm:inline">Let's talk</span>
+        <span class="hidden sm:inline">Say hello</span>
       </a>
       <!--/email_off-->
 
@@ -61,7 +59,7 @@ const isActive = (href: string) => {
         type="button"
         aria-label="Switch to light theme"
         aria-pressed="false"
-        class="flex size-11 cursor-pointer items-center justify-center rounded-full text-(--text-muted) transition-[background-color,color,transform] duration-300 hover:bg-(--surface-raised) hover:text-(--text-heading) active:scale-95 sm:ml-1"
+        class="flex size-11 cursor-pointer items-center justify-center rounded-full text-(--text-muted) transition-[background-color,color,transform] duration-300 hover:bg-(--surface-raised) hover:text-(--text-heading) active:scale-95 -mr-3"
       >
         <span id="theme-icon-dark" class="hidden">
           <Icon name="lucide:sun" class="size-3.75" />
@@ -124,4 +122,37 @@ const isActive = (href: string) => {
 
   const btn = document.getElementById("theme-toggle");
   btn?.addEventListener("click", toggleTheme);
+
+  // On the homepage, mark the nav link whose section is in view.
+  function trackActiveSection() {
+    const navLinks = [...document.querySelectorAll<HTMLAnchorElement>("[data-nav-section]")];
+    const sections = navLinks
+      .map((link) => document.getElementById(link.dataset.navSection ?? ""))
+      .filter((section): section is HTMLElement => Boolean(section));
+    if (!sections.length) return;
+
+    const setCurrent = (id?: string) => {
+      for (const link of navLinks) {
+        const isCurrent = link.dataset.navSection === id;
+        link.toggleAttribute("data-current", isCurrent);
+        if (isCurrent) link.setAttribute("aria-current", "location");
+        else if (link.getAttribute("aria-current") === "location") link.removeAttribute("aria-current");
+      }
+    };
+
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
+        }
+        setCurrent(sections.find((section) => visible.has(section.id))?.id);
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  trackActiveSection();
 </script>

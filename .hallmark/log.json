@@ -1,0 +1,57 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "shape": "Marquee Hero",
+  "theme": "brand",
+  "axes": "dark/geometric-sans/chromatic-lime",
+  "hero": "Ledge",
+  "nav": "split bar 64/36",
+  "footer": "colophon block",
+  "imagery": "screenshots 4 (the projects own), award photos 2, no people",
+  "photos": [],
+  "entry": "draw ddc0b9",
+  "fingerprint": "ledge-name / showcase-case / index-rows / split-photos / grid-3 / split-shelves",
+  "sections": [
+   "hero",
+   "showcase",
+   "index",
+   "split",
+   "grid",
+   "split",
+   "footer"
+  ],
+  "signature": "the staggered name at full scale resting at the base of the first screen",
+  "waived": [],
+  "prompt": "backend engineer portfolio, technical notebook, no photos of the owner",
+  "date": "2026-10-31"
+ },
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "hero": "Banner",
+  "nav": "split bar 64/36",
+  "prompt": "backend engineer portfolio, / hero, nav and about tools",
+  "sections": [
+   "hero",
+   "projects",
+   "recognition",
+   "writing",
+   "about",
+   "footer"
+  ],
+  "signature": "the staggered name at display size",
+  "waived": [],
+  "date": "2026-10-31"
+ },
+ {
+  "mode": "redesign",
+  "depth": "polish",
+  "scope": "page",
+  "prompt": "backend engineer portfolio, / route",
+  "waived": [],
+  "date": "2026-10-31"
+ }
+]

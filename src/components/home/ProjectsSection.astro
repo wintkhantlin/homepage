@@ -17,7 +17,7 @@ interface Props {
 const {
   projects,
   heading = "Selected work",
-  description = "Systems-oriented products with the engineering decisions surfaced, not hidden behind screenshots.",
+  description,
   showAllLink = false,
   headingLevel = "h2",
 } = Astro.props as Props;
@@ -43,40 +43,42 @@ const projectKind = (project: Project) => {
 ---
 
 <section id="projects" class="scroll-mt-28 py-12 sm:py-16">
-  <div class="mb-6 grid gap-5 border-b border-(--border) pb-6 md:grid-cols-[1fr_auto] md:items-end">
-    <div>
-      <Heading class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)">
-        {heading}
-      </Heading>
+  <div class="mb-6 border-b border-(--border) pb-6">
+    <Heading class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)">
+      {heading}
+    </Heading>
+    {description && (
       <p class="mt-4 max-w-xl text-base leading-relaxed text-(--text-muted)">
         {description}
       </p>
-    </div>
-    <p class="text-sm text-(--text-faint)">
-      {projects.length} {projects.length === 1 ? "project" : "projects"} documented
-    </p>
+    )}
   </div>
 
   {projects.length > 0 ? (
     <ul class="work-list" aria-label={heading}>
-      {projects.map((project) => (
+      {projects.map((project, index) => (
         <li>
-          <a href={`/project/${project.id}`} class="work-row group">
+          <a
+            href={`/project/${project.id}`}
+            class="work-row group"
+            aria-labelledby={`work-name-${index}`}
+            aria-describedby={`work-stack-${index} work-kind-${index}`}
+          >
             <div class="work-main">
-              <h3 class="work-name text-xl font-semibold tracking-[-0.02em] sm:text-2xl">
+              <h3 id={`work-name-${index}`} class="work-name text-xl font-semibold tracking-[-0.02em] sm:text-2xl">
                 {project.data.name}
               </h3>
-              <p class="work-highlights mt-1 text-sm">
-                {project.data.proofPoints.map((point) => point.title).join(" · ")}
-              </p>
+              <ul class="work-highlights mt-1 flex flex-wrap gap-x-4 text-sm">
+                {project.data.proofPoints.map((point) => <li>{point.title}</li>)}
+              </ul>
             </div>
 
-            <p class="work-stack text-base leading-relaxed">
+            <p id={`work-stack-${index}`} class="work-stack text-base leading-relaxed">
               <span class="sr-only">Built with </span>
               {project.data.technologies?.slice(0, 4).join(" / ")}
             </p>
 
-            <p class="work-kind text-sm sm:text-base">
+            <p id={`work-kind-${index}`} class="work-kind text-sm sm:text-base">
               <span class="work-kind-text">
                 <span>{projectKind(project)}</span>
                 <span class="work-maturity text-sm">{maturityLabels[project.data.maturity]}</span>
@@ -177,8 +179,17 @@ const projectKind = (project: Project) => {
     transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* Proof sits under the row on phones, beside it on tablets and touch laptops. */
   .work-thumb {
-    display: none;
+    display: block;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    width: min(100%, 14rem);
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    background: var(--border);
   }
 
   .work-row:hover,
@@ -198,7 +209,7 @@ const projectKind = (project: Project) => {
 
   @media (min-width: 768px) {
     .work-row {
-      grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr);
+      grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr) 7rem;
       align-items: center;
       min-height: 6.5rem;
       padding-block: 1.25rem;
@@ -208,61 +219,29 @@ const projectKind = (project: Project) => {
       grid-column: auto;
       grid-row: auto;
     }
+
+    .work-thumb {
+      grid-column: 4;
+      grid-row: 1;
+      width: 100%;
+    }
   }
 
-  /* Wide pointer screens give the screenshot its own slot, so revealing it never hides the row's text. */
+  /* Wide pointer screens dim the screenshot at rest and bring it to full strength on hover or focus. */
   @media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
     .work-row {
       grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr) 9rem;
     }
 
     .work-thumb {
-      display: block;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 0.375rem;
-      background: var(--border);
-      opacity: 0;
-      transform: scale(0.94);
-      transition:
-        opacity 220ms ease,
-        transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0.72;
+      transition: opacity 220ms ease;
     }
 
     .work-row:hover .work-thumb,
     .work-row:focus-visible .work-thumb {
       opacity: 1;
-      transform: scale(1);
     }
   }
 
-  /* Pointer devices: names rest one step down and the rest of the row stays faint;
-     the row under the pointer or focus comes to full contrast. Touch keeps full contrast. */
-  @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
-    .work-name {
-      color: var(--text-muted);
-    }
-
-    .work-row :is(.work-stack, .work-kind) {
-      color: var(--text-faint);
-      transition: color 240ms ease;
-    }
-
-    .work-row:hover .work-name,
-    .work-row:focus-visible .work-name {
-      color: var(--text-heading);
-    }
-
-    .work-row:hover :is(.work-stack, .work-kind),
-    .work-row:focus-visible :is(.work-stack, .work-kind) {
-      color: var(--text-muted);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .work-thumb {
-      transform: none;
-    }
-  }
 </style>

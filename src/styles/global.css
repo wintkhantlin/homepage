@@ -1,4 +1,18 @@
+/* Hallmark · shape: Marquee Hero (draw ddc0b9) · genre: modern-minimal · theme: brand · redesign: full
+ * paper: #0c0d0c dark, #fafafa light · accent: #caff77, focus and selection only · display: Plus Jakarta Sans · body: Plus Jakarta Sans · hero: Ledge · nav: split bar 64/36 (swapped from search-led: the site has no search) · footer: colophon block · signature: the staggered name at full scale, resting at the base of the first screen
+ * axes: dark/geometric-sans/chromatic-lime · posture: Restrained · contrast: pass · fold: pass · imagery: screenshots 4 in the index (the projects' own), award photos 2 (no people) · v2.0.0 */
+/* Hallmark · pre-emit critique: P3 H4 E4 S4 R5 V4 · weakest: P, a portfolio has little to argue, so the work leads straight after the name as an index with its screens in view */
+/* Hallmark · dropped the GenCourse case section · the owner found one project opened in full too much; every project sits in the index */
+/* Hallmark · dropped the hero portrait and the two winner-pose award photos · the owner asked for no photographs of himself; the portrait remains only as the share image in the page metadata */
+/* Hallmark · dropped {siteConfig.social.linkedin} from the hero · 58 allows two actions; LinkedIn stays linked in About and the footer */
+/* Hallmark · dropped the footer dock, [data-dock] and [data-dock-item] with their magnify script · a glossy OS-dock imitation (47c); the footer's links stay as plain links */
+/* Hallmark · dropped {item.href} · the footer's links are now {link.href} in two lists; every destination still renders */
+/* Hallmark · dropped "Say hello." link at the end of About · 69 names it, the footer closes with the same line */
+/* Hallmark · dropped the 01, 02, 03 ordinals on competition results · decoration text (66); the list is an ol */
+/* Hallmark · reworded the hero lede from "Software engineer and college student from Myanmar, building reliable backend systems for useful products. I document the engineering decisions as I go, in English and Burmese." to "Software engineer and college student from Myanmar, building reliable backend systems." · 58 names it; the bilingual fact stays in About */
+
 @import "tailwindcss";
+@import "./tokens.css";
 
 @plugin "@tailwindcss/typography";
 
@@ -20,7 +34,6 @@
     --border: rgba(232, 235, 227, 0.14);
     --border-strong: rgba(232, 235, 227, 0.22);
     --focus: #caff77;
-    --hero-glow: rgba(202, 255, 119, 0.065);
     --status-prototype: #bbc6ff;
     --status-wip: #f0b35a;
     --code-inline: #1b1e1b;
@@ -28,6 +41,7 @@
     --selection: #caff77;
     --selection-text: #10130d;
     --shadow-color: rgba(0, 0, 0, 0.48);
+
     color-scheme: dark;
 }
 
@@ -44,7 +58,6 @@
     --border: rgba(161, 161, 170, 0.65);
     --border-strong: rgba(113, 113, 122, 0.72);
     --focus: #18181b;
-    --hero-glow: rgba(229, 255, 99, 0.3);
     --status-prototype: #3b49df;
     --status-wip: #a85d00;
     --code-inline: #eeeeef;
@@ -53,10 +66,6 @@
     --selection-text: #fafafa;
     --shadow-color: rgba(24, 24, 27, 0.16);
     color-scheme: light;
-}
-
-.hero-intro-glow {
-    background: radial-gradient(ellipse at 50% -8%, var(--hero-glow), transparent 70%);
 }
 
 .hero-cta {
@@ -75,7 +84,7 @@
 
 /* The name settles into its stagger, one line after another. */
 .hero-name-line {
-    animation: hero-name-settle 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: hero-name-settle 700ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 .hero-name-line:nth-child(2) {
@@ -89,12 +98,12 @@
 @keyframes hero-name-settle {
     from {
         transform: translateX(-0.3em);
-        filter: blur(4px);
     }
 }
 
 html {
     min-width: 20rem;
+    overflow-x: clip;
     background: var(--bg);
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
@@ -132,6 +141,10 @@ textarea {
 
 :where(h1, h2, h3, h4, p, li, a) {
     overflow-wrap: break-word;
+}
+
+:where(h1, h2) {
+    text-wrap: balance;
 }
 
 :where(a, button, summary, [tabindex]):focus-visible {

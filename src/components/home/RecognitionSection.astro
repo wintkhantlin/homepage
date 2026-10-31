@@ -1,23 +1,14 @@
 ---
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
+import { Image, getImage } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import gustoMedals from "../../assets/img/awards/gusto-innovation-golden-metals.png";
-import gustoWinnerPose from "../../assets/img/awards/gusto-innovation-winner-pose.png";
 import gustoProjectDisplay from "../../assets/img/awards/polo-gusto-innovation-1.jpeg";
-import letsTechWinnerPose from "../../assets/img/awards/lets-tech-hackathon-winner-pose.png";
-
-interface RecognitionImage {
-  src: ImageMetadata;
-  alt: string;
-  renderWidth: number;
-}
 
 interface Recognition {
   result: string;
   event: string;
   datetime: string;
   date: string;
-  images?: RecognitionImage[];
 }
 
 const recognitions: Recognition[] = [
@@ -26,36 +17,12 @@ const recognitions: Recognition[] = [
     event: "GUSTO Innovation Awards & Forum 2026",
     datetime: "2026-08",
     date: "August 2026",
-    images: [
-      {
-        src: gustoWinnerPose,
-        alt: "Wint holding first runner-up and social media award boards at the GUSTO Innovation Awards & Forum",
-        renderWidth: 420,
-      },
-      {
-        src: gustoMedals,
-        alt: "Two gold GUSTO College award medals held in one hand",
-        renderWidth: 240,
-      },
-      {
-        src: gustoProjectDisplay,
-        alt: "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
-        renderWidth: 320,
-      },
-    ],
   },
   {
     result: "Winner",
     event: "Let's Tech 2026: Agentic Edition",
     datetime: "2026-07",
     date: "July 2026",
-    images: [
-      {
-        src: letsTechWinnerPose,
-        alt: "Wint holding the Let's Tech Hackathon winner board",
-        renderWidth: 320,
-      },
-    ],
   },
   {
     result: "Winner",
@@ -64,131 +31,313 @@ const recognitions: Recognition[] = [
     date: "January 2026",
   },
 ];
+
+const photos = [
+  {
+    src: gustoProjectDisplay,
+    alt: "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+    caption: "The team's recommerce marketplace display, GUSTO Innovation Awards & Forum, August 2026",
+  },
+  {
+    src: gustoMedals,
+    alt: "Two gold GUSTO College award medals held in one hand",
+    caption: "Two gold medals from the GUSTO Innovation Awards & Forum, August 2026",
+  },
+];
+
+const largePhotos = await Promise.all(
+  photos.map(async (photo) => {
+    const large = await getImage({ src: photo.src, width: 1400, format: "webp" });
+    return { src: large.src, alt: photo.alt, caption: photo.caption };
+  }),
+);
 ---
 
-<section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-28 py-12 sm:py-16">
-  <div class="grid gap-6 border-b border-(--border) pb-8 md:grid-cols-[1fr_auto] md:items-end">
+<!-- Split: the results as a dated list beside two photographs from the GUSTO forum, neither of them of a person. -->
+<section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-28 pt-(--section-gap-l)">
+  <div class="recognition-split">
     <div>
       <h2
         id="recognition-heading"
-        class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)"
+        class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)"
       >
         Competition results
       </h2>
+
+      <ol class="recognition-list mt-10">
+        {recognitions.map((recognition) => (
+          <li class="recognition-row">
+            <p class="text-title font-semibold tracking-[-0.02em] text-(--text-heading)">{recognition.result}</p>
+            <p class="text-base leading-relaxed text-(--text-muted)">{recognition.event}</p>
+            <time datetime={recognition.datetime} class="recognition-date text-sm tabular-nums text-(--text-faint)">
+              {recognition.date}
+            </time>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="recognition-photos">
+      <figure class="recognition-photo recognition-photo--lead">
+        <a href={largePhotos[0].src} class="photo-open" data-photo-index="0" aria-label={`View larger: ${photos[0].alt}`}>
+        <Image
+          src={gustoProjectDisplay}
+          alt="The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum"
+          widths={[400, 700]}
+          sizes="(min-width: 1024px) 300px, 60vw"
+          loading="lazy"
+          class="h-full w-full object-cover"
+        />
+        </a>
+      </figure>
+      <figure class="recognition-photo recognition-photo--second">
+        <a href={largePhotos[1].src} class="photo-open" data-photo-index="1" aria-label={`View larger: ${photos[1].alt}`}>
+        <Image
+          src={gustoMedals}
+          alt="Two gold GUSTO College award medals held in one hand"
+          widths={[300, 500]}
+          sizes="(min-width: 1024px) 200px, 40vw"
+          loading="lazy"
+          class="h-full w-full object-cover"
+        />
+        </a>
+      </figure>
+      <p class="recognition-caption text-sm text-(--text-faint)">GUSTO Innovation Awards & Forum, August 2026</p>
     </div>
   </div>
 
-  <ol>
-    {
-      recognitions.map((recognition, index) => (
-        <li
-          class:list={["recognition-row", { "recognition-row--preview": recognition.images }]}
-        >
-          <span class="font-mono text-xs tabular-nums text-(--text-faint)" aria-hidden="true">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <p class="text-sm font-semibold text-(--text-heading)">{recognition.result}</p>
-          <p class="max-w-2xl text-base leading-relaxed text-(--text-muted)">{recognition.event}</p>
-          <time
-            datetime={recognition.datetime}
-            class="font-mono text-xs tabular-nums text-(--text-faint) md:text-right"
-          >
-            {recognition.date}
-          </time>
+  <!-- Opens over the page when scripting runs; without it, each photo link opens the full-size file. -->
+  <dialog class="photo-viewer" aria-labelledby="photo-viewer-caption" data-photo-viewer data-photos={JSON.stringify(largePhotos)}>
+    <figure class="photo-viewer-figure">
+      <img class="photo-viewer-img" src={largePhotos[0].src} alt={largePhotos[0].alt} data-viewer-img />
+      <figcaption id="photo-viewer-caption" class="text-sm text-(--text-muted)" data-viewer-caption>{largePhotos[0].caption}</figcaption>
+    </figure>
 
-          {recognition.images && (
-            <aside
-              class:list={["award-preview", { "award-preview--gallery": recognition.images.length > 1 }]}
-              aria-label={`${recognition.event} photographs`}
-            >
-              {recognition.images.map((image) => (
-                <figure>
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={image.renderWidth}
-                    class="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </figure>
-              ))}
-            </aside>
-          )}
-        </li>
-      ))
-    }
-  </ol>
+    <div class="photo-viewer-controls">
+      <p class="text-sm tabular-nums text-(--text-faint)" data-viewer-count>1 of {largePhotos.length}</p>
+      <div class="flex items-center gap-1">
+        <button type="button" class="viewer-button" data-viewer-prev>
+          <Icon name="lucide:chevron-left" class="size-4" aria-hidden="true" />
+          Previous
+        </button>
+        <button type="button" class="viewer-button" data-viewer-next>
+          Next
+          <Icon name="lucide:chevron-right" class="size-4" aria-hidden="true" />
+        </button>
+        <button type="button" class="viewer-button" data-viewer-close autofocus>
+          <Icon name="lucide:x" class="size-4" aria-hidden="true" />
+          Close
+        </button>
+      </div>
+    </div>
+  </dialog>
 </section>
 
+<script>
+  type Photo = { src: string; alt: string; caption: string };
+
+  const viewer = document.querySelector<HTMLDialogElement>("[data-photo-viewer]");
+
+  if (viewer && typeof viewer.showModal === "function") {
+    const photos: Photo[] = JSON.parse(viewer.dataset.photos ?? "[]");
+    const img = viewer.querySelector<HTMLImageElement>("[data-viewer-img]");
+    const caption = viewer.querySelector<HTMLElement>("[data-viewer-caption]");
+    const count = viewer.querySelector<HTMLElement>("[data-viewer-count]");
+    let current = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (index: number) => {
+      current = (index + photos.length) % photos.length;
+      const photo = photos[current];
+      if (img) {
+        img.src = photo.src;
+        img.alt = photo.alt;
+      }
+      if (caption) caption.textContent = photo.caption;
+      if (count) count.textContent = `${current + 1} of ${photos.length}`;
+    };
+
+    for (const link of document.querySelectorAll<HTMLAnchorElement>(".photo-open")) {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        opener = link;
+        show(Number(link.dataset.photoIndex ?? 0));
+        viewer.showModal();
+      });
+    }
+
+    viewer.querySelector("[data-viewer-prev]")?.addEventListener("click", () => show(current - 1));
+    viewer.querySelector("[data-viewer-next]")?.addEventListener("click", () => show(current + 1));
+    viewer.querySelector("[data-viewer-close]")?.addEventListener("click", () => viewer.close());
+
+    viewer.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") show(current - 1);
+      if (event.key === "ArrowRight") show(current + 1);
+    });
+
+    viewer.addEventListener("close", () => opener?.focus());
+
+    // A click on the backdrop lands on the dialog itself, never on its content.
+    viewer.addEventListener("click", (event) => {
+      if (event.target === viewer) viewer.close();
+    });
+  }
+</script>
+
 <style>
-  .recognition-row {
-    position: relative;
+  .recognition-split {
     display: grid;
-    grid-template-columns: 2rem 1fr;
-    gap: 0.4rem 1rem;
-    border-bottom: 1px solid var(--border);
-    padding-block: 1.75rem;
+    gap: 3rem;
   }
 
-  @media (max-width: 767px) {
-    .recognition-row > span {
-      grid-column: 1;
-      grid-row: 1;
-      align-self: baseline;
-      margin-top: 0.15rem;
-    }
+  .recognition-list {
+    border-top: 1px solid var(--border);
+  }
 
-    .recognition-row > p:nth-of-type(1) {
-      grid-column: 2;
-      grid-row: 1;
-      align-self: baseline;
-    }
+  .recognition-row {
+    display: grid;
+    gap: 0.25rem;
+    border-bottom: 1px solid var(--border);
+    padding-block: 1.5rem;
+  }
 
-    .recognition-row > p:nth-of-type(2) {
-      grid-column: 2;
-      grid-row: 2;
-    }
+  .recognition-photos {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 0.75rem;
+    align-items: start;
+  }
 
-    .recognition-row > time {
-      grid-column: 2;
-      grid-row: 3;
-    }
+  .recognition-photo {
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: var(--surface);
+    outline: 1px solid var(--border);
+    outline-offset: -1px;
+  }
 
-    .recognition-row > .award-preview {
-      grid-column: 2;
-      grid-row: 4;
-      margin-top: 0.5rem;
+  .recognition-photo :global(img) {
+    border-radius: inherit;
+  }
+
+  .photo-open {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    cursor: zoom-in;
+  }
+
+  .photo-open :global(img) {
+    transition: opacity 200ms ease;
+  }
+
+  .photo-open:hover :global(img) {
+    opacity: 0.86;
+  }
+
+  .photo-viewer {
+    width: min(100% - 2rem, 56rem);
+    max-width: none;
+    max-height: calc(100% - 2rem);
+    margin: auto;
+    border: 1px solid var(--border-strong);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .photo-viewer[open] {
+    animation: viewer-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .photo-viewer::backdrop {
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+  }
+
+  .photo-viewer-figure {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .photo-viewer-img {
+    width: 100%;
+    max-height: 70svh;
+    border-radius: 0.5rem;
+    background: var(--bg);
+    object-fit: contain;
+  }
+
+  .photo-viewer-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .viewer-button {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 999px;
+    padding-inline: 0.875rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  .viewer-button:hover {
+    background: var(--surface-raised);
+    color: var(--text-heading);
+  }
+
+  .viewer-button:active {
+    background: var(--bg);
+  }
+
+  @keyframes viewer-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
     }
+  }
+
+  .recognition-photo--lead {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* The medals sit lower, so the pair reads as two moments rather than a strip. */
+  .recognition-photo--second {
+    aspect-ratio: 3 / 4;
+    margin-top: 4rem;
+  }
+
+  .recognition-caption {
+    grid-column: 1 / -1;
   }
 
   @media (min-width: 768px) {
     .recognition-row {
-      grid-template-columns: 2.5rem minmax(9rem, 0.7fr) minmax(0, 1.8fr) 8rem;
+      grid-template-columns: minmax(10rem, 1fr) minmax(0, 1.6fr) 7.5rem;
       align-items: baseline;
-      gap: 1.5rem;
-      padding-block: 2rem;
+      column-gap: 1.5rem;
     }
 
-    .recognition-row > .award-preview {
-      grid-column: 3 / -1;
+    .recognition-date {
+      text-align: right;
     }
   }
 
-  /* Award photos sit inline on every screen size: they are proof, not a hover surprise. */
-  .award-preview {
-    display: flex;
-    gap: 0.375rem;
-    height: 5.5rem;
-    margin-top: 0.25rem;
+  @media (min-width: 1024px) {
+    .recognition-split {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      column-gap: 4rem;
+      align-items: end;
+    }
   }
-
-  .award-preview figure {
-    height: 100%;
-    aspect-ratio: 3 / 4;
-    flex: none;
-    overflow: hidden;
-    border-radius: 0.375rem;
-    background: var(--border);
-  }
-
 </style>

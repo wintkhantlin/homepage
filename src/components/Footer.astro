@@ -1,15 +1,17 @@
 ---
-import { Icon } from "astro-icon/components";
+import CopyEmailButton from "./CopyEmailButton.astro";
 
 const pathname = Astro.url.pathname;
-const dockItems = [
-  { label: "Home", href: "/", icon: "lucide:house", tone: "slate" },
-  { label: "Work", href: "/projects", icon: "lucide:panels-top-left", tone: "blue" },
-  { label: "Notes", href: "/writing", icon: "lucide:notebook-pen", tone: "amber" },
-  { label: "Story", href: "/#about", icon: "lucide:user-round", tone: "green" },
-  { label: "GitHub", href: "https://github.com/wintkhantlin", icon: "lucide:github", tone: "ink", external: true, separator: true },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/wintkhantlin/", icon: "lucide:linkedin", tone: "linkedin", external: true },
-  { label: "Email", href: "mailto:hello@wintkhantlin.com", icon: "lucide:mail", tone: "rose" },
+const siteLinks = [
+  { label: "Home", href: "/" },
+  { label: "Work", href: "/projects" },
+  { label: "Notes", href: "/writing" },
+  { label: "Story", href: "/#about" },
+];
+const contactLinks = [
+  { label: "hello@wintkhantlin.com", href: "mailto:hello@wintkhantlin.com" },
+  { label: "GitHub", href: "https://github.com/wintkhantlin", external: true },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/wintkhantlin/", external: true },
 ];
 
 const isActive = (href: string) => {
@@ -20,292 +22,102 @@ const isActive = (href: string) => {
 };
 ---
 
+<!-- Colophon: the close as plain contact lines, then the site's links and one paragraph of credits. -->
 <footer class="border-t border-(--border)">
-  <!--email_off-->
-  <section class="flex w-full flex-col items-center justify-center border-b border-(--border) px-5 py-28 text-center sm:py-32" aria-labelledby="say-hello">
-    <p class="mb-5 text-sm text-(--text-muted)">Hiring, collaborating, or just curious?</p>
-    <h2 id="say-hello" class="font-sans text-[clamp(3rem,6.4vw,4.5rem)] font-semibold leading-none tracking-[-0.04em] text-(--text-heading)">
-      Say hello.
-    </h2>
-    <a
-      href="mailto:hello@wintkhantlin.com"
-      class="group mt-8 inline-flex min-h-12 items-center gap-3 border-b border-(--border-strong) text-lg text-(--text-heading) transition-colors hover:border-(--text-heading) sm:text-xl"
-    >
-      hello@wintkhantlin.com
-      <Icon name="lucide:arrow-up-right" class="size-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-    </a>
-  </section>
-  <!--/email_off-->
-
-  <div class="mx-auto flex max-w-7xl flex-col items-center px-5 pb-8 pt-14 sm:px-6 md:px-8">
-    <p class="mb-8 text-xs font-bold uppercase tracking-[0.18em] text-(--text-faint)">
-      Navigate the site
-    </p>
-
+  <div class="mx-auto w-full max-w-7xl px-5 pb-10 pt-(--section-gap-s) sm:px-6 md:px-8">
     <!--email_off-->
-    <nav class="grid w-full grid-cols-2 gap-px overflow-hidden rounded-xl border border-(--border) bg-(--border) sm:hidden" aria-label="Footer navigation">
-      {
-        dockItems.map((item) => (
-          <a
-            href={item.href}
-            target={item.external ? "_blank" : undefined}
-            rel={item.external ? "noopener noreferrer" : undefined}
-            aria-current={isActive(item.href) ? "page" : undefined}
-            class="flex min-h-12 items-center justify-between gap-3 bg-(--surface) px-4 text-sm font-medium text-(--text-muted) transition-colors hover:bg-(--surface-raised) hover:text-(--text-heading)"
-          >
-            <span>{item.label}</span>
-            <Icon name={item.external ? "lucide:arrow-up-right" : item.icon} class="size-4" aria-hidden="true" />
-          </a>
-        ))
-      }
-    </nav>
-
-    <nav class="dock-shell hidden sm:block" aria-label="Footer navigation">
-      <div class="dock" data-dock>
-        {
-          dockItems.map((item) => (
-            <>
-              {item.separator && <div class="dock-divider" aria-hidden="true" />}
-              <a
-                href={item.href}
-                target={item.external ? "_blank" : undefined}
-                rel={item.external ? "noopener noreferrer" : undefined}
-                aria-label={item.external ? `${item.label} (opens in a new tab)` : item.label}
-                aria-current={isActive(item.href) ? "page" : undefined}
-                class:list={["dock-item", `dock-item--${item.tone}`]}
-                data-dock-item
-              >
-                <span class="dock-tooltip" aria-hidden="true">{item.label}</span>
-                <span class="dock-icon" aria-hidden="true">
-                  <Icon name={item.icon} class="size-[46%]" />
-                </span>
-                {isActive(item.href) && <span class="dock-running" aria-hidden="true" />}
-              </a>
-            </>
-          ))
-        }
+    <section class="footer-close" aria-labelledby="say-hello">
+      <div>
+        <h2 id="say-hello" class="text-display-s font-semibold leading-none tracking-[-0.04em] text-(--text-heading)">
+          Say hello.
+        </h2>
+        <p class="mt-5 text-lead text-(--text-muted)">Hiring, collaborating, or just curious?</p>
       </div>
-    </nav>
+
+      <ul class="footer-contact" aria-label="Contact">
+        {contactLinks.map((link) => (
+          <li class="flex flex-wrap items-center">
+            <a
+              href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+              class="inline-flex min-h-11 items-center text-lg text-(--text-heading) underline decoration-(--border-strong) underline-offset-[0.3em] transition-[text-decoration-color] duration-200 hover:decoration-(--text-heading) sm:text-xl"
+            >
+              {link.label}
+              {link.external && <span class="sr-only"> (opens in a new tab)</span>}
+            </a>
+            {link.href.startsWith("mailto:") && <CopyEmailButton email={link.label} class="ml-2" />}
+          </li>
+        ))}
+      </ul>
+    </section>
     <!--/email_off-->
 
-    <div class="mt-9 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-(--text-faint)">
-      <span class="tabular-nums">&copy; {new Date().getFullYear()}</span>
-      <span class="size-1 rounded-full bg-(--text-faint)" aria-hidden="true"></span>
-      <span>Wint Khant Lin</span>
+    <div class="footer-colophon">
+      <nav aria-label="Footer navigation">
+        <ul class="flex flex-wrap gap-x-6">
+          {siteLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={isActive(link.href) ? "page" : undefined}
+                class="inline-flex min-h-11 items-center text-sm text-(--text-muted) transition-colors duration-200 hover:text-(--text-heading) aria-[current=page]:text-(--text-heading)"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+          <li class="ml-auto">
+            <a
+              href="#main-content"
+              class="inline-flex min-h-11 items-center text-sm text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"
+            >
+              Back to top
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <p class="max-w-[40rem] text-sm leading-relaxed text-(--text-faint)">
+        <span class="tabular-nums">&copy; {new Date().getFullYear()}</span> Wint Khant Lin. Built with Astro and
+        Tailwind CSS, set in Plus Jakarta Sans and JetBrains Mono.
+      </p>
     </div>
   </div>
 </footer>
 
 <style>
-  .dock-shell {
-    max-width: 100%;
-    padding: 0.75rem 0.75rem 0.9rem;
-    border: 1px solid color-mix(in srgb, var(--text-heading) 18%, transparent);
-    border-radius: 1.45rem;
-    background:
-      linear-gradient(180deg, color-mix(in srgb, var(--text-heading) 14%, transparent), transparent 42%),
-      color-mix(in srgb, var(--bg) 72%, transparent);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--text-heading) 20%, transparent),
-      0 18px 45px color-mix(in srgb, #000 28%, transparent);
-    backdrop-filter: blur(22px) saturate(145%);
-    -webkit-backdrop-filter: blur(22px) saturate(145%);
-  }
-
-  .dock {
-    display: flex;
-    align-items: flex-end;
-    gap: 0.6rem;
-  }
-
-  .dock-divider {
-    width: 1px;
-    height: 2.75rem;
-    align-self: center;
-    margin-inline: 0.25rem;
-    background: color-mix(in srgb, var(--text-heading) 20%, transparent);
-    flex: 0 0 auto;
-    pointer-events: none;
-  }
-
-  .dock-item {
-    --dock-scale: 1;
-    position: relative;
+  .footer-close {
     display: grid;
-    flex: 0 0 auto;
-    width: 3.4rem;
-    height: 3.4rem;
-    place-items: center;
-    transform: translateY(calc((var(--dock-scale) - 1) * -0.75rem)) scale(var(--dock-scale));
-    transform-origin: 50% 100%;
-    transition: transform 110ms ease-out;
-    will-change: transform;
+    gap: 2.5rem;
+    padding-bottom: 4rem;
   }
 
-  .dock-icon {
+  .footer-contact {
     display: grid;
-    width: 100%;
-    height: 100%;
-    place-items: center;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 1rem;
-    color: white;
-    background: linear-gradient(145deg, var(--tile-top), var(--tile-bottom));
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.34),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.18),
-      0 7px 14px rgba(0, 0, 0, 0.25);
+    gap: 0.25rem;
   }
 
-  .dock-icon::before {
-    position: absolute;
-    inset: 1px 2px auto;
-    height: 46%;
-    border-radius: 0.85rem 0.85rem 48% 48%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.25), transparent);
-    content: "";
-    pointer-events: none;
+  .footer-colophon {
+    display: grid;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
   }
 
-  .dock-item--slate { --tile-top: #74747c; --tile-bottom: #29292d; }
-  .dock-item--blue { --tile-top: #4aa5ff; --tile-bottom: #1262d6; }
-  .dock-item--amber { --tile-top: #ffbd3f; --tile-bottom: #db6b0b; }
-  .dock-item--green { --tile-top: #67d789; --tile-bottom: #16844b; }
-  .dock-item--ink { --tile-top: #5c5c65; --tile-bottom: #18181b; }
-  .dock-item--linkedin { --tile-top: #36a5e5; --tile-bottom: #0866a5; }
-  .dock-item--rose { --tile-top: #ff6d77; --tile-bottom: #c9234d; }
-
-  .dock-tooltip {
-    position: absolute;
-    left: 50%;
-    bottom: calc(100% + 0.7rem);
-    z-index: 2;
-    transform: translate(-50%, 0.25rem);
-    border: 1px solid color-mix(in srgb, var(--text-heading) 15%, transparent);
-    border-radius: 0.45rem;
-    padding: 0.3rem 0.5rem;
-    color: var(--text-heading);
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    font-size: 0.68rem;
-    font-weight: 650;
-    line-height: 1;
-    opacity: 0;
-    pointer-events: none;
-    white-space: nowrap;
-    transition: opacity 120ms ease, transform 120ms ease;
-    backdrop-filter: blur(12px);
-  }
-
-  .dock-item:hover .dock-tooltip,
-  .dock-item:focus-visible .dock-tooltip {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
-
-  .dock-item:active .dock-icon {
-    filter: brightness(0.9);
-  }
-
-  .dock-running {
-    position: absolute;
-    left: 50%;
-    bottom: -0.55rem;
-    width: 0.28rem;
-    height: 0.28rem;
-    transform: translateX(-50%);
-    border-radius: 999px;
-    background: var(--text-heading);
-  }
-
-  @media (max-width: 639px) {
-    .dock-shell {
-      width: 100%;
-      overflow-x: auto;
-      border-radius: 1.25rem;
-      scrollbar-width: none;
+  /* The same 64/36 split as the hero and the nav. */
+  @media (min-width: 1024px) {
+    .footer-close {
+      grid-template-columns: minmax(0, 64fr) minmax(0, 36fr);
+      column-gap: 3rem;
+      align-items: end;
+      padding-bottom: 6rem;
     }
 
-    .dock-shell::-webkit-scrollbar {
-      display: none;
-    }
-
-    .dock {
-      width: max-content;
-      min-width: 100%;
-      justify-content: center;
-      gap: 0.42rem;
-    }
-
-    .dock-item {
-      width: 2.85rem;
-      height: 2.85rem;
-    }
-
-    .dock-divider {
-      height: 2.25rem;
-      margin-inline: 0.15rem;
-    }
-  }
-
-  @media (hover: none), (prefers-reduced-motion: reduce) {
-    .dock-item {
-      --dock-scale: 1 !important;
-      transform: none;
-      transition: none;
-    }
-  }
-
-  @media (prefers-reduced-transparency: reduce) {
-    .dock-shell,
-    .dock-tooltip {
-      background: var(--bg);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
+    .footer-colophon {
+      grid-template-columns: minmax(0, 64fr) minmax(0, 36fr);
+      column-gap: 3rem;
+      align-items: center;
     }
   }
 </style>
-
-<script>
-  const dock = document.querySelector<HTMLElement>("[data-dock]");
-  const dockItems = dock?.querySelectorAll<HTMLElement>("[data-dock-item]");
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const canHover = window.matchMedia("(hover: hover)");
-
-  let rectsCache: { element: HTMLElement; center: number }[] = [];
-
-  function cacheRects() {
-    if (!dockItems) return;
-    rectsCache = Array.from(dockItems).map((item) => {
-      const rect = item.getBoundingClientRect();
-      const center = rect.left + rect.width / 2;
-      return { element: item, center };
-    });
-  }
-
-  function resetDock() {
-    dockItems?.forEach((item) => item.style.setProperty("--dock-scale", "1"));
-    rectsCache = [];
-  }
-
-  function magnifyDock(event: PointerEvent) {
-    if (reducedMotion.matches || !canHover.matches) return;
-
-    if (rectsCache.length === 0) {
-      cacheRects();
-    }
-
-    rectsCache.forEach(({ element, center }) => {
-      const distance = Math.abs(event.clientX - center);
-      const influence = Math.max(0, 1 - distance / 125);
-      element.style.setProperty("--dock-scale", String(1 + influence * 0.42));
-    });
-  }
-
-  dock?.addEventListener("pointerenter", cacheRects);
-  dock?.addEventListener("pointermove", magnifyDock);
-  dock?.addEventListener("pointerleave", resetDock);
-  dock?.addEventListener("focusout", resetDock);
-  window.addEventListener("resize", () => { rectsCache = []; });
-</script>

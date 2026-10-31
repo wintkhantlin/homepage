@@ -14,14 +14,15 @@ const wordCount = post.body?.split(/\s+/u).filter(Boolean).length ?? 0;
 const minutes = Math.max(1, Math.ceil(wordCount / 180));
 const isMyanmar = /[က-႟]/u.test(post.data.title);
 const excerpt = post.data.description ?? post.data.summary;
-const category = post.data.categories[0].replace(/-/gu, " ");
+const categoryName = post.data.categories[0].replace(/-/gu, " ");
+const category = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
 
 const HeadingTag = headingLevel;
 ---
 
 <article class="post-row">
   <a href={`/post/${post.id}`} class="post-link group">
-    <time datetime={post.data.publishedDate.toISOString()} class="post-date font-mono text-xs tabular-nums">
+    <time datetime={post.data.publishedDate.toISOString()} class="post-date text-sm tabular-nums">
       {post.data.publishedDate.toLocaleDateString("en-US", {
         month: "short",
         day: "2-digit",
@@ -41,7 +42,7 @@ const HeadingTag = headingLevel;
     </div>
 
     <p class="post-meta text-sm">
-      <span class="first-letter:uppercase">{category}</span>
+      <span>{category}</span>
       <span class="text-(--text-faint)">{isMyanmar ? "Burmese · " : ""}{minutes} min read</span>
       <Icon name="lucide:arrow-right" class="post-arrow size-4" aria-hidden="true" />
     </p>

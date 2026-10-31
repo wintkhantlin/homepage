@@ -1,71 +1,91 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
-import profilePhoto from "../../assets/img/happer.png";
 import { siteConfig } from "../../lib/seo";
 
 const email = siteConfig.social.email.replace("mailto:", "");
 ---
 
-<section class="relative overflow-hidden pb-12 pt-28 md:pb-28 md:pt-40">
-  <div class="hero-intro-glow pointer-events-none absolute inset-x-0 top-0 h-[58%]"></div>
+<!-- Ledge: a quiet field fills the first screen and the staggered name rests at its base, the line and actions beside its last line. -->
+<section class="hero" aria-labelledby="hero-name">
+  <h1 id="hero-name" class="hero-name font-sans font-semibold text-(--text-heading)">
+    <span class="hero-name-line block">Wint</span>{" "}
+    <span class="hero-name-line block pl-[0.9em]">Khant</span>{" "}
+    <span class="hero-name-line flex flex-wrap items-baseline gap-x-5 gap-y-2 pl-[1.8em]">
+      Lin{" "}
+      <span class="hero-alias font-sans text-sm font-medium leading-none tracking-normal text-(--text-faint) sm:text-base">also known as Happer</span>
+    </span>
+  </h1>
 
-  <div class="relative z-10 grid gap-12 md:grid-cols-12 md:gap-x-10 md:gap-y-0">
-    <div class="md:col-span-7 md:self-end">
-      <h1 class="hero-name font-sans text-[clamp(3rem,6.4vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.04em] text-(--text-heading)">
-        <span class="hero-name-line block">Wint</span>{" "}
-        <span class="hero-name-line block pl-[0.9em]">Khant</span>{" "}
-        <span class="hero-name-line flex items-baseline gap-5 pl-[1.8em]">
-          Lin{" "}
-          <span class="font-sans text-sm font-medium leading-none tracking-normal text-(--text-faint)">aka Happer</span>
-        </span>
-      </h1>
+  <div class="hero-side">
+    <p class="hero-lede max-w-[26rem] text-pretty text-lead leading-relaxed text-(--text-muted)">
+      <span class="text-(--text-heading)">Software engineer and college student from Myanmar</span>, building
+      reliable backend systems.
+    </p>
 
-      <p class="mt-10 max-w-[34rem] text-pretty text-lg leading-relaxed text-(--text-muted) md:mt-12">
-        <span class="text-(--text-heading)">Software engineer and college student from Myanmar</span>, building
-        reliable backend systems for useful products. I document the engineering decisions as I go, in English
-        and Burmese.
-      </p>
-
-      <!--email_off-->
-      <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
-        <a href={siteConfig.social.email} class="hero-cta group inline-flex min-h-12 items-center gap-3 rounded-full px-5 text-sm font-semibold duration-200 ease-out active:translate-y-px sm:text-base">
-          <Icon name="lucide:mail" class="size-4" aria-hidden="true" />
-          {email}
-        </a>
-        <a
-          href={siteConfig.social.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
-        >
-          GitHub<span class="sr-only"> (opens in a new tab)</span>
-          <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-        </a>
-        <a
-          href={siteConfig.social.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
-        >
-          LinkedIn<span class="sr-only"> (opens in a new tab)</span>
-          <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-        </a>
-      </div>
-      <!--/email_off-->
+    <!--email_off-->
+    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <a href={siteConfig.social.email} class="hero-cta group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-5 text-sm font-semibold duration-200 ease-out active:translate-y-px sm:text-base">
+        <Icon name="lucide:mail" class="size-4" aria-hidden="true" />
+        {email}
+      </a>
+      <a
+        href={siteConfig.social.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading) sm:text-base"
+      >
+        GitHub<span class="sr-only"> (opens in a new tab)</span>
+        <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+      </a>
     </div>
-
-    <!-- On phones the portrait tucks in beside the staggered name so the projects reach the first screen. -->
-    <figure class="absolute right-0 top-0 w-[5.5rem] md:static md:col-span-4 md:col-start-9 md:w-auto md:self-end">
-      <Image
-        src={profilePhoto}
-        alt="Wint Khant Lin looking out of a bus window in warm light"
-        widths={[360, 560, 760]}
-        sizes="(min-width: 768px) 30vw, 88px"
-        loading="eager"
-        fetchpriority="high"
-        class="aspect-[4/5] w-full rounded-lg object-cover object-[62%_35%]"
-      />
-    </figure>
+    <!--/email_off-->
   </div>
 </section>
+
+<style>
+  .hero {
+    display: grid;
+    row-gap: 2.5rem;
+    padding-block: 8rem 3rem;
+  }
+
+  .hero-name {
+    font-size: var(--text-display);
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+  }
+
+  /* Hovering the name pulls the stagger into a flush column, line by line, and lets it settle back out. */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .hero-name .hero-name-line {
+      transition: transform 560ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-name:hover .hero-name-line:nth-child(2) {
+      transform: translateX(-0.9em);
+      transition-delay: 40ms;
+    }
+
+    .hero-name:hover .hero-name-line:nth-child(3) {
+      transform: translateX(-1.8em);
+      transition-delay: 90ms;
+    }
+  }
+
+  /* Tracks match the header's 64/36 split, so the nav's links stand over the line and actions. */
+  @media (min-width: 1024px) {
+    .hero {
+      grid-template-columns: minmax(0, 64fr) minmax(0, 36fr);
+      column-gap: 3rem;
+      align-content: end;
+      align-items: end;
+      min-height: 100svh;
+      padding-block: 6rem 4.5rem;
+    }
+
+    /* Sits on the name's last line rather than its descenders. */
+    .hero-side {
+      padding-bottom: 0.5rem;
+    }
+  }
+</style>

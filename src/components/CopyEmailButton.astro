@@ -1,0 +1,72 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  email: string;
+  class?: string;
+}
+
+const { email, class: className } = Astro.props;
+---
+
+<!-- Copies the address for visitors without a mail app. It only says "Copied" once the clipboard accepted it; hidden without scripting, where it could do nothing. -->
+<!--email_off-->
+<button
+  type="button"
+  class:list={["copy-email inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full px-3 text-sm font-medium text-(--text-muted) transition-[background-color,color] duration-200 hover:bg-(--surface-raised) hover:text-(--text-heading) active:bg-(--surface) disabled:cursor-not-allowed disabled:opacity-60", className]}
+  data-copy-email={email}
+>
+  <Icon name="lucide:copy" class="size-4" aria-hidden="true" />
+  <span data-copy-label>Copy email</span>
+</button>
+<!--/email_off-->
+<span class="sr-only" role="status" aria-live="polite" data-copy-status></span>
+
+<style>
+  .copy-email {
+    display: none;
+  }
+
+  :global(.js) .copy-email {
+    display: inline-flex;
+  }
+</style>
+
+<script>
+  const resetTimers = new WeakMap<HTMLButtonElement, number>();
+
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy-email]")) {
+    const label = button.querySelector<HTMLElement>("[data-copy-label]");
+    const status = button.nextElementSibling?.matches("[data-copy-status]")
+      ? (button.nextElementSibling as HTMLElement)
+      : null;
+
+    if (!navigator.clipboard) {
+      button.disabled = true;
+      button.title = "Copying is not available in this browser";
+      continue;
+    }
+
+    button.addEventListener("click", async () => {
+      const email = button.dataset.copyEmail ?? "";
+      window.clearTimeout(resetTimers.get(button));
+
+      try {
+        await navigator.clipboard.writeText(email);
+        if (label) label.textContent = "Copied";
+        if (status) status.textContent = `${email} copied to the clipboard`;
+      } catch {
+        if (label) label.textContent = "Couldn’t copy";
+        if (status) status.textContent = "The address could not be copied";
+      }
+
+      resetTimers.set(
+        button,
+        window.setTimeout(() => {
+          if (label) label.textContent = "Copy email";
+          if (status) status.textContent = "";
+        }, 2000),
+      );
+    });
+  }
+</script>

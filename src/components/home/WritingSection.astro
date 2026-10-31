@@ -1,7 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
-import PostCard from "../PostCard.astro";
-
 type Post = Awaited<
   ReturnType<typeof import("../../lib/content").getSortedPosts>
 >[number];
@@ -11,40 +8,135 @@ interface Props {
 }
 
 const { posts } = Astro.props as Props;
+
+const notes = posts.slice(0, 3).map((post) => {
+  const wordCount = post.body?.split(/\s+/u).filter(Boolean).length ?? 0;
+  const categoryName = post.data.categories[0].replace(/-/gu, " ");
+
+  return {
+    post,
+    minutes: Math.max(1, Math.ceil(wordCount / 180)),
+    isMyanmar: /[က-႟]/u.test(post.data.title),
+    excerpt: post.data.description ?? post.data.summary,
+    category: categoryName.charAt(0).toUpperCase() + categoryName.slice(1),
+  };
+});
 ---
 
-<section id="writing" class="scroll-mt-28 py-12 sm:py-16">
-  <div class="mb-6 grid gap-5 border-b border-(--border) pb-6 md:grid-cols-[1fr_auto] md:items-end">
-    <div>
-      <h2 class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)">
-        Notes & writing
-      </h2>
-      <p class="mt-4 max-w-xl text-base leading-relaxed text-(--text-muted)">
-        Ideas about software, systems, algorithms, and the process of learning in public, in English and Burmese.
-      </p>
-    </div>
+<!-- Grid: the latest notes three across, each a column under a rule, the date leading. -->
+<section id="writing" aria-labelledby="writing-heading" class="scroll-mt-28 pt-(--section-gap)">
+  <div class="writing-head">
+    <h2 id="writing-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">
+      Notes & writing
+    </h2>
     <a
       href="/writing"
-      class="group inline-flex min-h-11 w-fit items-center gap-2 text-sm font-semibold text-(--text-muted) transition-colors hover:text-(--text-heading)"
+      class="inline-flex min-h-11 w-fit items-center text-base font-semibold text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"
     >
       View all notes
-      <Icon
-        name="lucide:arrow-right"
-        class="size-4 transition-transform duration-300 group-hover:translate-x-1"
-        aria-hidden="true"
-      />
     </a>
   </div>
 
-  <div class="flex flex-col">
-    {
-      posts.length > 0 ? (
-        posts.map((post) => <PostCard post={post} headingLevel="h3" />)
-      ) : (
-        <p class="border-b border-(--border) px-1 py-12 text-base leading-relaxed text-(--text-muted)">
-          No notes are published yet. Check back soon.
-        </p>
-      )
-    }
-  </div>
+  {
+    notes.length > 0 ? (
+      <div class="writing-grid">
+        {notes.map(({ post, minutes, isMyanmar, excerpt, category }) => (
+          <article class="writing-cell">
+            <a href={`/post/${post.id}`} class="writing-link">
+              <time datetime={post.data.publishedDate.toISOString()} class="text-sm tabular-nums text-(--text-faint)">
+                {post.data.publishedDate.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                })}
+              </time>
+              <h3 lang={isMyanmar ? "my" : undefined} class="writing-title mt-4 text-title font-semibold leading-snug tracking-[-0.02em]">
+                {post.data.title}
+              </h3>
+              {excerpt && (
+                <p lang={isMyanmar ? "my" : undefined} class="writing-excerpt mt-3 text-base leading-relaxed text-(--text-muted)">
+                  {excerpt}
+                </p>
+              )}
+              <p class="writing-meta text-sm text-(--text-muted)">
+                <span class="block">{category}</span>
+                <span class="block text-(--text-faint)">{isMyanmar ? `In Burmese, ${minutes} min read` : `${minutes} min read`}</span>
+              </p>
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="border-t border-(--border) py-12 text-base leading-relaxed text-(--text-muted)">
+        No notes are published yet. Check back soon.
+      </p>
+    )
+  }
 </section>
+
+<style>
+  .writing-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .writing-grid {
+    display: grid;
+    gap: 0 2rem;
+  }
+
+  .writing-cell {
+    border-top: 1px solid var(--border);
+  }
+
+  .writing-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-inline: -0.75rem;
+    border-radius: 0.5rem;
+    padding: 1.5rem 0.75rem 2rem;
+    color: var(--text-heading);
+    transition: background-color 200ms ease;
+  }
+
+  .writing-excerpt {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+
+  .writing-meta {
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+
+  .writing-title {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 200ms ease;
+  }
+
+  .writing-link:hover,
+  .writing-link:focus-visible {
+    background: var(--surface);
+  }
+
+  .writing-link:hover .writing-title,
+  .writing-link:focus-visible .writing-title {
+    text-decoration-color: currentColor;
+  }
+
+  @media (min-width: 900px) {
+    .writing-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

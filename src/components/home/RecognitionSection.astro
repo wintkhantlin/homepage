@@ -54,7 +54,7 @@ const photos = [
 const largePhotos = await Promise.all(
   photos.map(async (photo) => {
     const large = await getImage({ src: photo.src, width: 1400, format: "webp" });
-    return { src: large.src, alt: photo.alt, caption: photo.caption };
+    return { src: large.src, width: large.options.width, height: large.options.height, alt: photo.alt, caption: photo.caption };
   }),
 );
 ---
@@ -117,7 +117,7 @@ const largePhotos = await Promise.all(
   <!-- Opens over the page when scripting runs; without it, each photo link opens the full-size file. -->
   <dialog class="photo-viewer" aria-labelledby="photo-viewer-caption" data-photo-viewer data-photos={JSON.stringify(largePhotos)}>
     <figure class="photo-viewer-figure">
-      <img class="photo-viewer-img" src={largePhotos[0].src} alt={largePhotos[0].alt} data-viewer-img />
+      <img class="photo-viewer-img" width={largePhotos[0].width} height={largePhotos[0].height} alt={largePhotos[0].alt} data-viewer-img />
       <figcaption id="photo-viewer-caption" class="text-sm text-(--text-muted)" data-viewer-caption>{largePhotos[0].caption}</figcaption>
     </figure>
 
@@ -142,7 +142,7 @@ const largePhotos = await Promise.all(
 </section>
 
 <script>
-  type Photo = { src: string; alt: string; caption: string };
+  type Photo = { src: string; width: number; height: number; alt: string; caption: string };
 
   const viewer = document.querySelector<HTMLDialogElement>("[data-photo-viewer]");
 
@@ -158,8 +158,11 @@ const largePhotos = await Promise.all(
     const show = (index: number) => {
       current = (index + photos.length) % photos.length;
       const photo = photos[current];
+      // The full-size file loads only when the viewer opens, so the page doesn't download it up front.
       if (img) {
         img.src = photo.src;
+        img.width = photo.width;
+        img.height = photo.height;
         img.alt = photo.alt;
       }
       if (caption) caption.textContent = photo.caption;

@@ -6,10 +6,11 @@ interface Props {
   approach: string;
   architecture: string[];
   highlights: string[];
-  diagram: string;
+  diagramLight: string;
+  diagramDark: string;
 }
 
-const { challenge, approach, architecture, highlights, diagram } = Astro.props as Props;
+const { challenge, approach, architecture, highlights, diagramLight, diagramDark } = Astro.props as Props;
 ---
 
 <div class="space-y-20">
@@ -36,34 +37,14 @@ const { challenge, approach, architecture, highlights, diagram } = Astro.props a
       System architecture
     </h2>
     <div
-      class="mermaid-enhancement mt-7 overscroll-x-contain overflow-x-auto rounded-2xl border border-(--border) bg-(--surface) p-4 sm:p-8"
-      data-mermaid-diagram
+      class="diagram-frame mt-7 overscroll-x-contain overflow-x-auto rounded-2xl border border-(--border) bg-(--surface) p-4 sm:p-8"
+      data-diagram
       tabindex="0"
       aria-label="Scrollable system architecture diagram"
     >
-      <pre class="hidden" data-mermaid-source>{diagram}</pre>
-      <div
-        class="flex min-h-72 min-w-176 items-center justify-center text-sm text-(--text-faint)"
-        data-mermaid-output
-        role="img"
-        aria-label="System architecture diagram"
-        aria-live="polite"
-        aria-busy="true"
-      >
-        Rendering architecture…
-      </div>
-      <div class="hidden min-h-72 flex-col items-center justify-center gap-4 text-center" data-mermaid-error role="alert">
-        <p class="max-w-md text-sm leading-6 text-(--text-muted)">
-          The architecture diagram could not be rendered. The same system details remain available in the list below.
-        </p>
-        <button
-          type="button"
-          class="min-h-11 rounded-full border border-(--border) px-5 text-sm font-semibold text-(--text-heading) transition-colors hover:bg-(--border)"
-          data-mermaid-retry
-        >
-          Try rendering again
-        </button>
-      </div>
+      <!-- Both themes ship as static SVG; CSS shows the one matching the active theme. -->
+      <div class="diagram-theme diagram-dark min-w-176" role="img" aria-label="System architecture diagram" set:html={diagramDark}></div>
+      <div class="diagram-theme diagram-light min-w-176" role="img" aria-label="System architecture diagram" set:html={diagramLight}></div>
     </div>
 
     <button
@@ -113,99 +94,20 @@ const { challenge, approach, architecture, highlights, diagram } = Astro.props a
 </div>
 
 <script>
-  type Mermaid = typeof import("mermaid").default;
-  let mermaidPromise: Promise<Mermaid> | undefined;
+  const diagram = document.querySelector<HTMLElement>("[data-diagram]");
   const enlarge = document.querySelector<HTMLButtonElement>("[data-diagram-enlarge]");
-
-  function loadMermaid() {
-    mermaidPromise ??= import("mermaid").then((module) => module.default);
-    return mermaidPromise;
-  }
-
-  function configureMermaid(mermaid: Mermaid) {
-    const styles = getComputedStyle(document.documentElement);
-    const background = styles.getPropertyValue("--bg").trim();
-    const heading = styles.getPropertyValue("--text-heading").trim();
-    const muted = styles.getPropertyValue("--text-muted").trim();
-
-    mermaid.initialize({
-      startOnLoad: false,
-      securityLevel: "strict",
-      theme: "base",
-      fontFamily: styles.fontFamily,
-      themeVariables: {
-        background,
-        primaryColor: heading,
-        primaryTextColor: background,
-        primaryBorderColor: muted,
-        secondaryColor: background,
-        secondaryTextColor: heading,
-        secondaryBorderColor: muted,
-        lineColor: muted,
-        textColor: heading,
-      },
-      flowchart: {
-        curve: "basis",
-        htmlLabels: false,
-        useMaxWidth: true,
-      },
-    });
-  }
-
-  async function renderDiagram(force = false) {
-    const diagram = document.querySelector<HTMLElement>("[data-mermaid-diagram]");
-    const source = diagram?.querySelector<HTMLElement>("[data-mermaid-source]")?.textContent?.trim();
-    const output = diagram?.querySelector<HTMLElement>("[data-mermaid-output]");
-    const errorState = diagram?.querySelector<HTMLElement>("[data-mermaid-error]");
-
-    if (!diagram || !source || !output || !errorState) return;
-    if (diagram.dataset.loading === "true") return;
-    if (!force && diagram.dataset.rendered === "true") return;
-
-    diagram.dataset.loading = "true";
-    diagram.dataset.rendered = "false";
-    enlarge?.classList.add("hidden");
-    enlarge?.classList.remove("inline-flex");
-    errorState.classList.add("hidden");
-    errorState.classList.remove("flex");
-    output.classList.remove("hidden");
-    output.classList.add("flex", "min-h-72");
-    output.setAttribute("aria-busy", "true");
-    output.textContent = "Rendering architecture…";
-
-    try {
-      const mermaid = await loadMermaid();
-      configureMermaid(mermaid);
-      const { svg, bindFunctions } = await mermaid.render(`case-diagram-${Date.now()}`, source);
-      output.innerHTML = svg;
-      output.classList.remove("min-h-72");
-      output.setAttribute("aria-busy", "false");
-      bindFunctions?.(output);
-      diagram.dataset.rendered = "true";
-      enlarge?.classList.remove("hidden");
-      enlarge?.classList.add("inline-flex");
-    } catch (error) {
-      output.classList.add("hidden");
-      output.classList.remove("flex");
-      output.setAttribute("aria-busy", "false");
-      errorState.classList.remove("hidden");
-      errorState.classList.add("flex");
-      console.error("Unable to render Mermaid diagram", error);
-    } finally {
-      diagram.dataset.loading = "false";
-    }
-  }
-
-  const diagram = document.querySelector<HTMLElement>("[data-mermaid-diagram]");
-  const retry = diagram?.querySelector<HTMLButtonElement>("[data-mermaid-retry]");
-
   const viewer = document.querySelector<HTMLDialogElement>("[data-diagram-viewer]");
   const canvas = viewer?.querySelector<HTMLElement>("[data-diagram-canvas]");
   const closeViewer = viewer?.querySelector<HTMLButtonElement>("[data-diagram-close]");
 
-  // The viewer shows a copy of the rendered diagram, so it always matches the current theme.
+  // Enlarging needs the viewer script, so the button stays hidden without JavaScript.
+  enlarge?.classList.remove("hidden");
+  enlarge?.classList.add("inline-flex");
+
+  // The viewer shows a copy of the diagram variant for the active theme.
   enlarge?.addEventListener("click", () => {
-    const svg = diagram?.querySelector<SVGSVGElement>("[data-mermaid-output] svg");
+    const theme = document.documentElement.classList.contains("light") ? "light" : "dark";
+    const svg = diagram?.querySelector<SVGSVGElement>(`.diagram-${theme} svg`);
     if (!viewer || !canvas || !svg) return;
     const copy = svg.cloneNode(true) as SVGSVGElement;
     copy.style.maxWidth = "none";
@@ -220,28 +122,30 @@ const { challenge, approach, architecture, highlights, diagram } = Astro.props a
   viewer?.addEventListener("click", (event) => {
     if (event.target === viewer) viewer.close();
   });
-
-  retry?.addEventListener("click", () => void renderDiagram(true));
-  window.addEventListener("portfolio:theme-change", () => {
-    if (diagram?.dataset.rendered === "true") void renderDiagram(true);
-  });
-
-  if (diagram && "IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return;
-        observer.disconnect();
-        void renderDiagram();
-      },
-      { rootMargin: "320px" },
-    );
-    observer.observe(diagram);
-  } else {
-    void renderDiagram();
-  }
 </script>
 
 <style>
+  .diagram-theme {
+    display: none;
+  }
+
+  .diagram-theme :global(svg) {
+    display: block;
+    margin-inline: auto;
+  }
+
+  .diagram-dark {
+    display: block;
+  }
+
+  :global(.light) .diagram-dark {
+    display: none;
+  }
+
+  :global(.light) .diagram-light {
+    display: block;
+  }
+
   .diagram-viewer {
     width: min(100% - 2rem, 88rem);
     max-width: none;

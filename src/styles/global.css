@@ -242,17 +242,12 @@ textarea {
     transform: translateY(0);
 }
 
-#theme-toggle,
-.mermaid-enhancement {
+#theme-toggle {
     display: none;
 }
 
 .js #theme-toggle {
     display: flex;
-}
-
-.js .mermaid-enhancement {
-    display: block;
 }
 
 /* ── GIF mask plays, then expands to reveal new theme ── */

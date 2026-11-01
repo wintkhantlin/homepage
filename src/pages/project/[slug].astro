@@ -26,6 +26,19 @@ export async function getStaticPaths() {
 const { project, nextProject } = Astro.props as Props;
 const Content = project.Content;
 const caseStudy = project.data.caseStudy;
+
+// Diagrams are pre-rendered to SVG by `npm run diagrams` (scripts/render-diagrams.mjs).
+const diagramSvgs = import.meta.glob<string>("../../generated/diagrams/*.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+function diagramSvg(theme: "light" | "dark") {
+  const path = `../../generated/diagrams/${project.id}.${theme}.svg`;
+  if (!diagramSvgs[path]) throw new Error(`Missing ${path}. Run "npm run diagrams" and commit the output.`);
+  return diagramSvgs[path];
+}
+
 const maturityLabels = {
   built: "Built",
   prototype: "Prototype",
@@ -214,7 +227,8 @@ const structuredData = [
       <div class="md:col-span-8 lg:col-span-9">
         {caseStudy ? (
           <CaseStudy
-            diagram={caseStudy.diagram}
+            diagramLight={diagramSvg("light")}
+            diagramDark={diagramSvg("dark")}
             challenge={caseStudy.challenge}
             approach={caseStudy.approach}
             architecture={caseStudy.architecture}

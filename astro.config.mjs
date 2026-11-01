@@ -52,8 +52,10 @@ export default defineConfig({
     defaultStrategy: "hover",
   },
 
+  // Small stylesheets inline; the shared global CSS stays a cached file instead of
+  // being repeated inside every page's HTML.
   build: {
-    inlineStylesheets: "always",
+    inlineStylesheets: "auto",
   },
 
   fonts: [
@@ -61,6 +63,7 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: "Plus Jakarta Sans",
       weights: ["400", "500", "600", "700", "800"],
+      styles: ["normal"],
       cssVariable: "--font-heading",
       display: "swap",
     },
@@ -68,6 +71,7 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: "JetBrains Mono",
       weights: ["400", "500", "700"],
+      styles: ["normal"],
       cssVariable: "--font-body",
       display: "swap",
     },

@@ -15,23 +15,20 @@
     "@astrojs/partytown": "^2.1.9",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/ts-plugin": "^1.10.12",
     "@tailwindcss/vite": "4.2.4",
     "astro": "^7.4.4",
     "astro-expressive-code": "^0.44.3",
     "astro-icon": "1.1.5",
-    "tailwindcss": "4.2.4",
-    "typescript": "6.0.3"
+    "tailwindcss": "4.2.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
-    "@iconify-json/devicon": "^1.2.75",
-    "@iconify-json/logos": "^1.2.18",
+    "@astrojs/ts-plugin": "^1.10.12",
     "@iconify-json/lucide": "1.2.105",
-    "@iconify-json/simple-icons": "^1.2.101",
     "@tailwindcss/typography": "0.5.19",
     "husky": "^9.1.7",
     "mermaid": "11.17.2",
-    "playwright-core": "^1.64.1"
+    "playwright-core": "^1.64.1",
+    "typescript": "6.0.3"
   }
 }

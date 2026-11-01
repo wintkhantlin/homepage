@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
 import profilePhoto from "../../assets/img/happer.png";
 import { getImage, Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import TableOfContents from "../../components/TableOfContents.astro";
 import ArticleImage from "../../components/mdx/ArticleImage.astro";
 import ArticleLink from "../../components/mdx/ArticleLink.astro";
@@ -12,13 +13,16 @@ import ArticleEnhancements from "../../components/mdx/ArticleEnhancements.astro"
 export async function getStaticPaths() {
   const posts = await getSortedPosts();
 
-  return posts.map((post) => ({
+  return posts.map((post, index) => ({
     params: { slug: post.id },
-    props: { post },
+    props: {
+      post,
+      nextPost: posts.length > 1 ? posts[(index + 1) % posts.length] : undefined,
+    },
   }));
 }
 
-const { post } = Astro.props as { post: PostEntry };
+const { post, nextPost } = Astro.props as { post: PostEntry; nextPost?: PostEntry };
 const Content = post.Content;
 const description = post.data.description ?? post.data.summary ?? siteConfig.defaultDescription;
 const metaDescription = post.data.seoDescription ?? description;
@@ -67,7 +71,7 @@ const structuredData = [
   createBreadcrumbSchema(
     [
       { name: "Home", path: "/" },
-      { name: "Writing", path: "/writing" },
+      { name: "Notes", path: "/writing" },
       { name: post.data.title, path: canonicalPath },
     ],
     Astro.site,
@@ -94,13 +98,14 @@ const structuredData = [
   locale={language === "my" ? "my_MM" : siteConfig.locale}
 >
   <ArticleEnhancements />
-  <main id="main-content" tabindex="-1" class="mx-auto max-w-[50rem] px-5 pb-20 pt-32 sm:px-8 sm:pt-36">
+  <main id="main-content" class="mx-auto max-w-[50rem] px-5 pb-20 pt-32 sm:px-8 sm:pt-36">
     <nav class="mb-8" aria-label="Breadcrumb">
       <a
         href="/writing"
-        class="inline-flex min-h-11 items-center text-sm text-(--text-muted) underline decoration-(--border) underline-offset-4 transition-colors hover:text-(--text-heading)"
+        class="group inline-flex min-h-11 items-center gap-2 text-sm text-(--text-muted) transition-colors hover:text-(--text-heading) active:text-(--text-heading)"
       >
-        ← All notes
+        <Icon name="lucide:arrow-left" class="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
+        All notes
       </a>
     </nav>
 
@@ -109,7 +114,7 @@ const structuredData = [
         <div class="mb-6 flex items-center gap-3">
           <Image
             src={profilePhoto}
-            alt={`${siteConfig.author} profile photo`}
+            alt=""
             width={40}
             height={40}
             format="webp"
@@ -216,5 +221,33 @@ const structuredData = [
         <Content components={{ a: ArticleLink }} />
       </div>
     </article>
+
+    <aside lang="en" class="mt-16 border-t border-(--border) pt-8" aria-label="About the author">
+      <p class="text-base leading-relaxed text-(--text-muted)">
+        <span class="font-semibold text-(--text-heading)">{siteConfig.author}</span> is a software engineer and college
+        student from Myanmar, building reliable backend systems.{" "}
+        <a
+          href="/#about"
+          class="font-medium text-(--text-heading) underline decoration-(--border-strong) underline-offset-4 transition-[text-decoration-color] duration-200 hover:decoration-(--text-heading)"
+        >
+          More about me
+        </a>
+      </p>
+    </aside>
+
+    {nextPost && (
+      <a href={`/post/${nextPost.id}`} class="group mt-12 block border-y border-(--border) py-12">
+        <span lang="en" class="text-sm text-(--text-faint)">Next note</span>
+        <div class="mt-4 flex items-end justify-between gap-8">
+          <h2
+            lang={nextPost.data.lang ?? (/[က-႟]/u.test(nextPost.data.title) ? "my" : "en")}
+            class="font-sans text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-[1.2] tracking-[-0.03em] text-(--text-heading)"
+          >
+            {nextPost.data.title}
+          </h2>
+          <Icon name="lucide:arrow-right" class="mb-1 size-6 shrink-0 text-(--text-heading) transition-transform duration-300 group-hover:translate-x-2" aria-hidden="true" />
+        </div>
+      </a>
+    )}
   </main>
 </BaseLayout>

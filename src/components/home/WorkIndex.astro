@@ -7,9 +7,12 @@ type Project = Awaited<
 
 interface Props {
   projects: Project[];
+  /** Heads the list as a home section. Without it the page supplies its own h1 and the rows become h2s. */
+  heading?: string;
 }
 
-const { projects } = Astro.props as Props;
+const { projects, heading } = Astro.props as Props;
+const ItemHeading = heading ? "h3" : "h2";
 
 const contextLabels = {
   "open-source": "Open source",
@@ -30,20 +33,33 @@ const maturityLabels = {
 ---
 
 <!-- The work as an index: each row names the project, what it proves, its stack and its year, with its screen always in view. -->
-<section id="projects" aria-labelledby="index-heading" class="scroll-mt-28 pt-(--section-gap-s)">
-  <div class="index-head">
-    <h2 id="index-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">
-      Selected work
-    </h2>
-    <a
-      href="/projects"
-      class="inline-flex min-h-11 w-fit items-center text-base font-semibold text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"
-    >
-      View all projects
-    </a>
-  </div>
+<section
+  id="projects"
+  aria-labelledby={heading ? "index-heading" : undefined}
+  class:list={[heading && "scroll-mt-[calc(var(--section-gap-s)*-1)] pt-(--section-gap-s)"]}
+>
+  {heading && (
+    <div class="index-head">
+      <h2 id="index-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">
+        {heading}
+      </h2>
+      {projects.length > 0 && (
+        <a
+          href="/projects"
+          class="inline-flex min-h-11 w-fit items-center text-base font-semibold text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"
+        >
+          View all work
+        </a>
+      )}
+    </div>
+  )}
 
-  <ul class="index-list" aria-labelledby="index-heading">
+  {projects.length > 0 ? (
+  <ul
+    class="index-list"
+    aria-labelledby={heading ? "index-heading" : undefined}
+    aria-label={heading ? undefined : "All work"}
+  >
     {projects.map((project, index) => (
       <li>
         <a
@@ -53,9 +69,9 @@ const maturityLabels = {
           aria-describedby={`index-proof-${index} index-stack-${index}`}
         >
           <div class="index-name-cell">
-            <h3 id={`index-name-${index}`} class="index-name text-title font-semibold tracking-[-0.02em]">
+            <ItemHeading id={`index-name-${index}`} class="index-name text-title font-semibold tracking-[-0.02em]">
               {project.data.name}
-            </h3>
+            </ItemHeading>
             <p class="mt-1 text-sm text-(--text-faint)">{projectKind(project)}</p>
           </div>
 
@@ -83,21 +99,15 @@ const maturityLabels = {
               class="h-full w-full object-cover object-top"
             />
           </span>
-
-          <span class="index-preview" aria-hidden="true" data-kind="product">
-            <Image
-              src={project.data.img}
-              alt=""
-              widths={[640, 960]}
-              sizes="30rem"
-              loading="lazy"
-              class="h-full w-full object-cover object-top"
-            />
-          </span>
         </a>
       </li>
     ))}
   </ul>
+  ) : (
+    <p class="border-t border-(--border) py-12 text-base leading-relaxed text-(--text-muted)">
+      No project case studies are published yet. Check back soon.
+    </p>
+  )}
 </section>
 
 <style>
@@ -156,10 +166,6 @@ const maturityLabels = {
     text-decoration-color: currentColor;
   }
 
-  .index-preview {
-    display: none;
-  }
-
   @media (min-width: 640px) {
     .index-row {
       grid-template-columns: minmax(0, 1fr) 15rem;
@@ -182,41 +188,6 @@ const maturityLabels = {
     .index-thumb {
       grid-column: 5;
       grid-row: 1;
-    }
-  }
-
-  /* Wide pointer screens: hovering or focusing a row lifts a larger copy of its screen beside the thumbnail. Touch, and pages without scripting, keep the thumbnail alone. */
-  @media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
-    .index-row {
-      position: relative;
-    }
-
-    :global(.js) .index-preview {
-      position: absolute;
-      top: 50%;
-      right: calc(15rem + 2.75rem);
-      z-index: 5;
-      display: block;
-      width: 30rem;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      border-radius: 0.5rem;
-      background: var(--surface);
-      outline: 1px solid var(--border-strong);
-      outline-offset: -1px;
-      box-shadow: 0 24px 48px -12px var(--shadow-color);
-      opacity: 0;
-      transform: translateY(calc(-50% + 0.5rem));
-      pointer-events: none;
-      transition:
-        opacity 180ms ease,
-        transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    :global(.js) .index-row:hover .index-preview,
-    :global(.js) .index-row:focus-visible .index-preview {
-      opacity: 1;
-      transform: translateY(-50%);
     }
   }
 </style>

@@ -106,6 +106,7 @@ html {
     overflow-x: clip;
     background: var(--bg);
     scroll-behavior: smooth;
+    /* Clears the bar for article headings. Home sections cancel their own top gap with a negative scroll margin, so their headings land here too. */
     scroll-padding-top: 6rem;
 }
 

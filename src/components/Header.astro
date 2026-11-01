@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components";
 const links = [
   { label: "Work", href: "/projects", section: "projects" },
   { label: "Notes", href: "/writing", section: "writing" },
-  { label: "Story", href: "/#about", section: "about" },
+  { label: "About", href: "/#about", section: "about" },
 ];
 
 const pathname = Astro.url.pathname;
@@ -47,9 +47,10 @@ const isActive = (href: string) => {
 
       <!--email_off-->
       <a
-        href="mailto:hello@wintkhantlin.com"
-        class="inline-flex min-h-11 items-center whitespace-nowrap text-[13px] font-medium text-(--text-heading) lg:ml-auto underline decoration-(--border-strong) underline-offset-8 transition-[text-decoration-color] duration-300 hover:decoration-(--text-heading) sm:text-[14px]"
+        href="mailto:wintkhantlin@gmail.com"
+        class="inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap text-[13px] font-medium text-(--text-heading) lg:ml-auto underline decoration-transparent underline-offset-8 transition-[text-decoration-color] duration-300 hover:decoration-(--text-heading) sm:text-[14px]"
       >
+        <Icon name="lucide:mail" class="size-3.5" aria-hidden="true" />
         <span class="sm:hidden">Email</span>
         <span class="hidden sm:inline">Say hello</span>
       </a>

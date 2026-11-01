@@ -131,6 +131,15 @@ if (isRemote && (!width || !height)) {
     text-underline-offset: 0.2em;
   }
 
+  /* The pinned contents holds the right margin on wide screens, so figures in the text stay in the column. */
+  @media (min-width: 1280px) {
+    :global(.article-page:has(.article-toc) .article-body) .article-figure {
+      width: 100%;
+      margin-inline: 0;
+      transform: none;
+    }
+  }
+
   @media (max-width: 639px) {
     .article-figure {
       margin-block: 2.25rem;

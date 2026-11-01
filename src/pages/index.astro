@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroSection from "../components/home/HeroSection.astro";
-import ProjectsSection from "../components/home/ProjectsSection.astro";
 import WorkIndex from "../components/home/WorkIndex.astro";
 import RecognitionSection from "../components/home/RecognitionSection.astro";
 import WritingSection from "../components/home/WritingSection.astro";
@@ -36,9 +35,9 @@ const structuredData = [
   type="profile"
   structuredData={structuredData}
 >
-  <main id="main-content" tabindex="-1" class="mx-auto w-full max-w-7xl px-5 text-(--text) sm:px-6 md:px-8">
+  <main id="main-content" class="mx-auto w-full max-w-7xl px-5 text-(--text) sm:px-6 md:px-8">
     <HeroSection />
-    {projects.length > 0 ? <WorkIndex projects={projects} /> : <ProjectsSection projects={[]} />}
+    <WorkIndex projects={projects} heading="Selected work" />
     <RecognitionSection />
     <WritingSection posts={posts} />
     <AboutSection />

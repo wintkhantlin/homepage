@@ -13,6 +13,12 @@ interface Recognition {
 
 const recognitions: Recognition[] = [
   {
+    result: "Nominee",
+    event: "UXMM AiOcean",
+    datetime: "2026-11",
+    date: "November 2026",
+  },
+  {
     result: "First runner-up",
     event: "GUSTO Innovation Awards & Forum 2026",
     datetime: "2026-08",
@@ -54,7 +60,7 @@ const largePhotos = await Promise.all(
 ---
 
 <!-- Split: the results as a dated list beside two photographs from the GUSTO forum, neither of them of a person. -->
-<section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-28 pt-(--section-gap-l)">
+<section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-[calc(var(--section-gap-l)*-1)] pt-(--section-gap-l)">
   <div class="recognition-split">
     <div>
       <h2
@@ -124,7 +130,7 @@ const largePhotos = await Promise.all(
           Next
           <Icon name="lucide:chevron-right" class="size-4" aria-hidden="true" />
         </button>
-        <button type="button" class="viewer-button" data-viewer-close autofocus>
+        <button type="button" class="viewer-button" data-viewer-close>
           <Icon name="lucide:x" class="size-4" aria-hidden="true" />
           Close
         </button>
@@ -143,6 +149,7 @@ const largePhotos = await Promise.all(
     const img = viewer.querySelector<HTMLImageElement>("[data-viewer-img]");
     const caption = viewer.querySelector<HTMLElement>("[data-viewer-caption]");
     const count = viewer.querySelector<HTMLElement>("[data-viewer-count]");
+    const closeButton = viewer.querySelector<HTMLButtonElement>("[data-viewer-close]");
     let current = 0;
     let opener: HTMLElement | null = null;
 
@@ -163,12 +170,13 @@ const largePhotos = await Promise.all(
         opener = link;
         show(Number(link.dataset.photoIndex ?? 0));
         viewer.showModal();
+        closeButton?.focus();
       });
     }
 
     viewer.querySelector("[data-viewer-prev]")?.addEventListener("click", () => show(current - 1));
     viewer.querySelector("[data-viewer-next]")?.addEventListener("click", () => show(current + 1));
-    viewer.querySelector("[data-viewer-close]")?.addEventListener("click", () => viewer.close());
+    closeButton?.addEventListener("click", () => viewer.close());
 
     viewer.addEventListener("keydown", (event) => {
       if (event.key === "ArrowLeft") show(current - 1);

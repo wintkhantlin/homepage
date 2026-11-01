@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import { siteConfig } from "../../lib/seo";
+import CopyEmailButton from "../CopyEmailButton.astro";
 
 const email = siteConfig.social.email.replace("mailto:", "");
 ---
@@ -23,10 +24,22 @@ const email = siteConfig.social.email.replace("mailto:", "");
     </p>
 
     <!--email_off-->
-    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+    <div class="mt-8 flex flex-wrap items-center gap-x-2 gap-y-2">
       <a href={siteConfig.social.email} class="hero-cta group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-5 text-sm font-semibold duration-200 ease-out active:translate-y-px sm:text-base">
         <Icon name="lucide:mail" class="size-4" aria-hidden="true" />
         {email}
+      </a>
+      <CopyEmailButton email={email} />
+    </div>
+    <!--/email_off-->
+
+    <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-1">
+      <a
+        href="#projects"
+        class="group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading) sm:text-base"
+      >
+        See the work
+        <Icon name="lucide:arrow-down" class="size-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true" />
       </a>
       <a
         href={siteConfig.social.github}
@@ -38,7 +51,6 @@ const email = siteConfig.social.email.replace("mailto:", "");
         <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
       </a>
     </div>
-    <!--/email_off-->
   </div>
 </section>
 

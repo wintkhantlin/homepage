@@ -106,10 +106,8 @@ const entries = headings.filter((heading) => heading.depth === 2 || heading.dept
 
   .article-toc__count {
     color: var(--text-faint);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
   }
 
   .article-toc__chevron {
@@ -170,6 +168,34 @@ const entries = headings.filter((heading) => heading.depth === 2 || heading.dept
     border-radius: 999px;
     background: var(--focus);
     content: "";
+  }
+
+  /* Wide screens hold the contents in the right margin while the article scrolls. Zero height leaves the text column where it was. */
+  @media (min-width: 1280px) {
+    .article-toc {
+      position: sticky;
+      top: 6rem;
+      z-index: 1;
+      width: 13rem;
+      height: 0;
+      margin-inline-start: calc(100% + 2.5rem);
+      margin-bottom: 0;
+      border-block: 0;
+    }
+
+    .article-toc__summary {
+      grid-template-columns: minmax(0, 1fr) auto;
+      min-height: 2.75rem;
+    }
+
+    .article-toc__count {
+      display: none;
+    }
+
+    .article-toc__list {
+      max-height: calc(100svh - 10rem);
+      overflow-y: auto;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

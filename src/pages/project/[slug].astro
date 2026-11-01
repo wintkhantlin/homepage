@@ -31,6 +31,27 @@ const maturityLabels = {
   prototype: "Prototype",
   "work-in-progress": "Work in progress",
 } as const;
+const projectType = project.data.type || "Product";
+const maturity = maturityLabels[project.data.maturity];
+const facts: { label: string; value: string; datetime?: string }[] = [
+  { label: "My role", value: project.data.role },
+  { label: "Type", value: projectType.charAt(0).toUpperCase() + projectType.slice(1) },
+  {
+    label: "Year",
+    value: String(project.data.publishedDate.getFullYear()),
+    datetime: project.data.publishedDate.toISOString(),
+  },
+  ...(caseStudy?.status && caseStudy.status !== maturity ? [{ label: "Context", value: caseStudy.status }] : []),
+  { label: "Stage", value: maturity },
+];
+// Each id matches a section in CaseStudy.astro.
+const caseStudySections = [
+  { id: "the-challenge", label: "The challenge" },
+  { id: "the-approach", label: "The approach" },
+  { id: "system-architecture", label: "System architecture" },
+  { id: "how-it-is-structured", label: "How it is structured" },
+  { id: "what-it-includes", label: "What it includes" },
+];
 const canonicalPath = `/project/${project.id}`;
 const metaTitle = project.data.seoTitle ?? `${project.data.name} Case Study | ${siteConfig.siteName}`;
 const metaDescription = project.data.seoDescription ?? project.data.description;
@@ -61,7 +82,7 @@ const structuredData = [
   createBreadcrumbSchema(
     [
       { name: "Home", path: "/" },
-      { name: "Projects", path: "/projects" },
+      { name: "Work", path: "/projects" },
       { name: project.data.name, path: canonicalPath },
     ],
     Astro.site,
@@ -78,33 +99,14 @@ const structuredData = [
   keywords={[...(project.data.technologies || []), project.data.type || "software project", "software case study"]}
   structuredData={structuredData}
 >
-  <main id="main-content" tabindex="-1" class="mx-auto max-w-7xl px-5 pb-24 pt-36 text-(--text) sm:px-6 md:px-8">
+  <main id="main-content" class="mx-auto max-w-7xl px-5 pb-24 pt-36 text-(--text) sm:px-6 md:px-8">
     <a href="/projects" class="group inline-flex min-h-11 items-center gap-2 text-sm text-(--text-muted) transition-colors hover:text-(--text-heading) active:text-(--text-heading)">
       <Icon name="lucide:arrow-left" class="size-4 transition-transform duration-300 group-hover:-translate-x-1" />
-      All projects
+      All work
     </a>
 
     <header class="pb-16 pt-16 md:pb-20 md:pt-24">
-      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold uppercase tracking-[0.14em] text-(--text-faint)">
-        <span>{project.data.type || "Product"}</span>
-        <span aria-hidden="true">·</span>
-        <time datetime={project.data.publishedDate.toISOString()} class="tabular-nums">{project.data.publishedDate.getFullYear()}</time>
-        {caseStudy?.status && (
-          <>
-            <span aria-hidden="true">·</span>
-            <span>{caseStudy.status}</span>
-          </>
-        )}
-        <span aria-hidden="true">·</span>
-        <span>{maturityLabels[project.data.maturity]}</span>
-      </div>
-
-      <p class="mt-4 text-sm text-(--text-muted)">
-        <span class="text-(--text-faint)">My role</span>
-        <span class="ml-2 text-(--text-heading)">{project.data.role}</span>
-      </p>
-
-      <h1 class="mt-7 max-w-5xl font-sans text-[clamp(3rem,6.4vw,4.5rem)] font-semibold leading-[1] tracking-[-0.04em] text-(--text-heading)">
+      <h1 class="max-w-5xl font-sans text-[clamp(3rem,6.4vw,4.5rem)] font-semibold leading-[1] tracking-[-0.04em] text-(--text-heading)">
         {project.data.name}
       </h1>
 
@@ -112,7 +114,18 @@ const structuredData = [
         {project.data.description}
       </p>
 
-      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+      <dl class="mt-9 flex flex-wrap gap-x-10 gap-y-4 text-sm">
+        {facts.map((fact) => (
+          <div>
+            <dt class="text-(--text-faint)">{fact.label}</dt>
+            <dd class="mt-1 text-(--text-heading)">
+              {fact.datetime ? <time datetime={fact.datetime} class="tabular-nums">{fact.value}</time> : fact.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
         <a
           href={project.data.source}
           target="_blank"
@@ -136,8 +149,8 @@ const structuredData = [
       </div>
 
       <section class="mt-16 border-t border-(--border) pt-6" aria-labelledby="engineering-highlights">
-        <h2 id="engineering-highlights" class="text-sm font-semibold text-(--text-heading)">Engineering highlights</h2>
-        <ol class="mt-6 grid gap-8 md:grid-cols-2 md:gap-10">
+        <h2 id="engineering-highlights" class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">Engineering highlights</h2>
+        <ol class="mt-8 grid gap-8 md:grid-cols-2 md:gap-10">
           {project.data.proofPoints.map((point, index) => (
             <li>
               <h3 class="text-xl font-semibold tracking-[-0.02em] text-(--text-heading)">
@@ -162,8 +175,27 @@ const structuredData = [
     </figure>
 
     <div class="grid gap-16 py-24 md:grid-cols-12 md:gap-10 lg:py-32">
-      <aside class="md:col-span-4">
+      <aside class="md:col-span-4 lg:col-span-3">
         <div class="md:sticky md:top-32">
+          {caseStudy && (
+            <nav class="mb-10 hidden md:block" aria-label="On this page">
+              <p class="text-sm font-semibold text-(--text-heading)">On this page</p>
+              <ul class="mt-3 border-t border-(--border) pt-3">
+                {caseStudySections.map((section) => (
+                  <li>
+                    <a
+                      href={`#${section.id}`}
+                      data-case-link={section.id}
+                      class="flex min-h-9 items-center text-sm text-(--text-muted) transition-colors duration-200 hover:text-(--text-heading) active:text-(--text-heading) aria-[current=location]:font-semibold aria-[current=location]:text-(--text-heading) pointer-coarse:min-h-11"
+                    >
+                      {section.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+
           <h2 class="text-sm font-semibold text-(--text-heading)">
             Technology
           </h2>
@@ -184,7 +216,7 @@ const structuredData = [
         </div>
       </aside>
 
-      <div class="md:col-span-8">
+      <div class="md:col-span-8 lg:col-span-9">
         {caseStudy ? (
           <CaseStudy
             diagram={caseStudy.diagram}
@@ -223,3 +255,27 @@ const structuredData = [
     )}
   </main>
 </BaseLayout>
+
+<script>
+  // Marks the rail link whose section is crossing the reading line, and keeps it marked through the gaps between sections.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-case-link]")];
+  const sections = links
+    .map((link) => document.getElementById(link.dataset.caseLink ?? ""))
+    .filter((section): section is HTMLElement => Boolean(section));
+
+  if (sections.length && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          for (const link of links) {
+            if (link.dataset.caseLink === entry.target.id) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          }
+        }
+      },
+      { rootMargin: "-30% 0px -60% 0px" },
+    );
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>

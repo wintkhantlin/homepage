@@ -24,17 +24,19 @@ const notes = posts.slice(0, 3).map((post) => {
 ---
 
 <!-- Grid: the latest notes three across, each a column under a rule, the date leading. -->
-<section id="writing" aria-labelledby="writing-heading" class="scroll-mt-28 pt-(--section-gap)">
+<section id="writing" aria-labelledby="writing-heading" class="scroll-mt-[calc(var(--section-gap)*-1)] pt-(--section-gap)">
   <div class="writing-head">
     <h2 id="writing-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">
-      Notes & writing
+      Notes
     </h2>
-    <a
-      href="/writing"
-      class="inline-flex min-h-11 w-fit items-center text-base font-semibold text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"
-    >
-      View all notes
-    </a>
+    {posts.length > notes.length && (
+      <a
+        href="/writing"
+        class="inline-flex min-h-11 w-fit items-center text-base font-semibold text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"
+      >
+        View all notes
+      </a>
+    )}
   </div>
 
   {

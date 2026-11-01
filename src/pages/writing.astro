@@ -43,7 +43,7 @@ const structuredData = [
   createBreadcrumbSchema(
     [
       { name: "Home", path: "/" },
-      { name: "Writing", path: "/writing" },
+      { name: "Notes", path: "/writing" },
     ],
     Astro.site,
   ),
@@ -59,17 +59,17 @@ const structuredData = [
   keywords={["programming writing", "software engineering notes", "developer blog"]}
   structuredData={structuredData}
 >
-  <main id="main-content" tabindex="-1" class="mx-auto max-w-5xl px-5 pb-24 pt-36 text-(--text) sm:px-6 md:px-8">
-    <header class="mb-14 border-b border-(--border) pb-12 sm:mb-16">
+  <main id="main-content" class="mx-auto w-full max-w-7xl px-5 pb-24 pt-36 text-(--text) sm:px-6 md:px-8">
+    <header class="border-b border-(--border) pb-12">
       <h1 class="font-sans text-[clamp(3rem,6.4vw,4.5rem)] font-semibold leading-none tracking-[-0.04em] text-(--text-heading)">
-        Writing
+        Notes
       </h1>
       <p class="mt-5 max-w-2xl text-base leading-relaxed text-(--text-muted)">
-        Notes on software, systems, and learning in public, in English and Burmese.
+        Software, systems, and learning in public, in English and Burmese.
       </p>
     </header>
 
-    <section class="flex flex-col" aria-label="All writing">
+    <section class="flex flex-col" aria-label="All notes">
       {
         posts.length > 0 ? (
           posts.map((post) => <PostCard post={post} headingLevel="h2" />)

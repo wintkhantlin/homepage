@@ -98,6 +98,7 @@ const structuredData = [
   locale={language === "my" ? "my_MM" : siteConfig.locale}
 >
   <ArticleEnhancements />
+  <div class="read-progress" aria-hidden="true"></div>
   <main id="main-content" class="mx-auto max-w-[50rem] px-5 pb-20 pt-32 sm:px-8 sm:pt-36">
     <nav class="mb-8" aria-label="Breadcrumb">
       <a
@@ -251,3 +252,33 @@ const structuredData = [
     )}
   </main>
 </BaseLayout>
+
+<style>
+  /* Goal-gradient: a hairline that fills as the note is read. Browsers without scroll-driven animation simply show nothing. */
+  .read-progress {
+    display: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .read-progress {
+        display: block;
+        position: fixed;
+        inset: 0 0 auto 0;
+        z-index: 60;
+        height: 2px;
+        background: var(--text-heading);
+        transform: scaleX(0);
+        transform-origin: left;
+        animation: read-progress linear both;
+        animation-timeline: scroll(root block);
+      }
+    }
+  }
+
+  @keyframes read-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+</style>

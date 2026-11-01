@@ -17,6 +17,11 @@ export default defineConfig({
     domains: ["www.bigocheatsheet.com"],
   },
 
+  // Pages load on hover or tap, so navigation lands inside the Doherty threshold (~400ms).
+  prefetch: {
+    defaultStrategy: "hover",
+  },
+
   build: {
     inlineStylesheets: "always",
   },

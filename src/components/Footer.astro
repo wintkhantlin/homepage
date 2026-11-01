@@ -55,19 +55,19 @@ const isActive = (href: string) => {
 
     <div class="footer-colophon">
       <nav aria-label="Footer navigation">
-        <ul class="flex flex-wrap gap-x-6">
+        <ul class="-ml-1.5 flex flex-wrap gap-x-3">
           {siteLinks.map((link) => (
             <li>
               <a
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
-                class="inline-flex min-h-11 items-center text-sm text-(--text-muted) transition-colors duration-200 hover:text-(--text-heading) aria-[current=page]:text-(--text-heading)"
+                class="inline-flex min-h-11 items-center px-1.5 text-sm text-(--text-muted) transition-colors duration-200 hover:text-(--text-heading) aria-[current=page]:text-(--text-heading)"
               >
                 {link.label}
               </a>
             </li>
           ))}
-          <li class="ml-auto">
+          <li class="ml-auto pr-1.5">
             <a
               href="#main-content"
               class="inline-flex min-h-11 items-center text-sm text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"

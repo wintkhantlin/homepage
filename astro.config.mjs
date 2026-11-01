@@ -52,10 +52,10 @@ export default defineConfig({
     defaultStrategy: "hover",
   },
 
-  // Small stylesheets inline; the shared global CSS stays a cached file instead of
-  // being repeated inside every page's HTML.
+  // Inline the CSS so first paint needs no stylesheet round trip. The external file was
+  // a render-blocking request on the critical path; the cost is a larger HTML per page.
   build: {
-    inlineStylesheets: "auto",
+    inlineStylesheets: "always",
   },
 
   fonts: [

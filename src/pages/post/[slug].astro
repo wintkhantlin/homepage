@@ -1,7 +1,7 @@
 ---
 import { getSortedPosts, type PostEntry } from "../../lib/content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
+import { absoluteUrl, createAuthorSchema, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
 import profilePhoto from "../../assets/img/happer.png";
 import { getImage, Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
@@ -33,12 +33,9 @@ const language = post.data.lang ?? (isMyanmar ? "my" : "en");
 const canonicalPath = `/post/${post.id}`;
 const canonicalUrl = absoluteUrl(canonicalPath, Astro.site);
 
-const socialImage = await getImage({
-  src: post.data.cover ?? profilePhoto,
-  width: 1200,
-  height: 630,
-  format: "webp",
-});
+const socialImage = post.data.cover
+  ? await getImage({ src: post.data.cover, width: 1200, height: 630, format: "webp" })
+  : { src: siteConfig.defaultImage };
 
 const structuredData = [
   {
@@ -50,18 +47,8 @@ const structuredData = [
     datePublished: publishedTime,
     dateModified: modifiedTime,
     inLanguage: language,
-    author: {
-      "@type": "Person",
-      "@id": absoluteUrl("/#person", Astro.site),
-      name: siteConfig.author,
-      url: absoluteUrl("/", Astro.site),
-    },
-    publisher: {
-      "@type": "Person",
-      "@id": absoluteUrl("/#person", Astro.site),
-      name: siteConfig.author,
-      url: absoluteUrl("/", Astro.site),
-    },
+    author: createAuthorSchema(Astro.site),
+    publisher: createAuthorSchema(Astro.site),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalUrl,
@@ -228,7 +215,7 @@ const structuredData = [
         <span class="font-semibold text-(--text-heading)">{siteConfig.author}</span> is a software engineer and college
         student from Myanmar, building reliable backend systems.{" "}
         <a
-          href="/#about"
+          href="/about"
           class="font-medium text-(--text-heading) underline decoration-(--border-strong) underline-offset-4 transition-[text-decoration-color] duration-200 hover:decoration-(--text-heading)"
         >
           More about me

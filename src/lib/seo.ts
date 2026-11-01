@@ -7,10 +7,10 @@ export const siteConfig = {
   author: "Wint Khant Lin",
   role: "Software engineer",
   locale: "en_US",
-  defaultTitle: "Backend Software Engineer Portfolio | Wint Khant Lin",
+  defaultTitle: "Wint Khant Lin Portfolio",
   defaultDescription:
     "Explore Wint Khant Lin's software engineer portfolio, backend projects, systems thinking, web experiments, and programming notes from Myanmar.",
-  defaultImage: "/favicon.png",
+  defaultImage: "/og-default.png",
   defaultKeywords: [
     "Wint Khant Lin",
     "Happer",
@@ -72,6 +72,26 @@ export function createPersonSchema(site?: URL, image?: string) {
       "Software architecture",
     ],
     sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
+  };
+}
+
+export function createAuthorSchema(site?: URL) {
+  return {
+    "@type": "Person",
+    "@id": absoluteUrl("/#person", site),
+    name: siteConfig.author,
+    url: absoluteUrl("/about", site),
+    sameAs: [siteConfig.social.github, siteConfig.social.linkedin],
+  };
+}
+
+export function createProfilePageSchema(site?: URL) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    url: absoluteUrl("/about", site),
+    name: `About ${siteConfig.name}`,
+    mainEntity: { "@id": absoluteUrl("/#person", site) },
   };
 }
 

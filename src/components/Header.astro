@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components";
 const links = [
   { label: "Work", href: "/projects", section: "projects" },
   { label: "Notes", href: "/writing", section: "writing" },
-  { label: "About", href: "/#about", section: "about" },
+  { label: "About", href: "/about", section: "about" },
 ];
 
 const pathname = Astro.url.pathname;
@@ -13,6 +13,7 @@ const isHome = pathname === "/";
 const isActive = (href: string) => {
   if (href === "/writing") return pathname === "/writing" || pathname.startsWith("/post/");
   if (href === "/projects") return pathname === "/projects" || pathname.startsWith("/project/");
+  if (href === "/about") return pathname === "/about";
   return false;
 };
 ---

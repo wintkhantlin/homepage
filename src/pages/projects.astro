@@ -3,18 +3,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import WorkIndex from "../components/home/WorkIndex.astro";
 import { getSortedProjects } from "../lib/content";
 import { createBreadcrumbSchema, siteConfig } from "../lib/seo";
-import profilePhoto from "../assets/img/happer.png";
-import { getImage } from "astro:assets";
 
-const [projects, socialImage] = await Promise.all([
-  getSortedProjects(),
-  getImage({
-    src: profilePhoto,
-    width: 1200,
-    height: 630,
-    format: "webp",
-  }),
-]);
+const projects = await getSortedProjects();
 
 const title = `Software Projects & Case Studies | ${siteConfig.siteName}`;
 const description =
@@ -32,7 +22,6 @@ const structuredData = createBreadcrumbSchema(
   title={title}
   description={description}
   canonicalPath="/projects"
-  image={socialImage.src}
   imageAlt="Wint Khant Lin software projects"
   keywords={["software projects", "backend case studies", "distributed systems portfolio"]}
   structuredData={structuredData}

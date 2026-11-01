@@ -41,7 +41,7 @@ const {
 const pathname = canonicalPath ?? Astro.url.pathname;
 const canonicalUrl = Astro.site ? absoluteUrl(pathname, Astro.site) : undefined;
 const imageUrl = image ? absoluteUrl(image, Astro.site) : undefined;
-const twitterCard = image === siteConfig.defaultImage ? "summary" : "summary_large_image";
+const twitterCard = "summary_large_image";
 const metaKeywords = dedupeKeywords([...siteConfig.defaultKeywords, ...keywords]);
 const structuredDataPayload = structuredData
   ? JSON.stringify(Array.isArray(structuredData) ? structuredData : [structuredData]).replace(/</gu, "\\u003c")

@@ -6,7 +6,7 @@ const siteLinks = [
   { label: "Home", href: "/" },
   { label: "Work", href: "/projects" },
   { label: "Notes", href: "/writing" },
-  { label: "About", href: "/#about" },
+  { label: "About", href: "/about" },
 ];
 const contactLinks = [
   { label: "wintkhantlin@gmail.com", href: "mailto:wintkhantlin@gmail.com" },
@@ -16,6 +16,7 @@ const contactLinks = [
 
 const isActive = (href: string) => {
   if (href === "/") return pathname === "/";
+  if (href === "/about") return pathname === "/about";
   if (href === "/writing") return pathname === "/writing" || pathname.startsWith("/post/");
   if (href === "/projects") return pathname === "/projects" || pathname.startsWith("/project/");
   return false;

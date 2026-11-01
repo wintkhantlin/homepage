@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components";
 import CaseStudy from "../../components/project/CaseStudy.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getSortedProjects, type ProjectEntry } from "../../lib/content";
-import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
+import { absoluteUrl, createAuthorSchema, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
 
 interface Props {
   project: ProjectEntry;
@@ -72,12 +72,7 @@ const structuredData = [
     codeRepository: project.data.source,
     dateCreated: project.data.publishedDate.toISOString(),
     programmingLanguage: project.data.technologies,
-    author: {
-      "@type": "Person",
-      "@id": absoluteUrl("/#person", Astro.site),
-      name: siteConfig.author,
-      url: absoluteUrl("/", Astro.site),
-    },
+    author: createAuthorSchema(Astro.site),
   },
   createBreadcrumbSchema(
     [

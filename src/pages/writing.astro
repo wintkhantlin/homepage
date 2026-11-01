@@ -2,19 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getSortedPosts } from "../lib/content";
 import PostCard from "../components/PostCard.astro";
-import { absoluteUrl, createBreadcrumbSchema, siteConfig } from "../lib/seo";
-import profilePhoto from "../assets/img/happer.png";
-import { getImage } from "astro:assets";
+import { createAuthorSchema, createBreadcrumbSchema, siteConfig } from "../lib/seo";
 
-const [posts, socialImage] = await Promise.all([
-  getSortedPosts(),
-  getImage({
-    src: profilePhoto,
-    width: 1200,
-    height: 630,
-    format: "webp",
-  }),
-]);
+const posts = await getSortedPosts();
 
 const title = `Software Engineering Notes & Articles | ${siteConfig.siteName}`;
 const description =
@@ -26,11 +16,7 @@ const structuredData = [
     name: "Programming Writing",
     url: Astro.site ? new URL("/writing", Astro.site).toString() : "/writing",
     description,
-    author: {
-      "@type": "Person",
-      "@id": absoluteUrl("/#person", Astro.site),
-      name: siteConfig.author,
-    },
+    author: createAuthorSchema(Astro.site),
     blogPost: posts.map((post) => ({
       "@type": "BlogPosting",
       headline: post.data.title,
@@ -54,7 +40,6 @@ const structuredData = [
   title={title}
   description={description}
   canonicalPath="/writing"
-  image={socialImage.src}
   imageAlt="Wint Khant Lin programming notes"
   keywords={["programming writing", "software engineering notes", "developer blog"]}
   structuredData={structuredData}

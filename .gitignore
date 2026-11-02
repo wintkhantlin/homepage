@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local env files
+.env*.local
+
+# local tool output
+.playwright-cli/
+output/

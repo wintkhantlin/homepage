@@ -49,6 +49,7 @@ export default defineConfig({
 
   // Pages load on hover or tap, so navigation lands inside the Doherty threshold (~400ms).
   prefetch: {
+    prefetchAll: true,
     defaultStrategy: "hover",
   },
 

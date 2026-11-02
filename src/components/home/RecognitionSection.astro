@@ -59,22 +59,22 @@ const largePhotos = await Promise.all(
 );
 ---
 
-<!-- Split: the results as a dated list beside two photographs from the GUSTO forum, neither of them of a person. -->
+<!-- Split: the results as a dated list beside two photographs from the GUSTO forum, neither of them of a person. The photos share the list's top and bottom edges. -->
 <section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-[calc(var(--section-gap-l)*-1)] pt-(--section-gap-l)">
-  <div class="recognition-split">
-    <div>
-      <h2
-        id="recognition-heading"
-        class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)"
-      >
-        Competition results
-      </h2>
+  <h2
+    id="recognition-heading"
+    class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)"
+  >
+    Competition results
+  </h2>
 
-      <ol class="recognition-list mt-10">
+  <div class="recognition-split mt-10">
+    <div class="recognition-ledger">
+      <ol class="recognition-list">
         {recognitions.map((recognition) => (
           <li class="recognition-row">
             <p class="text-title font-semibold tracking-[-0.02em] text-(--text-heading)">{recognition.result}</p>
-            <p class="text-base leading-relaxed text-(--text-muted)">{recognition.event}</p>
+            <p class="recognition-event text-base leading-relaxed text-(--text-muted)">{recognition.event}</p>
             <time datetime={recognition.datetime} class="recognition-date text-sm tabular-nums text-(--text-faint)">
               {recognition.date}
             </time>
@@ -92,7 +92,7 @@ const largePhotos = await Promise.all(
           width={700}
           widths={[400, 600, 700]}
           quality={70}
-          sizes="(min-width: 1024px) 300px, 60vw"
+          sizes="(min-width: 1024px) 330px, min(57vw, 286px)"
           loading="lazy"
           class="h-full w-full object-cover"
         />
@@ -106,14 +106,15 @@ const largePhotos = await Promise.all(
           width={500}
           widths={[300, 400, 500]}
           quality={70}
-          sizes="(min-width: 1024px) 200px, 40vw"
+          sizes="(min-width: 1024px) 245px, min(43vw, 215px)"
           loading="lazy"
           class="h-full w-full object-cover"
         />
         </a>
       </figure>
-      <p class="recognition-caption text-sm text-(--text-faint)">GUSTO Innovation Awards & Forum, August 2026</p>
     </div>
+
+    <p class="recognition-caption text-sm text-(--text-faint)">GUSTO Innovation Awards & Forum, August 2026</p>
   </div>
 
   <!-- Opens over the page when scripting runs; without it, each photo link opens the full-size file. -->
@@ -202,25 +203,46 @@ const largePhotos = await Promise.all(
 <style>
   .recognition-split {
     display: grid;
-    gap: 3rem;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.75rem;
+  }
+
+  .recognition-ledger {
+    container-type: inline-size;
+    margin-bottom: 2.25rem;
   }
 
   .recognition-list {
     border-top: 1px solid var(--border);
   }
 
+  /* Result and date share the first line, with the event under them. */
   .recognition-row {
     display: grid;
-    gap: 0.25rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.25rem 1.5rem;
+    align-items: baseline;
     border-bottom: 1px solid var(--border);
-    padding-block: 1.5rem;
+    padding-block: 1.25rem;
   }
 
+  .recognition-event {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  .recognition-date {
+    grid-row: 1;
+    grid-column: 2;
+    text-align: right;
+  }
+
+  /* 4:3 columns over 3:4 and 9:16 photos give both the same height with nothing cropped. */
   .recognition-photos {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-columns: minmax(0, 4fr) minmax(0, 3fr);
     gap: 0.75rem;
-    align-items: start;
+    max-width: 32rem;
   }
 
   .recognition-photo {
@@ -248,6 +270,11 @@ const largePhotos = await Promise.all(
 
   .photo-open:hover :global(img) {
     opacity: 0.86;
+  }
+
+  /* The figure clips its overflow, so the ring sits inside the photo. */
+  .photo-open:focus-visible {
+    outline-offset: -4px;
   }
 
   .photo-viewer {
@@ -326,33 +353,66 @@ const largePhotos = await Promise.all(
     aspect-ratio: 3 / 4;
   }
 
-  /* The medals sit lower, so the pair reads as two moments rather than a strip. */
   .recognition-photo--second {
-    aspect-ratio: 3 / 4;
-    margin-top: 4rem;
+    aspect-ratio: 9 / 16;
   }
 
-  .recognition-caption {
-    grid-column: 1 / -1;
-  }
-
-  @media (min-width: 768px) {
-    .recognition-row {
-      grid-template-columns: minmax(10rem, 1fr) minmax(0, 1.6fr) 7.5rem;
-      align-items: baseline;
+  /* One line per result once the list is wide enough to hold the longest event name. */
+  @container (min-width: 40rem) {
+    .recognition-list {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr) max-content;
       column-gap: 1.5rem;
     }
 
+    .recognition-row {
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+      padding-block: 1.5rem;
+    }
+
+    .recognition-event,
     .recognition-date {
-      text-align: right;
+      grid-row: auto;
+      grid-column: auto;
     }
   }
 
   @media (min-width: 1024px) {
     .recognition-split {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 3rem;
+    }
+
+    .recognition-ledger {
+      margin-bottom: 0;
+    }
+
+    .recognition-photos {
+      max-width: none;
+    }
+
+    /* The list sets the row's height and the photos fill it, so their edges meet its rules. */
+    .recognition-photo--lead,
+    .recognition-photo--second {
+      position: relative;
+      aspect-ratio: auto;
+    }
+
+    .photo-open {
+      position: absolute;
+      inset: 0;
+    }
+
+    .recognition-caption {
+      grid-column: 2;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .recognition-split {
       grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
       column-gap: 4rem;
-      align-items: end;
     }
   }
 </style>

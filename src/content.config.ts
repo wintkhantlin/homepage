@@ -13,6 +13,7 @@ const posts = defineCollection({
         title: z.string().trim().min(1),
         seoTitle: z.string().trim().min(1).optional(),
         summary: z.string().trim().min(1).optional(),
+        englishSummary: z.string().trim().min(1).optional(),
         description: z.string().trim().min(1).optional(),
         seoDescription: z.string().trim().min(1).optional(),
         categories: z.array(z.string().trim().min(1)).min(1),

@@ -32,7 +32,7 @@ const maturityLabels = {
 } as const;
 ---
 
-<!-- The work as an index: each row names the project, what it proves, its stack and its year, with its screen always in view. -->
+<!-- The work as an index: each row names the project, what it does, its stack and its year, with its screen always in view. -->
 <section
   id="projects"
   aria-labelledby={heading ? "index-heading" : undefined}
@@ -66,7 +66,7 @@ const maturityLabels = {
           href={`/project/${project.id}`}
           class="index-row"
           aria-labelledby={`index-name-${index}`}
-          aria-describedby={`index-proof-${index} index-stack-${index}`}
+          aria-describedby={`index-about-${index} index-stack-${index}`}
         >
           <div class="index-name-cell">
             <ItemHeading id={`index-name-${index}`} class="index-name text-title font-semibold tracking-[-0.02em]">
@@ -75,9 +75,9 @@ const maturityLabels = {
             <p class="mt-1 text-sm text-(--text-faint)">{projectKind(project)}</p>
           </div>
 
-          <ul id={`index-proof-${index}`} class="index-proof grid gap-1 text-base text-(--text-heading)">
-            {project.data.proofPoints.map((point) => <li>{point.title}</li>)}
-          </ul>
+          <p id={`index-about-${index}`} class="index-about text-pretty text-base leading-relaxed text-(--text-heading)">
+            {project.data.description}
+          </p>
 
           <p id={`index-stack-${index}`} class="index-stack text-base leading-relaxed text-(--text-muted)">
             <span class="sr-only">Built with </span>
@@ -179,7 +179,7 @@ const maturityLabels = {
 
   @media (min-width: 1024px) {
     .index-row {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 3fr) minmax(0, 3fr) minmax(0, 1.4fr) 15rem;
+      grid-template-columns: minmax(0, 2.25fr) minmax(0, 4.5fr) minmax(0, 2.25fr) minmax(0, 1.4fr) 15rem;
       align-items: center;
       column-gap: 2rem;
       padding-block: 1.75rem;

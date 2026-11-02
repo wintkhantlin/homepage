@@ -13,7 +13,7 @@ const { post, headingLevel = "h3" } = Astro.props;
 const wordCount = post.body?.split(/\s+/u).filter(Boolean).length ?? 0;
 const minutes = Math.max(1, Math.ceil(wordCount / 180));
 const isMyanmar = /[က-႟]/u.test(post.data.title);
-const excerpt = post.data.description ?? post.data.summary;
+const excerpt = post.data.englishSummary ?? post.data.description ?? post.data.summary;
 const categoryName = post.data.categories[0].replace(/-/gu, " ");
 const category = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
 
@@ -35,7 +35,7 @@ const HeadingTag = headingLevel;
         {post.data.title}
       </HeadingTag>
       {excerpt && (
-        <p lang={isMyanmar ? "my" : undefined} class="mt-2 max-w-[60ch] text-base leading-relaxed text-(--text-muted)">
+        <p lang={isMyanmar && !post.data.englishSummary ? "my" : undefined} class="mt-2 max-w-[60ch] text-base leading-relaxed text-(--text-muted)">
           {excerpt}
         </p>
       )}

@@ -19,7 +19,7 @@ const isActive = (href: string) => {
 ---
 
 <!-- The bar sits on the page rather than over it: the wordmark heads the name's column and the links start where the hero's line does. -->
-<header class="site-header absolute inset-x-0 top-0 z-50">
+<header lang="en" class="site-header absolute inset-x-0 top-0 z-50">
   <div class="site-header-inner mx-auto w-full max-w-7xl px-5 sm:px-6 md:px-8">
     <a
       href="/"
@@ -61,7 +61,6 @@ const isActive = (href: string) => {
         id="theme-toggle"
         type="button"
         aria-label="Switch to light theme"
-        aria-pressed="false"
         class="flex size-11 cursor-pointer items-center justify-center rounded-full text-(--text-muted) transition-[background-color,color,transform] duration-300 hover:bg-(--surface-raised) hover:text-(--text-heading) active:scale-95 -mr-3"
       >
         <span id="theme-icon-dark" class="hidden">
@@ -123,7 +122,6 @@ const isActive = (href: string) => {
     if (darkIcon) darkIcon.classList.toggle("hidden", isLight);
     if (lightIcon) lightIcon.classList.toggle("hidden", !isLight);
     button?.setAttribute("aria-label", isLight ? "Switch to dark theme" : "Switch to light theme");
-    button?.setAttribute("aria-pressed", String(isLight));
     themeColor?.setAttribute("content", isLight ? "#fafafa" : "#0c0d0c");
   }
 

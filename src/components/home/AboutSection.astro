@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components";
 import { siteConfig } from "../../lib/seo";
 
-const { level = 2 } = Astro.props as { level?: 1 | 2 };
+const { level = 2, showTools = true } = Astro.props as { level?: 1 | 2; showTools?: boolean };
 const Heading = `h${level}` as "h1" | "h2";
 const SubHeading = `h${level + 1}` as "h2" | "h3";
 
@@ -78,27 +78,29 @@ const profiles = [
     </aside>
   </div>
 
-  <div class="mt-24">
-    <SubHeading id="tools-heading" class="text-[clamp(1.5rem,2.2vw,2rem)] font-semibold leading-tight tracking-[-0.03em] text-(--text-heading)">
-      Tools & technologies
-    </SubHeading>
+  {showTools && (
+    <div class="mt-24">
+      <SubHeading id="tools-heading" class="text-[clamp(1.5rem,2.2vw,2rem)] font-semibold leading-tight tracking-[-0.03em] text-(--text-heading)">
+        Tools & technologies
+      </SubHeading>
 
-    <!-- Each group is a column of its tools, one per line, so the stack reads as a set of shelves rather than a run of slashes. -->
-    <dl class="stack-grid mt-8" aria-labelledby="tools-heading">
-      {stack.map((row) => (
-        <div class="stack-group">
-          <dt class="text-sm text-(--text-faint)">{row.group}</dt>
-          <dd>
-            <ul class="stack-tools">
-              {row.tools.map((tool) => (
-                <li class="text-lg leading-snug text-(--text-heading) sm:text-xl">{tool}</li>
-              ))}
-            </ul>
-          </dd>
-        </div>
-      ))}
-    </dl>
-  </div>
+      <!-- Each group is a column of its tools, one per line, so the stack reads as a set of shelves rather than a run of slashes. -->
+      <dl class="stack-grid mt-8" aria-labelledby="tools-heading">
+        {stack.map((row) => (
+          <div class="stack-group">
+            <dt class="text-sm text-(--text-faint)">{row.group}</dt>
+            <dd>
+              <ul class="stack-tools">
+                {row.tools.map((tool) => (
+                  <li class="text-lg leading-snug text-(--text-heading) sm:text-xl">{tool}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  )}
 </section>
 
 <style>

@@ -148,9 +148,14 @@ const isActive = (href: string) => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (document.startViewTransition && !reduceMotion) {
-      document.startViewTransition(() => {
-        applyTheme(newTheme);
-      });
+      // Marks this transition as the theme switch, so page changes don't play its mask.
+      const root = document.documentElement;
+      root.classList.add("theme-switching");
+      document
+        .startViewTransition(() => {
+          applyTheme(newTheme);
+        })
+        .finished.finally(() => root.classList.remove("theme-switching"));
     } else {
       applyTheme(newTheme);
     }

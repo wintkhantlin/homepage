@@ -1,0 +1,85 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Origin {
+  /** A list page this page can be opened from. */
+  path: string;
+  /** Where the link leads when the browser can't step back to that list. */
+  href: string;
+  label: string;
+}
+
+interface Props {
+  /** What a visitor sees who arrived from anywhere else, or without scripting. */
+  href: string;
+  label: string;
+  origins: Origin[];
+  /** Pages of the same kind, reached through "Next", which keep the list the visitor started from. */
+  siblingPrefix: string;
+}
+
+const { href, label, origins, siblingPrefix } = Astro.props;
+---
+
+<!-- Names the list the visitor actually came from and returns them to their place in it. -->
+<a
+  lang="en"
+  href={href}
+  class="group inline-flex min-h-11 items-center gap-2 text-sm text-(--text-muted) transition-colors hover:text-(--text-heading) active:text-(--text-heading)"
+  data-back-link
+>
+  <Icon name="lucide:arrow-left" class="size-4 transition-transform duration-300 motion-safe:group-hover:-translate-x-1" aria-hidden="true" />
+  <span data-back-label>{label}</span>
+</a>
+
+<!-- Inline so the label is right before the first paint, instead of changing once the page is up. -->
+<script is:inline define:vars={{ origins, siblingPrefix }}>
+  const link = document.querySelector("[data-back-link]");
+  const clean = (path) => path.replace(/\/$/, "") || "/";
+  const storageKey = `list-origin:${siblingPrefix}`;
+
+  const remember = (path) => {
+    try {
+      if (path) sessionStorage.setItem(storageKey, path);
+      else sessionStorage.removeItem(storageKey);
+    } catch {}
+  };
+
+  const recall = () => {
+    try {
+      return sessionStorage.getItem(storageKey);
+    } catch {
+      return null;
+    }
+  };
+
+  let from = "";
+  try {
+    const referrer = new URL(document.referrer);
+    if (referrer.origin === location.origin) from = clean(referrer.pathname);
+  } catch {}
+
+  if (origins.some((origin) => origin.path === from)) remember(from);
+  else if (!from.startsWith(siblingPrefix)) remember(null);
+
+  const origin = origins.find((item) => item.path === recall());
+
+  if (origin) {
+    link.href = origin.href;
+    link.querySelector("[data-back-label]").textContent = origin.label;
+
+    // Stepping back through history restores the visitor's exact place; the link's address is the fallback.
+    link.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      const { navigation } = window;
+      const earlier = navigation?.currentEntry ? navigation.entries().slice(0, navigation.currentEntry.index) : [];
+      const listEntry = earlier.findLast((entry) => entry.url && clean(new URL(entry.url).pathname) === origin.path);
+
+      if (listEntry) {
+        event.preventDefault();
+        navigation.traverseTo(listEntry.key);
+      }
+    });
+  }
+</script>

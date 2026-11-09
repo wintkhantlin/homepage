@@ -95,9 +95,10 @@
     animation-delay: 120ms;
 }
 
+/* Uses translate so it stays clear of the transform the scroll effect drives. */
 @keyframes hero-name-settle {
     from {
-        transform: translateX(-0.3em);
+        translate: -0.3em 0;
     }
 }
 
@@ -250,19 +251,49 @@ textarea {
     display: flex;
 }
 
-/* ── GIF mask plays, then expands to reveal new theme ── */
-::view-transition-group(root) {
+/* ── Coming back to a list: the item the visitor opened shows itself, then fades ── */
+[data-returned] {
+    animation: returned-fade 1.8s ease-out;
+}
+
+@keyframes returned-fade {
+    0%,
+    30% {
+        background-color: var(--surface-raised);
+        box-shadow: inset 0 0 0 1px var(--border-strong);
+    }
+}
+
+/* ── Page changes: the old page fades into the new one, and a project's name travels with it ── */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+}
+
+::view-transition-group(*) {
+    animation-duration: 380ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Theme switch: GIF mask plays, then expands to reveal new theme ── */
+.theme-switching::view-transition-group(root) {
     z-index: 100;
 }
 
-::view-transition-new(root) {
+.theme-switching::view-transition-new(root) {
     mask: url('/animation.gif') center / 150px no-repeat;
     animation: gif-then-expand 0.6s ease-in-out both;
 }
 
-::view-transition-old(root) {
+.theme-switching::view-transition-old(root) {
     animation: none;
     z-index: -1;
+}
+
+/* The switch flips the page as one surface, so nothing may break out of its mask. */
+.theme-switching [data-shared-title] {
+    view-transition-name: none !important;
 }
 
 @keyframes gif-then-expand {
@@ -299,6 +330,11 @@ textarea {
     ::view-transition-old(root),
     ::view-transition-new(root) {
         animation: none !important;
+    }
+
+    /* A colour fade moves nothing, so it keeps its pace. */
+    [data-returned] {
+        animation-duration: 1.8s !important;
     }
 }
 

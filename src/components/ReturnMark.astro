@@ -1,0 +1,46 @@
+<!-- Remembers which list item a visitor opened and marks it when they come back, so they can see where they were. -->
+<script>
+  const STORAGE_KEY = "list-item-opened";
+  const ITEM = "a[data-list-item]";
+
+  const remember = (path: string | null) => {
+    try {
+      if (path) sessionStorage.setItem(STORAGE_KEY, path);
+      else sessionStorage.removeItem(STORAGE_KEY);
+    } catch {}
+  };
+
+  const recall = () => {
+    try {
+      return sessionStorage.getItem(STORAGE_KEY);
+    } catch {
+      return null;
+    }
+  };
+
+  const mark = (item: Element | null | undefined) => {
+    if (!item) return;
+    item.setAttribute("data-returned", "");
+    item.addEventListener("animationend", () => item.removeAttribute("data-returned"), { once: true });
+  };
+
+  document.addEventListener("click", (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const item = (event.target as Element).closest<HTMLAnchorElement>(ITEM);
+    if (item) remember(item.pathname);
+  });
+
+  // Runs on a normal load and when the browser restores the page from its back/forward cache.
+  window.addEventListener("pageshow", (event) => {
+    const items = [...document.querySelectorAll<HTMLAnchorElement>(ITEM)];
+    if (!items.length) return;
+
+    const [navigation] = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
+    const cameBack = event.persisted || navigation?.type === "back_forward";
+    const opened = recall();
+    remember(null);
+
+    if (cameBack) mark(items.find((item) => item.pathname === opened));
+    else if (location.hash) mark(items.find((item) => item.id === location.hash.slice(1)));
+  });
+</script>

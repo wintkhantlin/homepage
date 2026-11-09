@@ -54,6 +54,240 @@ const email = siteConfig.social.email.replace("mailto:", "");
   </div>
 </section>
 
+<script>
+  // The name answers the pointer: letters close to it swell heavy and take the accent, the ones around them
+  // thin out and lean away. Everything rides on springs, so it overshoots a little and settles on its own.
+  const REACH_EM = 0.62;
+  const WAKE_RATIO = 2.1;
+  const SWELL_WEIGHT = 420;
+  const THIN_WEIGHT = 230;
+  // Wide and gentle, so a whole word makes room instead of one letter crashing into the next.
+  const PUSH_REACH_EM = 1.4;
+  const PUSH_EM = 0.22;
+  const LIFT_EM = 0.08;
+  const SPRING = 0.12;
+  const DAMPING = 0.74;
+  const STRENGTH_EASING = 0.14;
+  const INTRO_SPEED_EM = 0.12;
+
+  type Spring = { value: number; velocity: number };
+
+  type Letter = {
+    element: HTMLElement;
+    line: number;
+    restX: number;
+    restY: number;
+    x: Spring;
+    y: Spring;
+    weight: Spring;
+    tint: number;
+  };
+
+  // Moves a spring one step toward its goal and reports how far it still has to go.
+  const pull = (spring: Spring, goal: number, step: number) => {
+    spring.velocity = (spring.velocity + (goal - spring.value) * SPRING * step) * DAMPING ** step;
+    spring.value += spring.velocity * step;
+    return Math.abs(goal - spring.value) + Math.abs(spring.velocity);
+  };
+
+  function wakeName(name: HTMLElement, hero: HTMLElement) {
+    const style = getComputedStyle(name);
+    const restWeight = Number.parseFloat(style.fontWeight);
+    const startSize = Number.parseFloat(style.fontSize);
+    const lines = [...name.querySelectorAll<HTMLElement>(".hero-name-line")];
+    const letters: Letter[] = [];
+
+    name.setAttribute("aria-label", (name.textContent ?? "").replace(/\s+/gu, " ").trim());
+
+    lines.forEach((line, lineIndex) => {
+      const textNode = [...line.childNodes].find((node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
+      if (!textNode) return;
+
+      const lineBox = line.getBoundingClientRect();
+      const raw = textNode.textContent ?? "";
+      const text = raw.trim();
+      const offset = raw.indexOf(text);
+      const range = document.createRange();
+      const word = document.createElement("span");
+      word.className = "hero-name-word";
+      word.setAttribute("aria-hidden", "true");
+
+      // Measured from the real text before it is split, so the kerning survives and nothing shifts.
+      [...text].forEach((character, index) => {
+        range.setStart(textNode, offset + index);
+        range.setEnd(textNode, offset + index + 1);
+        const box = range.getBoundingClientRect();
+
+        const element = document.createElement("span");
+        element.className = "hero-letter";
+        element.textContent = character;
+        element.style.width = `${box.width / startSize}em`;
+        word.append(element);
+
+        letters.push({
+          element,
+          line: lineIndex,
+          restX: (box.left + box.width / 2 - lineBox.left) / startSize,
+          restY: (box.top + box.height / 2 - lineBox.top) / startSize,
+          x: { value: 0, velocity: 0 },
+          y: { value: 0, velocity: 0 },
+          weight: { value: restWeight, velocity: 0 },
+          tint: 0,
+        });
+      });
+
+      textNode.replaceWith(word);
+    });
+
+    let pointerX = 0;
+    let pointerY = 0;
+    let strength = 0;
+    let strengthGoal = 0;
+    let sweeping = false;
+    let frame = 0;
+    let lastTime = 0;
+    let releaseTimer = 0;
+
+    const settle = () => {
+      frame = 0;
+      strength = 0;
+      for (const letter of letters) {
+        letter.x = { value: 0, velocity: 0 };
+        letter.y = { value: 0, velocity: 0 };
+        letter.weight = { value: restWeight, velocity: 0 };
+        letter.tint = 0;
+        letter.element.style.removeProperty("translate");
+        letter.element.style.removeProperty("font-variation-settings");
+        letter.element.style.removeProperty("--crest");
+      }
+    };
+
+    const tick = (time: number) => {
+      // Keeps the motion the same speed on 60Hz and 120Hz screens.
+      const step = Math.min((time - lastTime) / 16.67, 3) || 1;
+      lastTime = time;
+
+      const size = Number.parseFloat(getComputedStyle(name).fontSize);
+      const reach = REACH_EM * size;
+      const lineBoxes = lines.map((line) => line.getBoundingClientRect());
+
+      if (sweeping) {
+        pointerX += INTRO_SPEED_EM * size * step;
+        if (pointerX > name.getBoundingClientRect().right + reach * WAKE_RATIO) {
+          sweeping = false;
+          strengthGoal = 0;
+        }
+      }
+
+      strength += (strengthGoal - strength) * STRENGTH_EASING * step;
+      let restless = sweeping || Math.abs(strengthGoal - strength) > 0.005;
+
+      for (const letter of letters) {
+        const box = lineBoxes[letter.line];
+        const dx = box.left + letter.restX * size - pointerX;
+        // The intro is a front moving across the name, so only sideways distance counts.
+        const dy = sweeping ? 0 : box.top + letter.restY * size - pointerY;
+        const distance = Math.hypot(dx, dy);
+
+        const swell = Math.exp(-((distance / reach) ** 2));
+        const wake = Math.exp(-((distance / (reach * WAKE_RATIO)) ** 2));
+        const pushRatio = distance / (PUSH_REACH_EM * size);
+        const push = strength * PUSH_EM * size * pushRatio * Math.exp(-(pushRatio ** 2));
+        const lift = strength * LIFT_EM * size * swell;
+
+        const remaining =
+          pull(letter.x, distance ? (dx / distance) * push : 0, step) +
+          pull(letter.y, (distance ? (dy / distance) * push : 0) - lift, step) +
+          pull(letter.weight, restWeight + strength * (SWELL_WEIGHT * swell - THIN_WEIGHT * wake), step) / 20;
+
+        const tintGoal = strength * swell * swell;
+        letter.tint += (tintGoal - letter.tint) * 0.3 * step;
+        restless ||= remaining > 0.08 || Math.abs(tintGoal - letter.tint) > 0.01;
+
+        letter.element.style.translate = `${letter.x.value.toFixed(2)}px ${letter.y.value.toFixed(2)}px`;
+        letter.element.style.fontVariationSettings = `"wght" ${Math.round(letter.weight.value)}`;
+        letter.element.style.setProperty("--crest", letter.tint.toFixed(3));
+      }
+
+      if (restless) frame = requestAnimationFrame(tick);
+      else if (strengthGoal === 0) settle();
+      else frame = 0;
+    };
+
+    const run = () => {
+      if (frame) return;
+      lastTime = performance.now();
+      frame = requestAnimationFrame(tick);
+    };
+
+    const follow = (event: PointerEvent) => {
+      sweeping = false;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      strengthGoal = 1;
+      run();
+    };
+
+    hero.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "touch") follow(event);
+    });
+
+    hero.addEventListener("pointerleave", (event) => {
+      if (event.pointerType === "touch") return;
+      strengthGoal = 0;
+      run();
+    });
+
+    // A touch has no hover to follow, so tapping the name swells it there for a moment.
+    name.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "touch") return;
+      follow(event);
+      window.clearTimeout(releaseTimer);
+      releaseTimer = window.setTimeout(() => {
+        strengthGoal = 0;
+        run();
+      }, 420);
+    });
+
+    // The name moves under a resting pointer while the page scrolls.
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (strengthGoal) run();
+      },
+      { passive: true },
+    );
+
+    // Leaving mid-swell must not come back that way from the back/forward cache.
+    window.addEventListener("pagehide", () => {
+      cancelAnimationFrame(frame);
+      sweeping = false;
+      strengthGoal = 0;
+      settle();
+    });
+
+    // A wave crosses the name once on arrival, which also shows phones that it's alive.
+    const [navigation] = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
+    if (navigation?.type !== "back_forward") {
+      window.setTimeout(() => {
+        if (strengthGoal) return;
+        pointerX = name.getBoundingClientRect().left - REACH_EM * WAKE_RATIO * Number.parseFloat(getComputedStyle(name).fontSize);
+        sweeping = true;
+        strengthGoal = 1;
+        run();
+      }, 500);
+    }
+  }
+
+  const heroName = document.querySelector<HTMLElement>("#hero-name");
+  const heroSection = heroName?.closest("section");
+
+  if (heroName && heroSection && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+    // Letter positions are measured, so they have to be measured in the real font.
+    document.fonts.ready.then(() => wakeName(heroName, heroSection));
+  }
+</script>
+
 <style>
   .hero {
     display: grid;
@@ -67,20 +301,56 @@ const email = siteConfig.social.email.replace("mailto:", "");
     letter-spacing: -0.05em;
   }
 
-  /* Hovering the name pulls the stagger into a flush column, line by line, and lets it settle back out. */
-  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .hero-name .hero-name-line {
-      transition: transform 560ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* The letters are created in the browser, once the name is ready to answer the pointer. */
+  .hero-name :global(.hero-name-word) {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .hero-name :global(.hero-letter) {
+    display: inline-block;
+    white-space: pre;
+    color: color-mix(in oklch, var(--text-heading), var(--focus) calc(var(--crest, 0) * 100%));
+  }
+
+  /* Scrolling away pulls the stagger into a flush column by the time the name leaves the screen. */
+  @property --name-flush-scroll {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-name .hero-name-line:nth-child(2) {
+      transform: translateX(calc(var(--name-flush-scroll) * -0.9em));
     }
 
-    .hero-name:hover .hero-name-line:nth-child(2) {
-      transform: translateX(-0.9em);
-      transition-delay: 40ms;
+    .hero-name .hero-name-line:nth-child(3) {
+      transform: translateX(calc(var(--name-flush-scroll) * -1.8em));
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-name {
+        animation-name: hero-name-flush;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: scroll(root block);
+        animation-range: 0px 30svh;
+      }
     }
 
-    .hero-name:hover .hero-name-line:nth-child(3) {
-      transform: translateX(-1.8em);
-      transition-delay: 90ms;
+    @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+      .hero-name {
+        animation-range: 0px 60svh;
+      }
+    }
+  }
+
+  @keyframes hero-name-flush {
+    to {
+      --name-flush-scroll: 1;
     }
   }
 

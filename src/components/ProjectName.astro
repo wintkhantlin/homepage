@@ -1,0 +1,19 @@
+---
+interface Props {
+  as: "h1" | "h2" | "h3";
+  name: string;
+  slug: string;
+  class?: string;
+  id?: string;
+}
+
+const { as: Tag, name, slug, class: className, ...rest } = Astro.props;
+---
+
+<!-- Hugs the text on one line height everywhere, so the name lines up as it travels between the work list and its case study. -->
+<Tag
+  {...rest}
+  class:list={["w-fit leading-none", className]}
+  data-shared-title
+  style={`view-transition-name: project-${slug}`}
+>{name}</Tag>

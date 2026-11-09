@@ -5,6 +5,7 @@ import { absoluteUrl, createAuthorSchema, createBreadcrumbSchema, siteConfig } f
 import profilePhoto from "../../assets/img/happer.png";
 import { getImage, Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
+import BackLink from "../../components/BackLink.astro";
 import TableOfContents from "../../components/TableOfContents.astro";
 import ArticleImage from "../../components/mdx/ArticleImage.astro";
 import ArticleLink from "../../components/mdx/ArticleLink.astro";
@@ -18,11 +19,13 @@ export async function getStaticPaths() {
     props: {
       post,
       nextPost: posts.length > 1 ? posts[(index + 1) % posts.length] : undefined,
+      // The home page lists the three latest notes.
+      onHome: index < 3,
     },
   }));
 }
 
-const { post, nextPost } = Astro.props as { post: PostEntry; nextPost?: PostEntry };
+const { post, nextPost, onHome } = Astro.props as { post: PostEntry; nextPost?: PostEntry; onHome: boolean };
 const Content = post.Content;
 const description = post.data.description ?? post.data.summary ?? siteConfig.defaultDescription;
 const metaDescription = post.data.seoDescription ?? description;
@@ -88,13 +91,15 @@ const structuredData = [
   <div class="read-progress" aria-hidden="true"></div>
   <main id="main-content" class="mx-auto max-w-[50rem] px-5 pb-20 pt-32 sm:px-8 sm:pt-36">
     <nav class="mb-8" aria-label="Breadcrumb">
-      <a
+      <BackLink
         href="/writing"
-        class="group inline-flex min-h-11 items-center gap-2 text-sm text-(--text-muted) transition-colors hover:text-(--text-heading) active:text-(--text-heading)"
-      >
-        <Icon name="lucide:arrow-left" class="size-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
-        All notes
-      </a>
+        label="All notes"
+        siblingPrefix="/post/"
+        origins={[
+          { path: "/", href: onHome ? `/#note-${post.id}` : "/#writing", label: "Back to notes" },
+          { path: "/writing", href: `/writing#note-${post.id}`, label: "Back to all notes" },
+        ]}
+      />
     </nav>
 
     <article class="article-page font-sans">

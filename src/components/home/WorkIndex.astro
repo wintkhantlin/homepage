@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import ProjectName from "../ProjectName.astro";
 
 type Project = Awaited<
   ReturnType<typeof import("../../lib/content").getSortedProjects>
@@ -63,16 +64,22 @@ const maturityLabels = {
     {projects.map((project, index) => (
       <li>
         <a
+          id={`work-${project.id}`}
           href={`/project/${project.id}`}
           class="index-row"
+          data-list-item
           aria-labelledby={`index-name-${index}`}
           aria-describedby={`index-about-${index} index-stack-${index}`}
         >
           <div class="index-name-cell">
-            <ItemHeading id={`index-name-${index}`} class="index-name text-title font-semibold tracking-[-0.02em]">
-              {project.data.name}
-            </ItemHeading>
-            <p class="mt-1 text-sm text-(--text-faint)">{projectKind(project)}</p>
+            <ProjectName
+              as={ItemHeading}
+              id={`index-name-${index}`}
+              name={project.data.name}
+              slug={project.id}
+              class="index-name text-title font-semibold tracking-[-0.02em]"
+            />
+            <p class="mt-2.5 text-sm text-(--text-faint)">{projectKind(project)}</p>
           </div>
 
           <p id={`index-about-${index}`} class="index-about text-pretty text-base leading-relaxed text-(--text-heading)">
@@ -94,7 +101,7 @@ const maturityLabels = {
               src={project.data.img}
               alt=""
               widths={[320, 480, 640]}
-              sizes="(min-width: 1024px) 240px, 100vw"
+              sizes="(min-width: 1280px) 308px, (min-width: 1024px) 240px, 100vw"
               loading="lazy"
               class="h-full w-full object-cover object-top"
             />
@@ -135,7 +142,7 @@ const maturityLabels = {
     border-radius: 0.5rem;
     padding: 1.5rem 0.75rem;
     color: var(--text-heading);
-    transition: background-color 200ms ease;
+    transition: background-color 200ms ease, opacity 200ms ease;
   }
 
   .index-name {
@@ -161,9 +168,49 @@ const maturityLabels = {
     background: var(--surface);
   }
 
+  .index-row:active {
+    background: var(--surface-raised);
+  }
+
   .index-row:hover .index-name,
   .index-row:focus-visible .index-name {
     text-decoration-color: currentColor;
+  }
+
+  /* In the dark theme the near-white screenshots rest a step down, so they don't outshine the project names. */
+  :global(html:not(.light)) .index-thumb :global(img) {
+    opacity: 0.8;
+    transition: opacity 200ms ease;
+  }
+
+  .index-row:hover .index-thumb :global(img),
+  .index-row:focus-visible .index-thumb :global(img) {
+    opacity: 1;
+  }
+
+  /* Pointing at a project quiets the others. Each li holds the hairline between rows, so crossing it doesn't flicker. */
+  @media (hover: hover) and (pointer: fine) and (prefers-contrast: no-preference) {
+    .index-list:has(> li:hover, .index-row:focus-visible) > li:not(:hover, :has(.index-row:focus-visible)) .index-row {
+      opacity: 0.5;
+    }
+  }
+
+  /* The screenshot grows into the free space beside it, stopping short of the year column and the row's edges. */
+  @media (min-width: 1280px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    /* Wraps "Work in progress", the one status long enough to reach the grown screenshot. */
+    .index-year {
+      max-width: 5.5rem;
+    }
+
+    .index-thumb {
+      transform-origin: right center;
+      transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .index-row:hover .index-thumb,
+    .index-row:focus-visible .index-thumb {
+      transform: scale(1.28);
+    }
   }
 
   @media (min-width: 640px) {

@@ -21,7 +21,7 @@ const HeadingTag = headingLevel;
 ---
 
 <article class="post-row">
-  <a href={`/post/${post.id}`} class="post-link group">
+  <a id={`note-${post.id}`} href={`/post/${post.id}`} class="post-link group" data-list-item>
     <time datetime={post.data.publishedDate.toISOString()} class="post-date text-sm tabular-nums">
       {post.data.publishedDate.toLocaleDateString("en-US", {
         month: "short",

@@ -44,7 +44,7 @@ const notes = posts.slice(0, 3).map((post) => {
       <div class="writing-grid">
         {notes.map(({ post, minutes, isMyanmar, excerpt, category }) => (
           <article class="writing-cell">
-            <a href={`/post/${post.id}`} class="writing-link">
+            <a id={`note-${post.id}`} href={`/post/${post.id}`} class="writing-link" data-list-item>
               <time datetime={post.data.publishedDate.toISOString()} class="text-sm tabular-nums text-(--text-faint)">
                 {post.data.publishedDate.toLocaleDateString("en-US", {
                   month: "short",

@@ -55,22 +55,20 @@ const email = siteConfig.social.email.replace("mailto:", "");
 </section>
 
 <script>
+  import { advanceChain, PHYSICS_STEP, type Spring } from "../../lib/animation/namePhysics";
   // The name answers the pointer: letters close to it swell heavy and take the accent, the ones around them
   // thin out and lean away. Everything rides on springs, so it overshoots a little and settles on its own.
   const REACH_EM = 0.62;
   const WAKE_RATIO = 2.1;
-  const SWELL_WEIGHT = 420;
-  const THIN_WEIGHT = 230;
+  const SWELL_WEIGHT = 290;
+  const THIN_WEIGHT = 110;
   // Wide and gentle, so a whole word makes room instead of one letter crashing into the next.
   const PUSH_REACH_EM = 1.4;
-  const PUSH_EM = 0.22;
-  const LIFT_EM = 0.08;
-  const SPRING = 0.12;
-  const DAMPING = 0.74;
-  const STRENGTH_EASING = 0.14;
-  const INTRO_SPEED_EM = 0.12;
-
-  type Spring = { value: number; velocity: number };
+  const PUSH_EM = 0.16;
+  const LIFT_EM = 0.055;
+  // Seconds-based damped oscillator: identical response at any display refresh rate.
+  const FREQUENCY = 19;
+  const DAMPING_RATIO = 0.72;
 
   type Letter = {
     element: HTMLElement;
@@ -79,15 +77,26 @@ const email = siteConfig.social.email.replace("mailto:", "");
     restY: number;
     x: Spring;
     y: Spring;
+    rotation: Spring;
+    mass: number;
     weight: Spring;
     tint: number;
   };
 
   // Moves a spring one step toward its goal and reports how far it still has to go.
   const pull = (spring: Spring, goal: number, step: number) => {
-    spring.velocity = (spring.velocity + (goal - spring.value) * SPRING * step) * DAMPING ** step;
-    spring.value += spring.velocity * step;
-    return Math.abs(goal - spring.value) + Math.abs(spring.velocity);
+    const displacement = spring.value - goal;
+    const decay = FREQUENCY * DAMPING_RATIO;
+    const frequency = FREQUENCY * Math.sqrt(1 - DAMPING_RATIO ** 2);
+    const envelope = Math.exp(-decay * step);
+    const sine = Math.sin(frequency * step);
+    const cosine = Math.cos(frequency * step);
+    const coefficient = (spring.velocity + decay * displacement) / frequency;
+    spring.value = goal + envelope * (displacement * cosine + coefficient * sine);
+    spring.velocity = envelope * (
+      spring.velocity * cosine - (decay * coefficient + frequency * displacement) * sine
+    );
+    return Math.abs(goal - spring.value) + Math.abs(spring.velocity) / FREQUENCY;
   };
 
   function wakeName(name: HTMLElement, hero: HTMLElement) {
@@ -131,6 +140,8 @@ const email = siteConfig.social.email.replace("mailto:", "");
           restY: (box.top + box.height / 2 - lineBox.top) / startSize,
           x: { value: 0, velocity: 0 },
           y: { value: 0, velocity: 0 },
+          rotation: { value: 0, velocity: 0 },
+          mass: 0.9 + box.width / startSize * 0.35,
           weight: { value: restWeight, velocity: 0 },
           tint: 0,
         });
@@ -139,24 +150,62 @@ const email = siteConfig.social.email.replace("mailto:", "");
       textNode.replaceWith(word);
     });
 
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let visible = true;
+    let size = startSize;
+    let pointerTargetX = 0;
+    let pointerTargetY = 0;
     let pointerX = 0;
     let pointerY = 0;
     let strength = 0;
     let strengthGoal = 0;
     let sweeping = false;
+    let sweepTime = 0;
     let frame = 0;
     let lastTime = 0;
     let releaseTimer = 0;
+    let introTimer = 0;
+    let accumulator = 0;
+    let pointerVelocityX = 0;
+    let pointerVelocityY = 0;
+    let lastPointerTime = 0;
+    let touchStarted = 0;
+    let touchActive = false;
+    let lastScroll = window.scrollY;
+    let scrollVelocity = 0;
+    const scrollProgress = () => Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * (window.innerWidth >= 1024 ? 0.6 : 0.3))));
+    const scrollSpring: Spring = { value: scrollProgress(), velocity: 0 };
+    const renderScroll = () => {
+      lines.forEach((line, i) => {
+        line.style.translate = motionPreference.matches ? "" : `${-i * 0.9 * scrollSpring.value}em 0`;
+      });
+    };
+    renderScroll();
 
     const settle = () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(releaseTimer);
+      window.clearTimeout(introTimer);
       frame = 0;
+      sweeping = false;
+      strengthGoal = 0;
       strength = 0;
+      accumulator = 0;
+      pointerVelocityX = pointerVelocityY = scrollVelocity = 0;
+      lastPointerTime = 0;
+      touchActive = false;
+      lastScroll = window.scrollY;
+      scrollSpring.value = scrollProgress();
+      scrollSpring.velocity = 0;
+      renderScroll();
       for (const letter of letters) {
         letter.x = { value: 0, velocity: 0 };
         letter.y = { value: 0, velocity: 0 };
+        letter.rotation = { value: 0, velocity: 0 };
         letter.weight = { value: restWeight, velocity: 0 };
         letter.tint = 0;
         letter.element.style.removeProperty("translate");
+        letter.element.style.removeProperty("rotate");
         letter.element.style.removeProperty("font-variation-settings");
         letter.element.style.removeProperty("--crest");
       }
@@ -164,47 +213,73 @@ const email = siteConfig.social.email.replace("mailto:", "");
 
     const tick = (time: number) => {
       // Keeps the motion the same speed on 60Hz and 120Hz screens.
-      const step = Math.min((time - lastTime) / 16.67, 3) || 1;
+      const step = Math.min((time - lastTime) / 1000, 0.05) || 1 / 60;
       lastTime = time;
 
-      const size = Number.parseFloat(getComputedStyle(name).fontSize);
-      const reach = REACH_EM * size;
       const lineBoxes = lines.map((line) => line.getBoundingClientRect());
-
-      if (sweeping) {
-        pointerX += INTRO_SPEED_EM * size * step;
-        if (pointerX > name.getBoundingClientRect().right + reach * WAKE_RATIO) {
-          sweeping = false;
-          strengthGoal = 0;
+      // Substeps keep the coupled solver stable and independent of render frequency.
+      accumulator += step;
+      let restless = false;
+      while (accumulator >= PHYSICS_STEP) {
+        const dt = PHYSICS_STEP;
+        accumulator -= dt;
+        const reach = REACH_EM * size;
+        if (sweeping) {
+          sweepTime += dt;
+          const row = Math.floor(sweepTime / 0.6);
+          if (row >= lines.length) {
+            sweeping = false;
+            strengthGoal = 0;
+          } else {
+            const word = letters.filter((letter) => letter.line === row);
+            const phase = (sweepTime % 0.6) / 0.6;
+            const start = word[0].restX * size - reach;
+            const end = word[word.length - 1].restX * size + reach;
+            pointerX = lineBoxes[row].left + start + (end - start) * phase;
+            pointerY = lineBoxes[row].top + word[0].restY * size;
+          }
+        } else if (strengthGoal > 0) {
+          const blend = 1 - Math.exp(-24 * dt);
+          pointerX += (pointerTargetX - pointerX) * blend;
+          pointerY += (pointerTargetY - pointerY) * blend;
         }
+        strength += (strengthGoal - strength) * (1 - Math.exp(-12 * dt));
+        pull(scrollSpring, scrollProgress(), dt);
+        pointerVelocityX *= Math.exp(-9 * dt);
+        pointerVelocityY *= Math.exp(-9 * dt);
+        scrollVelocity *= Math.exp(-10 * dt);
+
+        const targets = letters.map((letter) => {
+          const box = lineBoxes[letter.line];
+          const dx = box.left + letter.restX * size - pointerX;
+          const dy = box.top + letter.restY * size - pointerY;
+          const distance = Math.hypot(dx, dy);
+          const swell = Math.exp(-((distance / reach) ** 2));
+          const wake = Math.exp(-((distance / (reach * WAKE_RATIO)) ** 2));
+          const ratio = distance / (PUSH_REACH_EM * size);
+          const push = strength * PUSH_EM * size * ratio * Math.exp(-(ratio ** 2));
+          const press = touchActive ? Math.min((time - touchStarted) / 500, 1) : 0;
+          pull(letter.weight, restWeight + strength * (SWELL_WEIGHT * swell - THIN_WEIGHT * wake), dt);
+          letter.tint += (strength * swell * swell - letter.tint) * (1 - Math.exp(-20 * dt));
+          return {
+            x: distance ? dx / distance * push : 0,
+            y: (distance ? dy / distance * push : 0) - strength * LIFT_EM * size * swell + press * size * 0.08 * swell,
+            // Pointer drag and scroll inertia are external forces, not duration-based tweens.
+            forceX: pointerVelocityX * 5 * swell * strength,
+            forceY: pointerVelocityY * 5 * swell * strength + scrollVelocity * (1.5 + letter.line * 0.3),
+          };
+        });
+        advanceChain(letters, targets, size);
       }
-
-      strength += (strengthGoal - strength) * STRENGTH_EASING * step;
-      let restless = sweeping || Math.abs(strengthGoal - strength) > 0.005;
-
+      renderScroll();
+      restless = sweeping || touchActive || Math.abs(strengthGoal - strength) > 0.002 ||
+        Math.abs(scrollSpring.value - scrollProgress()) + Math.abs(scrollSpring.velocity) > 0.0005 ||
+        Math.abs(scrollVelocity) > 0.1 ||
+        (strengthGoal > 0 && Math.hypot(pointerTargetX - pointerX, pointerTargetY - pointerY) > 0.1);
       for (const letter of letters) {
-        const box = lineBoxes[letter.line];
-        const dx = box.left + letter.restX * size - pointerX;
-        // The intro is a front moving across the name, so only sideways distance counts.
-        const dy = sweeping ? 0 : box.top + letter.restY * size - pointerY;
-        const distance = Math.hypot(dx, dy);
-
-        const swell = Math.exp(-((distance / reach) ** 2));
-        const wake = Math.exp(-((distance / (reach * WAKE_RATIO)) ** 2));
-        const pushRatio = distance / (PUSH_REACH_EM * size);
-        const push = strength * PUSH_EM * size * pushRatio * Math.exp(-(pushRatio ** 2));
-        const lift = strength * LIFT_EM * size * swell;
-
-        const remaining =
-          pull(letter.x, distance ? (dx / distance) * push : 0, step) +
-          pull(letter.y, (distance ? (dy / distance) * push : 0) - lift, step) +
-          pull(letter.weight, restWeight + strength * (SWELL_WEIGHT * swell - THIN_WEIGHT * wake), step) / 20;
-
-        const tintGoal = strength * swell * swell;
-        letter.tint += (tintGoal - letter.tint) * 0.3 * step;
-        restless ||= remaining > 0.08 || Math.abs(tintGoal - letter.tint) > 0.01;
-
+        restless ||= Math.abs(letter.x.velocity) + Math.abs(letter.y.velocity) + Math.abs(letter.rotation.velocity) + Math.abs(letter.weight.velocity) > 0.1;
         letter.element.style.translate = `${letter.x.value.toFixed(2)}px ${letter.y.value.toFixed(2)}px`;
+        letter.element.style.rotate = `${letter.rotation.value.toFixed(3)}deg`;
         letter.element.style.fontVariationSettings = `"wght" ${Math.round(letter.weight.value)}`;
         letter.element.style.setProperty("--crest", letter.tint.toFixed(3));
       }
@@ -215,15 +290,29 @@ const email = siteConfig.social.email.replace("mailto:", "");
     };
 
     const run = () => {
-      if (frame) return;
+      if (frame || !visible || document.hidden || motionPreference.matches) return;
       lastTime = performance.now();
       frame = requestAnimationFrame(tick);
     };
 
     const follow = (event: PointerEvent) => {
+      if (motionPreference.matches || !visible) return;
+      window.clearTimeout(introTimer);
+      if (strengthGoal === 0 || sweeping) {
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+      }
+      const now = performance.now();
+      const elapsed = (now - lastPointerTime) / 1000;
+      if (lastPointerTime && elapsed > 0 && elapsed < 0.1) {
+        const limit = size * 14;
+        pointerVelocityX = Math.max(-limit, Math.min(limit, (event.clientX - pointerTargetX) / elapsed));
+        pointerVelocityY = Math.max(-limit, Math.min(limit, (event.clientY - pointerTargetY) / elapsed));
+      }
+      lastPointerTime = now;
       sweeping = false;
-      pointerX = event.clientX;
-      pointerY = event.clientY;
+      pointerTargetX = event.clientX;
+      pointerTargetY = event.clientY;
       strengthGoal = 1;
       run();
     };
@@ -238,22 +327,57 @@ const email = siteConfig.social.email.replace("mailto:", "");
       run();
     });
 
+    const release = () => {
+      window.clearTimeout(releaseTimer);
+      touchActive = false;
+      strengthGoal = 0;
+      run();
+    };
+    window.addEventListener("pointerup", (event) => {
+      if (event.pointerType === "touch") release();
+    });
+    window.addEventListener("pointercancel", release);
+    window.addEventListener("blur", settle);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) settle();
+    });
+    motionPreference.addEventListener("change", settle);
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (!visible) settle();
+      else if (Math.abs(scrollSpring.value - scrollProgress()) > 0.001) run();
+    }).observe(name);
+    new ResizeObserver(() => {
+      const nextSize = Number.parseFloat(getComputedStyle(name).fontSize);
+      if (nextSize !== size) {
+        size = nextSize;
+        settle();
+      }
+    }).observe(name);
+
     // A touch has no hover to follow, so tapping the name swells it there for a moment.
     name.addEventListener("pointerdown", (event) => {
       if (event.pointerType !== "touch") return;
       follow(event);
+      touchStarted = performance.now();
+      touchActive = !motionPreference.matches;
       window.clearTimeout(releaseTimer);
       releaseTimer = window.setTimeout(() => {
-        strengthGoal = 0;
-        run();
-      }, 420);
+        release();
+      }, 1800);
     });
 
-    // The name moves under a resting pointer while the page scrolls.
+    // Scrolling releases the interaction so it never competes with reading.
     window.addEventListener(
       "scroll",
       () => {
-        if (strengthGoal) run();
+        const delta = window.scrollY - lastScroll;
+        lastScroll = window.scrollY;
+        if (!visible || motionPreference.matches) return;
+        scrollVelocity = Math.max(-size * 12, Math.min(size * 12, scrollVelocity + delta * 12));
+        window.clearTimeout(introTimer);
+        sweeping = false;
+        release();
       },
       { passive: true },
     );
@@ -269,9 +393,10 @@ const email = siteConfig.social.email.replace("mailto:", "");
     // A wave crosses the name once on arrival, which also shows phones that it's alive.
     const [navigation] = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
     if (navigation?.type !== "back_forward") {
-      window.setTimeout(() => {
-        if (strengthGoal) return;
+      introTimer = window.setTimeout(() => {
+        if (strengthGoal || !visible || document.hidden || motionPreference.matches) return;
         pointerX = name.getBoundingClientRect().left - REACH_EM * WAKE_RATIO * Number.parseFloat(getComputedStyle(name).fontSize);
+        sweepTime = 0;
         sweeping = true;
         strengthGoal = 1;
         run();
@@ -282,7 +407,7 @@ const email = siteConfig.social.email.replace("mailto:", "");
   const heroName = document.querySelector<HTMLElement>("#hero-name");
   const heroSection = heroName?.closest("section");
 
-  if (heroName && heroSection && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+  if (heroName && heroSection) {
     // Letter positions are measured, so they have to be measured in the real font.
     document.fonts.ready.then(() => wakeName(heroName, heroSection));
   }
@@ -310,48 +435,8 @@ const email = siteConfig.social.email.replace("mailto:", "");
   .hero-name :global(.hero-letter) {
     display: inline-block;
     white-space: pre;
+    transform-origin: 50% 80%;
     color: color-mix(in oklch, var(--text-heading), var(--focus) calc(var(--crest, 0) * 100%));
-  }
-
-  /* Scrolling away pulls the stagger into a flush column by the time the name leaves the screen. */
-  @property --name-flush-scroll {
-    syntax: "<number>";
-    inherits: true;
-    initial-value: 0;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-name .hero-name-line:nth-child(2) {
-      transform: translateX(calc(var(--name-flush-scroll) * -0.9em));
-    }
-
-    .hero-name .hero-name-line:nth-child(3) {
-      transform: translateX(calc(var(--name-flush-scroll) * -1.8em));
-    }
-  }
-
-  @supports (animation-timeline: scroll()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .hero-name {
-        animation-name: hero-name-flush;
-        animation-timing-function: linear;
-        animation-fill-mode: both;
-        animation-timeline: scroll(root block);
-        animation-range: 0px 30svh;
-      }
-    }
-
-    @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-      .hero-name {
-        animation-range: 0px 60svh;
-      }
-    }
-  }
-
-  @keyframes hero-name-flush {
-    to {
-      --name-flush-scroll: 1;
-    }
   }
 
   /* Tracks match the header's 64/36 split, so the nav's links stand over the line and actions. */

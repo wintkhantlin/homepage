@@ -1,0 +1,50 @@
+---
+const { email } = Astro.props as { email: string };
+---
+<span class="slot-email" data-slot-email={email}>
+  <span class="sr-only">{email}</span>
+  <span aria-hidden="true" class="slot-email-text">{email}</span>
+</span>
+<style>
+  .slot-email { display: inline-flex; white-space: nowrap; line-height: 1.5; }
+  .slot-email :global(.slot-cell) { display: inline-block; height: 1.5em; overflow: hidden; vertical-align: bottom; }
+  .slot-email :global(.slot-reel) { display: flex; flex-direction: column; }
+  .slot-email :global(.slot-glyph) { height: 1.5em; flex-shrink: 0; }
+</style>
+<script>
+  import { spring, reducedMotion } from '../lib/animation/spring';
+  for (const label of document.querySelectorAll<HTMLElement>('[data-slot-email]')) {
+    const text = label.dataset.slotEmail ?? '';
+    const holder = label.querySelector<HTMLElement>('.slot-email-text');
+    const trigger = label.closest('a');
+    if (!holder || !trigger) continue;
+    const reels = [...text].map((character, index) => {
+      const cell = document.createElement('span'); cell.className = 'slot-cell';
+      const reel = document.createElement('span'); reel.className = 'slot-reel';
+      for (let i = 0; i < 5; i++) {
+        const glyph = document.createElement('span'); glyph.className = 'slot-glyph'; glyph.textContent = character;
+        reel.append(glyph);
+      }
+      cell.append(reel);
+      return { cell, motion: spring(1, value => { reel.style.transform = `translateY(${-value * 1.5}em)`; }, { mass: 0.85 + index * 0.045, stiffness: 160, damping: 20 }) };
+    });
+    holder.replaceChildren(...reels.map(reel => reel.cell));
+    let engaged = false;
+    const roll = () => {
+      if (engaged || reducedMotion.matches) return;
+      engaged = true;
+      reels.forEach(({ motion }) => motion.set(3));
+    };
+    const reset = () => {
+      if (trigger.matches(':hover, :focus-visible')) return;
+      engaged = false;
+      reels.forEach(({ motion }) => motion.set(1));
+    };
+    trigger.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') roll(); });
+    trigger.addEventListener('focus', roll);
+    trigger.addEventListener('pointerleave', reset);
+    trigger.addEventListener('blur', reset);
+    trigger.addEventListener('pointerdown', roll);
+    trigger.addEventListener('pointercancel', () => { engaged = false; reels.forEach(({ motion }) => motion.set(1)); });
+  }
+</script>

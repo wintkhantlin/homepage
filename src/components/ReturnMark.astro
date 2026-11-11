@@ -21,6 +21,10 @@
   const mark = (item: Element | null | undefined) => {
     if (!item) return;
     item.setAttribute("data-returned", "");
+    if (document.documentElement.hasAttribute("data-physics-home")) {
+      window.setTimeout(() => item.removeAttribute("data-returned"), 1800);
+      return;
+    }
     item.addEventListener("animationend", () => item.removeAttribute("data-returned"), { once: true });
   };
 

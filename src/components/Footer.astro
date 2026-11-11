@@ -1,4 +1,5 @@
 ---
+import SlotEmail from "./SlotEmail.astro";
 import CopyEmailButton from "./CopyEmailButton.astro";
 
 const pathname = Astro.url.pathname;
@@ -44,7 +45,7 @@ const isActive = (href: string) => {
               rel={link.external ? "noopener noreferrer" : undefined}
               class="inline-flex min-h-11 items-center text-lg text-(--text-heading) underline decoration-(--border-strong) underline-offset-[0.3em] transition-[text-decoration-color] duration-200 hover:decoration-(--text-heading) sm:text-xl"
             >
-              {link.label}
+              {link.href.startsWith("mailto:") ? <SlotEmail email={link.label} /> : link.label}
               {link.external && <span class="sr-only"> (opens in a new tab)</span>}
             </a>
             {link.href.startsWith("mailto:") && <CopyEmailButton email={link.label} class="ml-2" />}
@@ -64,7 +65,7 @@ const isActive = (href: string) => {
                 aria-current={isActive(link.href) ? "page" : undefined}
                 class="inline-flex min-h-11 items-center px-1.5 text-sm text-(--text-muted) transition-colors duration-200 hover:text-(--text-heading) aria-[current=page]:text-(--text-heading)"
               >
-                {link.label}
+                {link.href.startsWith("mailto:") ? <SlotEmail email={link.label} /> : link.label}
               </a>
             </li>
           ))}

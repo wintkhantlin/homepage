@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import ProjectName from "../ProjectName.astro";
 
 type Project = Awaited<
@@ -33,208 +34,63 @@ const maturityLabels = {
 } as const;
 ---
 
-<!-- The work as an index: each row names the project, what it does, its stack and its year, with its screen always in view. -->
-<section
-  id="projects"
-  aria-labelledby={heading ? "index-heading" : undefined}
-  class:list={[heading && "scroll-mt-[calc(var(--section-gap-s)*-1)] pt-(--section-gap-s)"]}
->
+<section id="projects" aria-labelledby={heading ? "index-heading" : undefined}
+  class:list={[heading && "scroll-mt-[calc(var(--section-gap-s)*-1)] pt-(--section-gap-s)"]}>
   {heading && (
-    <div class="index-head">
-      <h2 id="index-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">
-        {heading}
-      </h2>
-      {projects.length > 0 && (
-        <a
-          href="/projects"
-          class="inline-flex min-h-11 w-fit items-center text-base font-semibold text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"
-        >
-          View all work
-        </a>
-      )}
+    <div class="index-head" data-spring-reveal>
+      <div>
+        <h2 id="index-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">{heading}</h2>
+        <p class="mt-4 max-w-md text-base leading-relaxed text-(--text-muted)">The products, the systems behind them, and what I learned building them.</p>
+      </div>
+      <a href="/projects" class="index-all">View all work <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
     </div>
   )}
-
   {projects.length > 0 ? (
-  <ul
-    class="index-list"
-    aria-labelledby={heading ? "index-heading" : undefined}
-    aria-label={heading ? undefined : "All work"}
-  >
-    {projects.map((project, index) => (
-      <li>
-        <a
-          id={`work-${project.id}`}
-          href={`/project/${project.id}`}
-          class="index-row"
-          data-list-item
-          aria-labelledby={`index-name-${index}`}
-          aria-describedby={`index-about-${index} index-stack-${index}`}
-        >
-          <div class="index-name-cell">
-            <ProjectName
-              as={ItemHeading}
-              id={`index-name-${index}`}
-              name={project.data.name}
-              slug={project.id}
-              class="index-name text-title font-semibold tracking-[-0.02em]"
-            />
-            <p class="mt-2.5 text-sm text-(--text-faint)">{projectKind(project)}</p>
-          </div>
-
-          <p id={`index-about-${index}`} class="index-about text-pretty text-base leading-relaxed text-(--text-heading)">
-            {project.data.description}
-          </p>
-
-          <p id={`index-stack-${index}`} class="index-stack text-base leading-relaxed text-(--text-muted)">
-            <span class="sr-only">Built with </span>
-            {project.data.technologies?.slice(0, 4).join(", ")}
-          </p>
-
-          <p class="index-year text-sm text-(--text-muted)">
-            <span class="block tabular-nums text-(--text-heading)">{project.data.publishedDate.getFullYear()}</span>
-            <span class="block">{maturityLabels[project.data.maturity]}</span>
-          </p>
-
-          <span class="index-thumb" aria-hidden="true" data-kind="product">
-            <Image
-              src={project.data.img}
-              alt=""
-              widths={[320, 480, 640]}
-              sizes="(min-width: 1280px) 308px, (min-width: 1024px) 240px, 100vw"
-              loading="lazy"
-              class="h-full w-full object-cover object-top"
-            />
-          </span>
-        </a>
-      </li>
-    ))}
-  </ul>
-  ) : (
-    <p class="border-t border-(--border) py-12 text-base leading-relaxed text-(--text-muted)">
-      No project case studies are published yet. Check back soon.
-    </p>
-  )}
+    <ul class="index-list" aria-label={heading ? undefined : "All work"}>
+      {projects.map((project, index) => (
+        <li data-spring-reveal>
+          <a id={`work-${project.id}`} href={`/project/${project.id}`} class="index-row" data-list-item data-spring-card
+            aria-labelledby={`index-name-${index}`} aria-describedby={`index-about-${index}`}>
+            <div class="index-preview" aria-hidden="true">
+              <span class="index-thumb" data-spring-image>
+                <Image src={project.data.img} alt="" widths={[480, 720, 960]} sizes="(min-width: 1024px) 560px, (min-width: 640px) 45vw, 100vw" loading="lazy" class="h-full w-full object-contain" />
+              </span>
+            </div>
+            <div class="index-detail">
+              <p class="index-meta"><span>{projectKind(project)}</span><span>{project.data.publishedDate.getFullYear()} · {maturityLabels[project.data.maturity]}</span></p>
+              <div class="index-title-line">
+                <ProjectName as={ItemHeading} id={`index-name-${index}`} name={project.data.name} slug={project.id} class="index-name" />
+                <span class="index-arrow" data-spring-arrow aria-hidden="true"><Icon name="lucide:arrow-up-right" class="size-6" /></span>
+              </div>
+              <p id={`index-about-${index}`} class="index-about">{project.data.description}</p>
+              <p class="index-stack"><span class="sr-only">Built with </span>{project.data.technologies?.slice(0, 4).join(" / ")}</p>
+              <span class="index-case">Explore the project <span aria-hidden="true">↗</span></span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : <p class="py-12 text-(--text-muted)">No project case studies are published yet. Check back soon.</p>}
 </section>
-
 <style>
-  .index-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
-    justify-content: space-between;
-    gap: 1rem 2rem;
-    padding-bottom: 2rem;
-  }
-
-  .index-list {
-    border-top: 1px solid var(--border);
-  }
-
-  .index-list > li {
-    border-bottom: 1px solid var(--border);
-  }
-
-  .index-row {
-    display: grid;
-    gap: 1rem;
-    margin-inline: -0.75rem;
-    border-radius: 0.5rem;
-    padding: 1.5rem 0.75rem;
-    color: var(--text-heading);
-    transition: background-color 200ms ease, opacity 200ms ease;
-  }
-
-  .index-name {
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 0.2em;
-    transition: text-decoration-color 200ms ease;
-  }
-
-  .index-thumb {
-    display: block;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    border-radius: 0.375rem;
-    background: var(--surface);
-    outline: 1px solid var(--border);
-    outline-offset: -1px;
-  }
-
-  .index-row:hover,
-  .index-row:focus-visible {
-    background: var(--surface);
-  }
-
-  .index-row:active {
-    background: var(--surface-raised);
-  }
-
-  .index-row:hover .index-name,
-  .index-row:focus-visible .index-name {
-    text-decoration-color: currentColor;
-  }
-
-  /* In the dark theme the near-white screenshots rest a step down, so they don't outshine the project names. */
-  :global(html:not(.light)) .index-thumb :global(img) {
-    opacity: 0.8;
-    transition: opacity 200ms ease;
-  }
-
-  .index-row:hover .index-thumb :global(img),
-  .index-row:focus-visible .index-thumb :global(img) {
-    opacity: 1;
-  }
-
-  /* Pointing at a project quiets the others. Each li holds the hairline between rows, so crossing it doesn't flicker. */
-  @media (hover: hover) and (pointer: fine) and (prefers-contrast: no-preference) {
-    .index-list:has(> li:hover, .index-row:focus-visible) > li:not(:hover, :has(.index-row:focus-visible)) .index-row {
-      opacity: 0.5;
-    }
-  }
-
-  /* The screenshot grows into the free space beside it, stopping short of the year column and the row's edges. */
-  @media (min-width: 1280px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    /* Wraps "Work in progress", the one status long enough to reach the grown screenshot. */
-    .index-year {
-      max-width: 5.5rem;
-    }
-
-    .index-thumb {
-      transform-origin: right center;
-      transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .index-row:hover .index-thumb,
-    .index-row:focus-visible .index-thumb {
-      transform: scale(1.28);
-    }
-  }
-
+  .index-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.5rem; padding-bottom: 2.5rem; }
+  .index-all { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; color: var(--text-heading); border-bottom: 1px solid var(--border-strong); }
+  .index-list { list-style: none; padding: 0; }
+  .index-list > li { border-top: 1px solid var(--border); }
+  .index-list > li:last-child { border-bottom: 1px solid var(--border); }
+  .index-row { display: grid; gap: 1.5rem; padding-block: 1.75rem; color: var(--text-heading); }
+  .index-preview { display: grid; place-items: center; aspect-ratio: 16 / 10; overflow: hidden; border-radius: .5rem; padding: clamp(1rem, 2.5vw, 2.25rem); background: color-mix(in oklch, var(--surface) 90%, var(--text-faint)); }
+  .index-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: .25rem; overflow: hidden; box-shadow: 0 12px 28px -12px var(--shadow-color); outline: 1px solid var(--border); }
+  .index-detail { align-self: center; padding-block: .25rem; }
+  .index-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; font-size: .75rem; color: var(--text-faint); }
+  .index-title-line { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+  .index-name { font-size: clamp(1.8rem, 3vw, 2.75rem); line-height: 1.12; letter-spacing: -.045em; font-weight: 600; }
+  .index-arrow { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex-shrink: 0; border: 1px solid var(--border-strong); border-radius: 50%; }
+  .index-about { max-width: 34rem; margin-top: 1rem; font-size: 1rem; line-height: 1.7; color: var(--text-muted); text-wrap: pretty; }
+  .index-stack { margin-top: 1.25rem; font-size: .75rem; line-height: 1.8; color: var(--text-faint); }
+  .index-case { display: inline-flex; gap: .5rem; margin-top: 1.5rem; font-size: .8125rem; font-weight: 500; }
+  .index-row:hover .index-case, .index-row:focus-visible .index-case { text-decoration: underline; text-underline-offset: .3em; }
   @media (min-width: 640px) {
-    .index-row {
-      grid-template-columns: minmax(0, 1fr) 15rem;
-    }
-
-    .index-thumb {
-      grid-column: 2;
-      grid-row: 1 / span 4;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .index-row {
-      grid-template-columns: minmax(0, 2.25fr) minmax(0, 4.5fr) minmax(0, 2.25fr) minmax(0, 1.4fr) 15rem;
-      align-items: center;
-      column-gap: 2rem;
-      padding-block: 1.75rem;
-    }
-
-    .index-thumb {
-      grid-column: 5;
-      grid-row: 1;
-    }
+    .index-row { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); padding-block: 2.5rem; }
   }
 </style>

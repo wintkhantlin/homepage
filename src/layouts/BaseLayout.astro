@@ -48,7 +48,7 @@ const structuredDataPayload = structuredData
   : undefined;
 ---
 
-<html lang={lang}>
+<html lang={lang} data-physics-home={pathname === "/" ? "" : undefined}>
   <head>
     <Font cssVariable="--font-heading" preload />
     <Font cssVariable="--font-body" />

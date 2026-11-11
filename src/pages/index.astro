@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeMotion from "../components/home/HomeMotion.astro";
 import HeroSection from "../components/home/HeroSection.astro";
 import WorkIndex from "../components/home/WorkIndex.astro";
 import RecognitionSection from "../components/home/RecognitionSection.astro";
@@ -42,4 +43,5 @@ const structuredData = [
     <WritingSection posts={posts} />
     <AboutSection showTools={false} />
   </main>
+  <HomeMotion />
 </BaseLayout>

@@ -59,33 +59,36 @@ const largePhotos = await Promise.all(
 );
 ---
 
-<!-- Split: the results as a dated list beside two photographs from the GUSTO forum, neither of them of a person. The photos share the list's top and bottom edges. -->
+<!-- Events and outcomes stay distinct; the adjacent photographs document the GUSTO forum. -->
 <section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-[calc(var(--section-gap-l)*-1)] pt-(--section-gap-l)">
-  <h2
+  <h2 data-spring-reveal
     id="recognition-heading"
     class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)"
   >
     Competition results
   </h2>
 
+  <p class="mt-4 max-w-lg text-base leading-relaxed text-(--text-muted)" data-spring-reveal>From technical competitions to innovation awards.</p>
+
   <div class="recognition-split mt-10">
     <div class="recognition-ledger">
-      <ol class="recognition-list">
+      <ul class="recognition-list" role="list">
         {recognitions.map((recognition) => (
-          <li class="recognition-row">
-            <p class="text-title font-semibold tracking-[-0.02em] text-(--text-heading)">{recognition.result}</p>
-            <p class="recognition-event text-base leading-relaxed text-(--text-muted)">{recognition.event}</p>
+          <li class="recognition-row" data-spring-reveal>
+            <p class="recognition-result" data-winner={recognition.result === "Winner" ? "true" : undefined}><Icon name={recognition.result === "Winner" ? "lucide:trophy" : "lucide:award"} class="size-3.5" aria-hidden="true" />{recognition.result}</p>
+            <p class="recognition-event">{recognition.event}</p>
             <time datetime={recognition.datetime} class="recognition-date text-sm tabular-nums text-(--text-faint)">
               {recognition.date}
             </time>
           </li>
         ))}
-      </ol>
+      </ul>
     </div>
 
+    <div class="recognition-gallery" data-spring-reveal>
     <div class="recognition-photos">
       <figure class="recognition-photo recognition-photo--lead">
-        <a href={largePhotos[0].src} class="photo-open" data-photo-index="0" aria-label={`View larger: ${photos[0].alt}`}>
+        <a href={largePhotos[0].src} class="photo-open" data-spring-card data-photo-index="0" aria-label={`View larger: ${photos[0].alt}`}>
         <Image
           src={gustoProjectDisplay}
           alt="The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum"
@@ -94,12 +97,12 @@ const largePhotos = await Promise.all(
           quality={70}
           sizes="(min-width: 1024px) 330px, min(57vw, 286px)"
           loading="lazy"
-          class="h-full w-full object-cover"
+          class="h-full w-full object-cover" data-spring-image
         />
         </a>
       </figure>
       <figure class="recognition-photo recognition-photo--second">
-        <a href={largePhotos[1].src} class="photo-open" data-photo-index="1" aria-label={`View larger: ${photos[1].alt}`}>
+        <a href={largePhotos[1].src} class="photo-open" data-spring-card data-photo-index="1" aria-label={`View larger: ${photos[1].alt}`}>
         <Image
           src={gustoMedals}
           alt="Two gold GUSTO College award medals held in one hand"
@@ -108,19 +111,22 @@ const largePhotos = await Promise.all(
           quality={70}
           sizes="(min-width: 1024px) 245px, min(43vw, 215px)"
           loading="lazy"
-          class="h-full w-full object-cover"
+          class="h-full w-full object-cover" data-spring-image
         />
         </a>
       </figure>
     </div>
 
     <p class="recognition-caption text-sm text-(--text-faint)">GUSTO Innovation Awards & Forum, August 2026</p>
+    </div>
   </div>
 
   <!-- Opens over the page when scripting runs; without it, each photo link opens the full-size file. -->
   <dialog class="photo-viewer" aria-labelledby="photo-viewer-caption" data-photo-viewer data-photos={JSON.stringify(largePhotos)}>
     <figure class="photo-viewer-figure">
+      <div class="photo-viewer-stage" data-viewer-stage>
       <img class="photo-viewer-img" width={largePhotos[0].width} height={largePhotos[0].height} alt={largePhotos[0].alt} data-viewer-img />
+      </div>
       <figcaption id="photo-viewer-caption" class="text-sm text-(--text-muted)" data-viewer-caption>{largePhotos[0].caption}</figcaption>
     </figure>
 
@@ -145,6 +151,7 @@ const largePhotos = await Promise.all(
 </section>
 
 <script>
+  import { spring } from "../../lib/animation/spring";
   type Photo = { src: string; width: number; height: number; alt: string; caption: string };
 
   const viewer = document.querySelector<HTMLDialogElement>("[data-photo-viewer]");
@@ -157,50 +164,121 @@ const largePhotos = await Promise.all(
     const closeButton = viewer.querySelector<HTMLButtonElement>("[data-viewer-close]");
     let current = 0;
     let opener: HTMLElement | null = null;
+    let closing = false;
+    let request = 0;
+    let direction = 1;
+    const stage = viewer.querySelector<HTMLElement>('[data-viewer-stage]');
+    const outgoing = document.createElement('img');
+    outgoing.className = 'photo-viewer-img photo-viewer-outgoing';
+    outgoing.alt = '';
+    outgoing.setAttribute('aria-hidden', 'true');
+    outgoing.hidden = true;
+    stage?.append(outgoing);
+    const photoMotion = spring(1, value => {
+      const progress = Math.max(0, Math.min(1, value));
+      if (img) {
+        img.style.opacity = String(progress);
+        img.style.transform = `translateX(${direction * (1 - value) * 16}px)`;
+      }
+      outgoing.style.opacity = String(1 - progress);
+      outgoing.style.transform = `translateX(${-direction * value * 12}px)`;
+      if (value === 1) outgoing.hidden = true;
+    }, { stiffness: 260, damping: 28 });
+    const motion = spring(1, value => {
+      const progress = Math.max(0, Math.min(1, value));
+      viewer.style.opacity = String(progress);
+      viewer.style.setProperty('--viewer-backdrop', String(progress));
+      viewer.style.transform = `translateY(${(1 - value) * 20}px) scale(${0.97 + value * 0.03})`;
+      if (closing && value === 0) { closing = false; viewer.close(); }
+    }, { stiffness: 240, damping: 26 });
+    const close = () => {
+      if (!viewer.open || closing) return;
+      closing = true;
+      request++;
+      viewer.removeAttribute('aria-busy');
+      motion.set(0);
+    };
 
-    const show = (index: number) => {
+    const show = async (index: number, opening = false) => {
+      if (closing) return;
+      const revision = ++request;
+      direction = index >= current ? 1 : -1;
       current = (index + photos.length) % photos.length;
       const photo = photos[current];
-      // The full-size file loads only when the viewer opens, so the page doesn't download it up front.
-      if (img) {
-        img.src = photo.src;
-        img.width = photo.width;
-        img.height = photo.height;
+      const thumbnail = document.querySelector<HTMLImageElement>(`.photo-open[data-photo-index="${current}"] img`);
+      if (opening && img) {
+        // Reuse the decoded thumbnail immediately; the full-size image loads without moving the layout.
+        photoMotion.jump(1);
+        img.src = thumbnail?.currentSrc || photo.src;
         img.alt = photo.alt;
+        if (caption) caption.textContent = photo.caption;
+        if (count) count.textContent = `${current + 1} of ${photos.length}`;
       }
+      viewer.setAttribute('aria-busy', 'true');
+      const loaded = new Image();
+      loaded.src = photo.src;
+      try { await loaded.decode(); }
+      catch {
+        if (revision === request) viewer.removeAttribute('aria-busy');
+        return; // Keep the visible image if loading fails.
+      }
+      if (revision !== request || !viewer.open || closing || !img) return;
+      photoMotion.jump(1);
+      outgoing.src = img.src;
+      img.src = loaded.src;
+      img.alt = photo.alt;
       if (caption) caption.textContent = photo.caption;
       if (count) count.textContent = `${current + 1} of ${photos.length}`;
+      viewer.removeAttribute('aria-busy');
+      if (!opening) {
+        outgoing.hidden = false;
+        photoMotion.jump(0);
+        photoMotion.set(1);
+      }
     };
 
     for (const link of document.querySelectorAll<HTMLAnchorElement>(".photo-open")) {
       link.addEventListener("click", (event) => {
         event.preventDefault();
         opener = link;
-        show(Number(link.dataset.photoIndex ?? 0));
+        closing = false;
+        void show(Number(link.dataset.photoIndex ?? 0), true);
+        motion.jump(0);
         viewer.showModal();
-        closeButton?.focus();
+        motion.set(1);
+        closeButton?.focus({ preventScroll: true });
       });
     }
 
     viewer.querySelector("[data-viewer-prev]")?.addEventListener("click", () => show(current - 1));
     viewer.querySelector("[data-viewer-next]")?.addEventListener("click", () => show(current + 1));
-    closeButton?.addEventListener("click", () => viewer.close());
+    closeButton?.addEventListener("click", close);
+    viewer.addEventListener("cancel", event => { event.preventDefault(); close(); });
 
     viewer.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowLeft") show(current - 1);
-      if (event.key === "ArrowRight") show(current + 1);
+      if (event.key === "ArrowLeft") { event.preventDefault(); void show(current - 1); }
+      if (event.key === "ArrowRight") { event.preventDefault(); void show(current + 1); }
     });
 
-    viewer.addEventListener("close", () => opener?.focus());
+    viewer.addEventListener("close", () => {
+      request++;
+      closing = false;
+      photoMotion.jump(1);
+      opener?.focus({ preventScroll: true });
+    });
 
     // A click on the backdrop lands on the dialog itself, never on its content.
     viewer.addEventListener("click", (event) => {
-      if (event.target === viewer) viewer.close();
+      if (event.target !== viewer) return;
+      const box = viewer.getBoundingClientRect();
+      if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) close();
     });
   }
 </script>
 
 <style>
+  .recognition-gallery { align-self: start; }
+  .recognition-caption { margin-top: 1rem; line-height: 1.6; max-width: 28rem; }
   .recognition-split {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -208,11 +286,12 @@ const largePhotos = await Promise.all(
   }
 
   .recognition-ledger {
-    container-type: inline-size;
     margin-bottom: 2.25rem;
   }
 
   .recognition-list {
+    list-style: none;
+    padding: 0;
     border-top: 1px solid var(--border);
   }
 
@@ -220,13 +299,15 @@ const largePhotos = await Promise.all(
   .recognition-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 0.25rem 1.5rem;
+    gap: 0.75rem 1rem;
     align-items: baseline;
     border-bottom: 1px solid var(--border);
-    padding-block: 1.25rem;
+    padding-block: 1.5rem;
   }
 
-  .recognition-event {
+  .recognition-result { display: inline-flex; align-items: center; gap: .5rem; font-size: .75rem; font-weight: 500; color: var(--text-muted); }
+  .recognition-result[data-winner] { color: var(--focus); }
+  .recognition-event { font-size: clamp(1.125rem, 1.5vw, 1.5rem); line-height: 1.4; letter-spacing: -.025em; font-weight: 500; color: var(--text-heading);
     grid-row: 2;
     grid-column: 1 / -1;
   }
@@ -289,12 +370,11 @@ const largePhotos = await Promise.all(
     color: var(--text);
   }
 
-  .photo-viewer[open] {
-    animation: viewer-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
+
 
   .photo-viewer::backdrop {
     background: color-mix(in srgb, var(--bg) 88%, transparent);
+    opacity: var(--viewer-backdrop, 0);
   }
 
   .photo-viewer-figure {
@@ -302,13 +382,31 @@ const largePhotos = await Promise.all(
     gap: 0.75rem;
   }
 
-  .photo-viewer-img {
+  .photo-viewer-stage {
+    position: relative;
+    height: min(62svh, 42rem);
+    overflow: hidden;
+    border-radius: .5rem;
+    background: var(--bg);
+  }
+
+  .photo-viewer-stage :global(.photo-viewer-img) {
+    display: block;
     width: 100%;
-    max-height: 70svh;
+    height: 100%;
     border-radius: 0.5rem;
     background: var(--bg);
     object-fit: contain;
   }
+
+  .photo-viewer-stage :global(.photo-viewer-outgoing) {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .photo-viewer-stage :global(.photo-viewer-outgoing[hidden]) { display: none; }
+  .photo-viewer-figure figcaption { min-height: 3.2em; }
+  :global(html:has(.photo-viewer[open])) { overflow: hidden; scrollbar-gutter: stable; }
 
   .photo-viewer-controls {
     display: flex;
@@ -342,40 +440,12 @@ const largePhotos = await Promise.all(
     background: var(--bg);
   }
 
-  @keyframes viewer-in {
-    from {
-      opacity: 0;
-      transform: translateY(0.5rem);
-    }
-  }
-
   .recognition-photo--lead {
     aspect-ratio: 3 / 4;
   }
 
   .recognition-photo--second {
     aspect-ratio: 9 / 16;
-  }
-
-  /* One line per result once the list is wide enough to hold the longest event name. */
-  @container (min-width: 40rem) {
-    .recognition-list {
-      display: grid;
-      grid-template-columns: max-content minmax(0, 1fr) max-content;
-      column-gap: 1.5rem;
-    }
-
-    .recognition-row {
-      grid-column: 1 / -1;
-      grid-template-columns: subgrid;
-      padding-block: 1.5rem;
-    }
-
-    .recognition-event,
-    .recognition-date {
-      grid-row: auto;
-      grid-column: auto;
-    }
   }
 
   @media (min-width: 1024px) {
@@ -390,22 +460,13 @@ const largePhotos = await Promise.all(
 
     .recognition-photos {
       max-width: none;
-    }
-
-    /* The list sets the row's height and the photos fill it, so their edges meet its rules. */
-    .recognition-photo--lead,
-    .recognition-photo--second {
-      position: relative;
-      aspect-ratio: auto;
-    }
-
-    .photo-open {
-      position: absolute;
-      inset: 0;
+      align-self: start;
+      margin-top: 1.5rem;
     }
 
     .recognition-caption {
       grid-column: 2;
+      align-self: start;
     }
   }
 

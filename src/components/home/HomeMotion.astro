@@ -1,0 +1,115 @@
+<script>
+  import { spring, reducedMotion } from '../../lib/animation/spring';
+  // Homepage motion is driven by the same mass–spring solver, never CSS durations.
+  const reveals = new Map<Element, ReturnType<typeof spring>>();
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) if (entry.isIntersecting) {
+      reveals.get(entry.target)?.set(1);
+      observer.unobserve(entry.target);
+    }
+  }, { threshold: 0.08 });
+  for (const element of document.querySelectorAll<HTMLElement>('[data-spring-reveal], .writing-head, .writing-cell, .about-split, .footer-close')) {
+    const motion = spring(reducedMotion.matches ? 1 : 0, value => {
+      element.style.translate = `0 ${(1 - value) * 28}px`;
+      element.style.opacity = String(Math.max(0.45, Math.min(1, 0.45 + value * 0.55)));
+    }, { mass: 1.15, stiffness: 180, damping: 24 });
+    reveals.set(element, motion);
+    observer.observe(element);
+    element.addEventListener('focusin', () => motion.jump(1));
+  }
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) for (const motion of reveals.values()) motion.jump(1);
+  });
+
+  for (const card of document.querySelectorAll<HTMLElement>('[data-spring-card]')) {
+    const image = card.querySelector<HTMLElement>('[data-spring-image]');
+    const arrow = card.querySelector<HTMLElement>('[data-spring-arrow]');
+    let hovered = false;
+    let focused = false;
+    const motion = spring(0, value => {
+      if (image) image.style.transform = `scale(${1 + value * 0.035}) translateY(${-value * 3}px)`;
+      if (arrow) arrow.style.transform = `translate(${value * 2}px, ${-value * 2}px) rotate(${value * 6}deg)`;
+    }, { mass: 1.1, stiffness: 200, damping: 22 });
+    const update = () => motion.set(hovered || focused ? 1 : 0);
+    card.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') { hovered = true; update(); } });
+    card.addEventListener('pointerleave', () => { hovered = false; update(); });
+    card.addEventListener('focusin', () => { focused = true; update(); });
+    card.addEventListener('focusout', () => { focused = false; update(); });
+  }
+
+  for (const control of document.querySelectorAll<HTMLElement>('a:not(.index-row):not(.photo-open), button')) {
+    const icon = control.querySelector<SVGElement>('svg');
+    const isTheme = control.id === 'theme-toggle';
+    const press = spring(1, value => { control.style.scale = String(value); }, { stiffness: 300, damping: 24 });
+    control.addEventListener('pointerdown', () => press.set(0.97));
+    const release = () => press.set(1);
+    control.addEventListener('pointerup', release);
+    control.addEventListener('pointerleave', release);
+    control.addEventListener('pointercancel', release);
+    control.addEventListener('blur', release);
+    if (!icon || control.matches('[href^="mailto:"]')) continue;
+    const motion = spring(0, value => {
+      if (isTheme) control.style.rotate = `${value * 180}deg`;
+      else icon.style.transform = `translateY(${-value * 2}px)`;
+    });
+    if (isTheme) {
+      let turns = 0;
+      control.addEventListener('click', () => motion.set(++turns));
+    } else {
+      control.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') motion.set(1); });
+      control.addEventListener('pointerleave', () => motion.set(0));
+      control.addEventListener('focus', () => motion.set(1));
+      control.addEventListener('blur', () => motion.set(0));
+    }
+  }
+
+  const header = document.querySelector<HTMLElement>('.site-header');
+  if (header) {
+    const motion = spring(0, value => { header.style.translate = `0 ${-value * 100}%`; }, { stiffness: 230, damping: 27 });
+    const update = () => motion.set(header.hasAttribute('data-hidden') && !header.matches(':focus-within') ? 1 : 0);
+    new MutationObserver(update).observe(header, { attributes: true, attributeFilter: ['data-hidden'] });
+    header.addEventListener('focusin', update);
+    header.addEventListener('focusout', () => queueMicrotask(update));
+    update();
+  }
+
+  // Spring navigation for explicit anchor clicks; wheel/touch scrolling remains native.
+  let navigating = false;
+  const scroll = spring(window.scrollY, value => {
+    if (navigating) window.scrollTo({ top: value, behavior: 'instant' });
+  }, { stiffness: 280, damping: 30 });
+  const stop = () => { navigating = false; scroll.jump(window.scrollY); };
+  for (const event of ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const) window.addEventListener(event, stop, { passive: true });
+  document.addEventListener('click', event => {
+    const link = (event.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || reducedMotion.matches) return;
+    const id = link.hash.slice(1);
+    const target = document.getElementById(id);
+    if (!target) return;
+    event.preventDefault();
+    const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+    const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    const destination = Math.max(0, Math.min(document.documentElement.scrollHeight - innerHeight, target.getBoundingClientRect().top + window.scrollY - margin - padding));
+    scroll.jump(window.scrollY);
+    navigating = true;
+    scroll.set(destination);
+    history.pushState(null, '', link.hash);
+    const hadTabindex = target.hasAttribute('tabindex');
+    if (!hadTabindex) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+    if (!hadTabindex) target.addEventListener('blur', () => target.removeAttribute('tabindex'), { once: true });
+  });
+</script>
+<style is:global>
+  /* Static states remain available without JS. All animated homepage changes use spring.ts. */
+  html[data-physics-home], html[data-physics-home] * { scroll-behavior: auto !important; }
+  html[data-physics-home] *, html[data-physics-home] *::before, html[data-physics-home] *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  html[data-physics-home] .site-header { transform: none !important; }
+  html[data-physics-home] .group svg { translate: none !important; }
+  html[data-physics-home] .hero-cta:active { translate: none; }
+  html[data-physics-home] #theme-toggle:active { scale: 1; }
+  html[data-physics-home] [data-returned] { outline: 1px solid var(--border-strong); outline-offset: 5px; }
+</style>

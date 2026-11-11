@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import { siteConfig } from "../../lib/seo";
+import SlotEmail from "../SlotEmail.astro";
 import CopyEmailButton from "../CopyEmailButton.astro";
 
 const email = siteConfig.social.email.replace("mailto:", "");
@@ -27,7 +28,7 @@ const email = siteConfig.social.email.replace("mailto:", "");
     <div class="mt-8 flex flex-wrap items-center gap-x-2 gap-y-2">
       <a href={siteConfig.social.email} class="hero-cta group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full px-5 text-sm font-semibold duration-200 ease-out active:translate-y-px sm:text-base">
         <Icon name="lucide:mail" class="size-4" aria-hidden="true" />
-        {email}
+        <SlotEmail email={email} />
       </a>
       <CopyEmailButton email={email} />
     </div>

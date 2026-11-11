@@ -9,7 +9,6 @@ import BackLink from "../../components/BackLink.astro";
 import TableOfContents from "../../components/TableOfContents.astro";
 import ArticleImage from "../../components/mdx/ArticleImage.astro";
 import ArticleLink from "../../components/mdx/ArticleLink.astro";
-import ArticleEnhancements from "../../components/mdx/ArticleEnhancements.astro";
 
 export async function getStaticPaths() {
   const posts = await getSortedPosts();
@@ -87,7 +86,6 @@ const structuredData = [
   lang={language}
   locale={language === "my" ? "my_MM" : siteConfig.locale}
 >
-  <ArticleEnhancements />
   <div class="read-progress" aria-hidden="true"></div>
   <main id="main-content" class="mx-auto max-w-[50rem] px-5 pb-20 pt-32 sm:px-8 sm:pt-36">
     <nav class="mb-8" aria-label="Breadcrumb">

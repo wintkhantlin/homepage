@@ -4,7 +4,10 @@
   const reveals = new Map<Element, ReturnType<typeof spring>>();
   const observer = new IntersectionObserver(entries => {
     for (const entry of entries) if (entry.isIntersecting) {
-      reveals.get(entry.target)?.set(1);
+      const motion = reveals.get(entry.target);
+      motion?.set(1);
+      // If frames stall (an occluded window, a busy device), the content must still land fully visible.
+      if (motion) window.setTimeout(() => motion.jump(1), 1400);
       observer.unobserve(entry.target);
     }
   }, { threshold: 0.08 });

@@ -20,6 +20,7 @@ interface Props {
   structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
   lang?: string;
   locale?: string;
+  compactFooter?: boolean;
 }
 
 const {
@@ -36,6 +37,7 @@ const {
   structuredData,
   lang = "en",
   locale = siteConfig.locale,
+  compactFooter = false,
 } = Astro.props as Props;
 
 const pathname = canonicalPath ?? Astro.url.pathname;
@@ -116,7 +118,7 @@ const structuredDataPayload = structuredData
     <a lang="en" class="skip-link" href="#main-content">Skip to main content</a>
     <Header />
     <slot />
-    <Footer />
+    <Footer compact={compactFooter} />
     <ReturnMark />
   </body>
 </html>

@@ -15,6 +15,8 @@ interface Props {
 
 const { projects, heading } = Astro.props as Props;
 const ItemHeading = heading ? "h3" : "h2";
+// The home section shows large rows; the Work page, which lists every project, lays them out as a two-column index.
+const asGrid = !heading;
 
 const contextLabels = {
   "open-source": "Open source",
@@ -42,11 +44,11 @@ const maturityLabels = {
         <h2 id="index-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">{heading}</h2>
         <p class="mt-4 max-w-md text-base leading-relaxed text-(--text-muted)">The products, the systems behind them, and what I learned building them.</p>
       </div>
-      <a href="/projects" class="index-all">View all work <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+      <a href="/projects" class="index-all index-all--head">View all work <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
     </div>
   )}
   {projects.length > 0 ? (
-    <ul class="index-list" aria-label={heading ? undefined : "All work"}>
+    <ul class:list={["index-list", asGrid && "index-list--grid"]} aria-label={heading ? undefined : "All work"}>
       {projects.map((project, index) => (
         <li data-spring-reveal>
           <a id={`work-${project.id}`} href={`/project/${project.id}`} class="index-row" data-list-item data-spring-card
@@ -58,12 +60,13 @@ const maturityLabels = {
             </div>
             <div class="index-detail">
               <p class="index-meta"><span>{projectKind(project)}</span><span>{project.data.publishedDate.getFullYear()} · {maturityLabels[project.data.maturity]}</span></p>
-              <div class="index-title-line">
-                <ProjectName as={ItemHeading} id={`index-name-${index}`} name={project.data.name} slug={project.id} class="index-name" />
-                <span class="index-arrow" data-spring-arrow aria-hidden="true"><Icon name="lucide:arrow-up-right" class="size-6" /></span>
-              </div>
+              <ProjectName as={ItemHeading} id={`index-name-${index}`} name={project.data.name} slug={project.id} class="index-name" />
               <p id={`index-about-${index}`} class="index-about">{project.data.description}</p>
-              <p class="index-stack"><span class="sr-only">Built with </span>{project.data.technologies?.slice(0, 4).join(" / ")}</p>
+              {heading ? (
+                <p class="index-stack index-stack--highlights"><span class="sr-only">Engineering highlights: </span>{project.data.proofPoints.map((point) => point.title).join(" · ")}</p>
+              ) : (
+                <p class="index-stack"><span class="sr-only">Built with </span>{project.data.technologies?.slice(0, 4).join(" / ")}</p>
+              )}
               <span class="index-case">Explore the project <span aria-hidden="true">↗</span></span>
             </div>
           </a>
@@ -71,26 +74,50 @@ const maturityLabels = {
       ))}
     </ul>
   ) : <p class="py-12 text-(--text-muted)">No project case studies are published yet. Check back soon.</p>}
+  {heading && projects.length > 0 && (
+    <a href="/projects" class="index-all index-all--foot">View all work <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+  )}
 </section>
 <style>
   .index-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.5rem; padding-bottom: 2.5rem; }
   .index-all { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; color: var(--text-heading); border-bottom: 1px solid var(--border-strong); }
   .index-list { list-style: none; padding: 0; }
+  /* On phones the link follows the rows it opens, instead of leading two screens of them. */
+  .index-all--head { display: none; }
+  .index-all--foot { margin-top: 1.5rem; }
+  .index-stack--highlights { color: var(--text-muted); }
+  @media (min-width: 640px) {
+    .index-all--head { display: inline-flex; }
+    .index-all--foot { display: none; }
+  }
   .index-list > li { border-top: 1px solid var(--border); }
   .index-list > li:last-child { border-bottom: 1px solid var(--border); }
-  .index-row { display: grid; gap: 1.5rem; padding-block: 1.75rem; color: var(--text-heading); }
-  .index-preview { display: grid; place-items: center; aspect-ratio: 16 / 10; overflow: hidden; border-radius: .5rem; padding: clamp(1rem, 2.5vw, 2.25rem); background: color-mix(in oklch, var(--surface) 90%, var(--text-faint)); }
+  .index-row { display: grid; gap: 1.25rem; padding-block: 1.5rem; color: var(--text-heading); }
+  /* Phones: the screenshot gets nearly the whole width; the panel's padding only comes back where there is room for it. */
+  .index-preview { display: grid; place-items: center; aspect-ratio: 16 / 10; overflow: hidden; border-radius: .5rem; padding: .5rem; background: color-mix(in oklch, var(--surface) 90%, var(--text-faint)); }
   .index-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: .25rem; overflow: hidden; box-shadow: 0 12px 28px -12px var(--shadow-color); outline: 1px solid var(--border); }
   .index-detail { align-self: center; padding-block: .25rem; }
-  .index-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; font-size: .75rem; color: var(--text-faint); }
-  .index-title-line { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
-  .index-name { font-size: clamp(1.8rem, 3vw, 2.75rem); line-height: 1.12; letter-spacing: -.045em; font-weight: 600; }
-  .index-arrow { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex-shrink: 0; border: 1px solid var(--border-strong); border-radius: 50%; }
-  .index-about { max-width: 34rem; margin-top: 1rem; font-size: 1rem; line-height: 1.7; color: var(--text-muted); text-wrap: pretty; }
-  .index-stack { margin-top: 1.25rem; font-size: .75rem; line-height: 1.8; color: var(--text-faint); }
-  .index-case { display: inline-flex; gap: .5rem; margin-top: 1.5rem; font-size: .8125rem; font-weight: 500; }
+  .index-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; font-size: .875rem; color: var(--text-faint); }
+  .index-name { display: block; margin-top: .75rem; font-size: clamp(1.8rem, 3vw, 2.75rem); line-height: 1.12; letter-spacing: -.045em; font-weight: 600; }
+  .index-about { max-width: 34rem; margin-top: .75rem; font-size: 1rem; line-height: 1.7; color: var(--text-muted); text-wrap: pretty; }
+  .index-stack { margin-top: 1rem; font-size: .875rem; line-height: 1.7; color: var(--text-faint); }
+  .index-case { display: inline-flex; gap: .5rem; margin-top: 1rem; font-size: .9375rem; font-weight: 500; }
   .index-row:hover .index-case, .index-row:focus-visible .index-case { text-decoration: underline; text-underline-offset: .3em; }
   @media (min-width: 640px) {
     .index-row { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); padding-block: 2.5rem; }
+    .index-preview { padding: clamp(1rem, 2.5vw, 2.25rem); }
+  }
+  /* Desktop rows: the screenshot takes the narrow side of the 36/64 split the hero and footer use, so four projects fit in far less scroll. */
+  @media (min-width: 1024px) {
+    .index-row { grid-template-columns: minmax(0, 36fr) minmax(0, 64fr); column-gap: 3rem; padding-block: 2rem; }
+    .index-preview { padding: clamp(.75rem, 1.4vw, 1.25rem); }
+  }
+  /* The Work page: two cards across once there is room, each a screenshot over its description. */
+  @media (min-width: 900px) {
+    .index-list--grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 4vw, 4rem); border-bottom: 1px solid var(--border); }
+    .index-list--grid > li:last-child { border-bottom: 0; }
+    .index-list--grid .index-row { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-block: 2rem; height: 100%; align-content: start; }
+    .index-list--grid .index-preview { padding: 1rem; }
+    .index-list--grid .index-name { font-size: clamp(1.6rem, 2.2vw, 2.1rem); }
   }
 </style>

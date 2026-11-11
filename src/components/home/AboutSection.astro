@@ -2,7 +2,16 @@
 import { Icon } from "astro-icon/components";
 import { siteConfig } from "../../lib/seo";
 
-const { level = 2, showTools = true } = Astro.props as { level?: 1 | 2; showTools?: boolean };
+// On the home page the footer and the hero already carry the profile links, so that row is left out there.
+const { level = 2, showTools = true, showProfiles = true, brief = false } = Astro.props as {
+  level?: 1 | 2;
+  showTools?: boolean;
+  showProfiles?: boolean;
+  /** The home version: the opening paragraph and the facts, with a way on to the full page. */
+  brief?: boolean;
+};
+// As the page's own h1 it opens at the shared page top; as a home section it takes the section gap.
+const standalone = level === 1;
 const Heading = `h${level}` as "h1" | "h2";
 const SubHeading = `h${level + 1}` as "h2" | "h3";
 
@@ -28,7 +37,11 @@ const profiles = [
 ---
 
 <!-- Split: the story on the wide column, the quick facts on the narrow one, then the stack as shelves. -->
-<section id="about" aria-labelledby="about-heading" class="scroll-mt-[calc(var(--section-gap-l)*-1)] pb-(--section-gap) pt-(--section-gap-l)">
+<section
+  id="about"
+  aria-labelledby="about-heading"
+  class:list={[standalone ? "pb-(--section-gap-s)" : "scroll-mt-[calc(var(--section-gap)*-1)] pb-20 pt-(--section-gap)"]}
+>
   <div class="about-split">
     <div>
       <Heading id="about-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">
@@ -42,11 +55,15 @@ const profiles = [
           building tools that solve real problems.
         </p>
 
+        {brief ? (
+          <a href="/about" class="about-more">More about me <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" /></a>
+        ) : (
         <p class="text-pretty text-base leading-relaxed text-(--text-muted)">
           I started coding because I was curious about how things work under the hood. That curiosity turned
           into a love for over-engineering side projects, exploring system design, and learning in public.
           Every project I ship teaches me something new.
         </p>
+        )}
       </div>
     </div>
 
@@ -58,6 +75,7 @@ const profiles = [
             <dd class="text-sm text-(--text-heading)">{fact.value}</dd>
           </div>
         ))}
+        {showProfiles && (
         <div class="grid grid-cols-[7rem_1fr] gap-4 py-3.5">
           <dt class="text-sm text-(--text-faint)">Elsewhere</dt>
           <dd class="flex flex-wrap gap-x-4">
@@ -74,6 +92,7 @@ const profiles = [
             ))}
           </dd>
         </div>
+        )}
       </dl>
     </aside>
   </div>
@@ -104,6 +123,9 @@ const profiles = [
 </section>
 
 <style>
+  .about-more { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; color: var(--text-heading); border-bottom: 1px solid var(--border-strong); }
+  .about-more:hover { border-color: var(--text-heading); }
+
   .about-split {
     display: grid;
     gap: 3rem;

@@ -1,0 +1,75 @@
+{
+ "dark/post/idempotency-keys-what-most-tutorials-dont-tell-you": {
+  "count": 0,
+  "failures": []
+ },
+ "light/post/idempotency-keys-what-most-tutorials-dont-tell-you": {
+  "count": 0,
+  "failures": []
+ },
+ "dark/project/gencourse": {
+  "count": 0,
+  "failures": []
+ },
+ "light/project/gencourse": {
+  "count": 0,
+  "failures": []
+ },
+ "dark/about": {
+  "count": 0,
+  "failures": []
+ },
+ "light/about": {
+  "count": 0,
+  "failures": []
+ },
+ "dark/writing": {
+  "count": 0,
+  "failures": []
+ },
+ "light/writing": {
+  "count": 0,
+  "failures": []
+ },
+ "dark/projects": {
+  "count": 0,
+  "failures": []
+ },
+ "light/projects": {
+  "count": 0,
+  "failures": []
+ },
+ "photo320": {
+  "open": true,
+  "dialog": {
+   "x": 16,
+   "y": 65,
+   "w": 288,
+   "h": 713
+  },
+  "stage": {
+   "w": 254,
+   "h": 523
+  },
+  "btns": [
+   {
+    "t": "Previous",
+    "w": 108,
+    "h": 44
+   },
+   {
+    "t": "Next",
+    "w": 81,
+    "h": 44
+   },
+   {
+    "t": "Close",
+    "w": 89,
+    "h": 44
+   }
+  ],
+  "scrollW": 320,
+  "clientW": 320,
+  "escapeMs": 747
+ }
+}

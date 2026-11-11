@@ -1,0 +1,240 @@
+{
+ "tocCollapse": {
+  "before": {
+   "open": true,
+   "navDisplay": "block",
+   "navVis": true,
+   "linkRect": {
+    "w": 208,
+    "h": 54
+   },
+   "hit": true
+  },
+  "after": {
+   "open": false,
+   "navDisplay": "block",
+   "navVis": false,
+   "linkRect": {
+    "w": 208,
+    "h": 54
+   },
+   "linkText": "ပထမဆုံး Idempotency ",
+   "hit": {
+    "tag": "body",
+    "isLink": false,
+    "text": "Skip to main content"
+   },
+   "detailsH": 0
+  }
+ },
+ "lightKeyboard": [
+  {
+   "tag": "a",
+   "text": "Skip to main content",
+   "label": null,
+   "outline": "rgb(202, 255, 119) solid 2px",
+   "offset": "4px",
+   "rect": {
+    "w": 172,
+    "h": 45
+   }
+  },
+  {
+   "tag": "a",
+   "text": "Wint Khant Lin",
+   "label": null,
+   "outline": "rgb(202, 255, 119) solid 2px",
+   "offset": "4px",
+   "rect": {
+    "w": 748,
+    "h": 44
+   }
+  },
+  {
+   "tag": "a",
+   "text": "Work",
+   "label": null,
+   "outline": "rgb(202, 255, 119) solid 2px",
+   "offset": "4px",
+   "rect": {
+    "w": 47,
+    "h": 44
+   }
+  },
+  {
+   "tag": "a",
+   "text": "Notes",
+   "label": null,
+   "outline": "rgb(202, 255, 119) solid 2px",
+   "offset": "4px",
+   "rect": {
+    "w": 52,
+    "h": 44
+   }
+  },
+  {
+   "tag": "a",
+   "text": "About",
+   "label": null,
+   "outline": "rgb(202, 255, 119) solid 2px",
+   "offset": "4px",
+   "rect": {
+    "w": 53,
+    "h": 44
+   }
+  },
+  {
+   "tag": "a",
+   "text": "Say hello",
+   "label": null,
+   "outline": "rgb(202, 255, 119) solid 2px",
+   "offset": "4px",
+   "rect": {
+    "w": 92,
+    "h": 44
+   }
+  },
+  {
+   "tag": "button",
+   "text": "",
+   "label": "Switch to light theme",
+   "outline": "rgb(202, 255, 119) solid 2px",
+   "offset": "4px",
+   "rect": {
+    "w": 44,
+    "h": 44
+   }
+  }
+ ],
+ "aria/about": [
+  {
+   "t": "Work",
+   "href": "/projects",
+   "aria": null,
+   "current": false
+  },
+  {
+   "t": "Notes",
+   "href": "/writing",
+   "aria": null,
+   "current": false
+  },
+  {
+   "t": "About",
+   "href": "/about",
+   "aria": "location",
+   "current": true
+  },
+  {
+   "t": "Say hello",
+   "href": "mailto:wintkhantlin@gmail.com",
+   "aria": null,
+   "current": false
+  }
+ ],
+ "aria/projects": [
+  {
+   "t": "Work",
+   "href": "/projects",
+   "aria": "location",
+   "current": true
+  },
+  {
+   "t": "Notes",
+   "href": "/writing",
+   "aria": null,
+   "current": false
+  },
+  {
+   "t": "About",
+   "href": "/about",
+   "aria": null,
+   "current": false
+  },
+  {
+   "t": "Say hello",
+   "href": "mailto:wintkhantlin@gmail.com",
+   "aria": null,
+   "current": false
+  }
+ ],
+ "aria/writing": [
+  {
+   "t": "Work",
+   "href": "/projects",
+   "aria": null,
+   "current": false
+  },
+  {
+   "t": "Notes",
+   "href": "/writing",
+   "aria": "page",
+   "current": false
+  },
+  {
+   "t": "About",
+   "href": "/about",
+   "aria": null,
+   "current": false
+  },
+  {
+   "t": "Say hello",
+   "href": "mailto:wintkhantlin@gmail.com",
+   "aria": null,
+   "current": false
+  }
+ ],
+ "aria/project/gencourse": [
+  {
+   "t": "Work",
+   "href": "/projects",
+   "aria": "page",
+   "current": false
+  },
+  {
+   "t": "Notes",
+   "href": "/writing",
+   "aria": null,
+   "current": false
+  },
+  {
+   "t": "About",
+   "href": "/about",
+   "aria": null,
+   "current": false
+  },
+  {
+   "t": "Say hello",
+   "href": "mailto:wintkhantlin@gmail.com",
+   "aria": null,
+   "current": false
+  }
+ ],
+ "hitAreas": {
+  "btnRect": {
+   "x": 100,
+   "y": 2623,
+   "w": 1228,
+   "h": 44
+  },
+  "points": [
+   {
+    "f": 0.02,
+    "isBtn": false
+   },
+   {
+    "f": 0.5,
+    "isBtn": false
+   },
+   {
+    "f": 0.98,
+    "isBtn": false
+   }
+  ],
+  "label": "Enlarge diagram"
+ },
+ "wordmarkClick": {
+  "before": "http://localhost:4321/project/gencourse",
+  "after": "http://localhost:4321/"
+ }
+}

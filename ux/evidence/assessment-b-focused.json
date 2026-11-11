@@ -1,0 +1,1217 @@
+{
+ "detector": {
+  "hasSrcAttr": false,
+  "srcAttr": null,
+  "naturalWidth": 0,
+  "complete": true,
+  "dialogOpen": false,
+  "dialogDisplay": "none",
+  "imgRect": {
+   "w": 0,
+   "h": 0
+  },
+  "checkVisibility": false,
+  "imgDisplay": "block",
+  "imgVisibility": "visible",
+  "imgOpacity": "1",
+  "widthAttr": "1400",
+  "heightAttr": "1867",
+  "offsetParent": false,
+  "alt": "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+  "requestsBeforeOpen": [
+   "http://localhost:4321/_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=400&h=533&q=70&f=webp",
+   "http://localhost:4321/_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fgusto-innovation-golden-metals.png%3ForigWidth%3D800%26origHeight%3D1422%26origFormat%3Dpng&w=300&h=533&q=70&f=webp",
+   "http://localhost:4321/_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=1400&h=1867&f=webp"
+  ],
+  "afterOpen": {
+   "hasSrc": true,
+   "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%",
+   "naturalWidth": 1152,
+   "complete": true,
+   "visible": true
+  },
+  "requestsAfterOpen": [
+   "http://localhost:4321/_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=400&h=533&q=70&f=webp",
+   "http://localhost:4321/_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fgusto-innovation-golden-metals.png%3ForigWidth%3D800%26origHeight%3D1422%26origFormat%3Dpng&w=300&h=533&q=70&f=webp",
+   "http://localhost:4321/_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=1400&h=1867&f=webp"
+  ]
+ },
+ "spyTop": {
+  "y": 0,
+  "active": null,
+  "currentCount": 0,
+  "aria": [
+   {
+    "t": "Work",
+    "aria": null
+   },
+   {
+    "t": "Notes",
+    "aria": null
+   },
+   {
+    "t": "About",
+    "aria": null
+   }
+  ]
+ },
+ "wordmark": {
+  "rect": {
+   "x": 112,
+   "y": 14,
+   "w": 748,
+   "h": 44
+  },
+  "midRight": {
+   "tag": "a",
+   "text": "Wint Khant Lin",
+   "isWordmark": true
+  },
+  "gap": {
+   "tag": "div",
+   "text": "Wint Khant LinWorkNotesAboutSa",
+   "isWordmark": false
+  }
+ },
+ "gif": [
+  {
+   "url": "http://localhost:4321/animation.gif",
+   "type": "image"
+  },
+  {
+   "url": "http://localhost:4321/animation.gif",
+   "status": 200,
+   "type": "image"
+  }
+ ],
+ "escapeTiming": {
+  "closedAfterMs": 753,
+  "focusedAfter": "View larger: The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum"
+ },
+ "diagramDark": [
+  {
+   "theme": "dark",
+   "group": "edgeLabel",
+   "text": "WebSocket progress",
+   "fg": "rgb(250,249,246)",
+   "bg": "rgb(12,13,12)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 126,
+    "h": 16
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "Learner",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 47,
+    "h": 20
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "React + Vite",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 75,
+    "h": 20
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "Oathkeeper Gateway",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 129,
+    "h": 20
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "Course Management API",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 153,
+    "h": 20
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "Ory Kratos",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 65,
+    "h": 20
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "PostgreSQL",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "path",
+   "ratio": 18.49,
+   "rect": {
+    "w": 74,
+    "h": 20
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "RabbitMQ",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 61,
+    "h": 20
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "Python AI Worker",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 106,
+    "h": 20
+   }
+  },
+  {
+   "theme": "dark",
+   "group": "node",
+   "text": "Go Notification Service",
+   "fg": "rgb(12,13,12)",
+   "bg": "rgb(250,249,246)",
+   "shape": "rect",
+   "ratio": 18.49,
+   "rect": {
+    "w": 139,
+    "h": 20
+   }
+  }
+ ],
+ "diagramLight": [
+  {
+   "theme": "light",
+   "group": "edgeLabel",
+   "text": "WebSocket progress",
+   "fg": "rgb(24,24,27)",
+   "bg": "rgb(250,250,250)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 126,
+    "h": 16
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "Learner",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 47,
+    "h": 20
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "React + Vite",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 75,
+    "h": 20
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "Oathkeeper Gateway",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 129,
+    "h": 20
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "Course Management API",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 153,
+    "h": 20
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "Ory Kratos",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 65,
+    "h": 20
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "PostgreSQL",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "path",
+   "ratio": 16.97,
+   "rect": {
+    "w": 74,
+    "h": 20
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "RabbitMQ",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 61,
+    "h": 20
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "Python AI Worker",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 106,
+    "h": 20
+   }
+  },
+  {
+   "theme": "light",
+   "group": "node",
+   "text": "Go Notification Service",
+   "fg": "rgb(250,250,250)",
+   "bg": "rgb(24,24,27)",
+   "shape": "rect",
+   "ratio": 16.97,
+   "rect": {
+    "w": 139,
+    "h": 20
+   }
+  }
+ ],
+ "diagramThemes": {
+  "darkDisplay": "none",
+  "lightDisplay": "block"
+ },
+ "articleMeasure": {
+  "charsFirstLine": 77,
+  "width": 736,
+  "fontSize": "20px",
+  "lineHeight": "34px",
+  "maxWidthRule": "none",
+  "textSample": "Payment App တစ်ခုကနေ ငွေ 50,000 လောက်ပိုက်ဆံလွဲမယ်"
+ },
+ "articleLang": {
+  "html": "my",
+  "headTitle": "Idempotency Keys ဆိုတာဘာလဲ | Wint Khant Lin",
+  "paragraphs": [
+   {
+    "lang": null,
+    "text": "Payment App တစ်ခုကနေ ငွေ 50,000 လောက်ပိုက်ဆံလွဲမယ်"
+   },
+   {
+    "lang": null,
+    "text": "အဲ့လိုအခြေအနေကြရင်မေးစရာတစ်ခုရှိလာတာက"
+   },
+   {
+    "lang": null,
+    "text": "ငွေက တကယ်ရော ထွက်သွားပြီလား?"
+   },
+   {
+    "lang": null,
+    "text": "အဲ့လိုအခြေအနေမျိုးမှာ Pay ကိုနောက်တစ်ကြိမ်နှိပ်ကြတ"
+   },
+   {
+    "lang": null,
+    "text": "request ကတော့နှစ်ခါထွက်သွားလိမ့်မယ် Backend ဘက်မှာ"
+   },
+   {
+    "lang": null,
+    "text": "You can send the same request multiple times, but "
+   }
+  ],
+  "headings": [
+   {
+    "lang": null,
+    "text": "ပထမဆုံး Idempotency ဆိုတာဘာလဲ?"
+   },
+   {
+    "lang": null,
+    "text": "TL;DR"
+   },
+   {
+    "lang": null,
+    "text": "References"
+   }
+  ],
+  "aboutAside": "en"
+ },
+ "bigoLang": {
+  "html": "my",
+  "title": "Big O Notation ဆိုတာဘာလဲ? (Beginner Guide) | Wint Khant Lin",
+  "headings": [
+   {
+    "lang": null,
+    "text": "Time Complexity တွက်ခြင်း"
+   },
+   {
+    "lang": null,
+    "text": "Space Complexity တွက်ခြင်း"
+   }
+  ],
+  "paragraphs": [
+   {
+    "lang": null,
+    "text": "Big O Notation ဆိုတာက algorithm selection နှင့် performance "
+   },
+   {
+    "lang": null,
+    "text": "Time Complexity ဆိုတာက algorithms တစ်ခုက input size ပေါ် မှာ"
+   },
+   {
+    "lang": null,
+    "text": "Space complexity ဆိုတာ algorithm တစ်ခုကို run တဲ့အခါမှာ requ"
+   },
+   {
+    "lang": null,
+    "text": "Big O Notation ဆိုတာကဟာ Programmer တိုင်းသိထားသင့်တဲ့ mathem"
+   },
+   {
+    "lang": null,
+    "text": "Time Complexity ဆိုတာက Algorithm တစ်ခုပြုလုပ်တဲ့အချိန် ကြာချ"
+   }
+  ],
+  "tocLinks": [
+   {
+    "lang": null,
+    "text": "Time Complexity တွက်ခြင်း",
+    "h": 34
+   },
+   {
+    "lang": null,
+    "text": "ဉပမာများ",
+    "h": 34
+   },
+   {
+    "lang": null,
+    "text": "Space Complexity တွက်ခြင်း",
+    "h": 34
+   },
+   {
+    "lang": null,
+    "text": "ဥပမာများ",
+    "h": 34
+   }
+  ]
+ },
+ "notFound": {
+  "bad": [
+   "HTTP 404 http://localhost:4321/404",
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "h1": "This page doesn’t exist",
+  "title": "404 — Page Not Found | Wint Khant Lin"
+ },
+ "duplicateIds": [],
+ "skip": {
+  "before": {
+   "active": "Skip to main content",
+   "y": 0
+  },
+  "after": {
+   "activeTag": "main",
+   "activeId": "main-content",
+   "y": 0,
+   "hash": "#main-content",
+   "targetTop": 0
+  }
+ },
+ "narrow": {
+  "nav": {
+   "w": 173,
+   "scrollW": 185,
+   "display": "flex",
+   "gap": "0px"
+  },
+  "button": {
+   "w": 41,
+   "h": 44,
+   "flexShrink": "1",
+   "minWidth": "auto",
+   "padding": "0px",
+   "marginRight": "-12px"
+  },
+  "children": [
+   {
+    "tag": "a",
+    "text": "Work",
+    "w": 44,
+    "shrink": "1"
+   },
+   {
+    "tag": "a",
+    "text": "Notes",
+    "w": 49,
+    "shrink": "1"
+   },
+   {
+    "tag": "a",
+    "text": "About",
+    "w": 50,
+    "shrink": "1"
+   },
+   {
+    "tag": "a",
+    "text": "Say hello",
+    "w": 0,
+    "shrink": "1"
+   },
+   {
+    "tag": "button",
+    "text": "",
+    "w": 41,
+    "shrink": "1"
+   }
+  ],
+  "headerInner": {
+   "w": 320,
+   "gap": "16px"
+  }
+ },
+ "firstScreen": [
+  {
+   "w": 1440,
+   "h": 900,
+   "hero": {
+    "x": 112,
+    "y": 0,
+    "w": 1216,
+    "h": 900,
+    "bottom": 900
+   },
+   "heroName": {
+    "x": 112,
+    "y": 411,
+    "w": 748,
+    "h": 417,
+    "bottom": 828
+   },
+   "heroSide": {
+    "x": 908,
+    "y": 577,
+    "w": 420,
+    "h": 251,
+    "bottom": 828
+   },
+   "header": {
+    "x": 0,
+    "y": 0,
+    "w": 1440,
+    "h": 72,
+    "bottom": 72
+   },
+   "projectsTop": 900,
+   "visibleText": [
+    {
+     "tag": "h1",
+     "text": "Wint Khant Linalso known as Happer",
+     "top": 411
+    },
+    {
+     "tag": "p",
+     "text": "Software engineer and college student from Myanmar, bui",
+     "top": 577
+    },
+    {
+     "tag": "a",
+     "text": "wintkhantlin@gmail.comwwwwwiiiiinnnnntttttkkkkkhhhhhaaa",
+     "top": 712
+    },
+    {
+     "tag": "a",
+     "text": "See the work",
+     "top": 776
+    },
+    {
+     "tag": "a",
+     "text": "GitHub (opens in a new tab)",
+     "top": 776
+    }
+   ],
+   "pageHeight": 5280
+  },
+  {
+   "w": 390,
+   "h": 844,
+   "hero": {
+    "x": 20,
+    "y": 0,
+    "w": 350,
+    "h": 639,
+    "bottom": 639
+   },
+   "heroName": {
+    "x": 20,
+    "y": 128,
+    "w": 350,
+    "h": 143,
+    "bottom": 271
+   },
+   "heroSide": {
+    "x": 20,
+    "y": 311,
+    "w": 350,
+    "h": 280,
+    "bottom": 591
+   },
+   "header": {
+    "x": 0,
+    "y": 0,
+    "w": 390,
+    "h": 72,
+    "bottom": 72
+   },
+   "projectsTop": 639,
+   "visibleText": [
+    {
+     "tag": "h1",
+     "text": "Wint Khant Linalso known as Happer",
+     "top": 128
+    },
+    {
+     "tag": "p",
+     "text": "Software engineer and college student from Myanmar, bui",
+     "top": 311
+    },
+    {
+     "tag": "a",
+     "text": "wintkhantlin@gmail.comwwwwwiiiiinnnnntttttkkkkkhhhhhaaa",
+     "top": 431
+    },
+    {
+     "tag": "a",
+     "text": "See the work",
+     "top": 547
+    },
+    {
+     "tag": "a",
+     "text": "GitHub (opens in a new tab)",
+     "top": 547
+    },
+    {
+     "tag": "h2",
+     "text": "Selected work",
+     "top": 695
+    },
+    {
+     "tag": "p",
+     "text": "The products, the systems behind them, and what I learn",
+     "top": 748
+    },
+    {
+     "tag": "a",
+     "text": "View all work",
+     "top": 824
+    }
+   ],
+   "pageHeight": 6405
+  },
+  {
+   "w": 320,
+   "h": 844,
+   "hero": {
+    "x": 20,
+    "y": 0,
+    "w": 280,
+    "h": 661,
+    "bottom": 661
+   },
+   "heroName": {
+    "x": 20,
+    "y": 128,
+    "w": 280,
+    "h": 165,
+    "bottom": 293
+   },
+   "heroSide": {
+    "x": 20,
+    "y": 333,
+    "w": 280,
+    "h": 280,
+    "bottom": 613
+   },
+   "header": {
+    "x": 0,
+    "y": 0,
+    "w": 320,
+    "h": 72,
+    "bottom": 72
+   },
+   "projectsTop": 661,
+   "visibleText": [
+    {
+     "tag": "h1",
+     "text": "Wint Khant Linalso known as Happer",
+     "top": 128
+    },
+    {
+     "tag": "p",
+     "text": "Software engineer and college student from Myanmar, bui",
+     "top": 333
+    },
+    {
+     "tag": "a",
+     "text": "wintkhantlin@gmail.comwwwwwiiiiinnnnntttttkkkkkhhhhhaaa",
+     "top": 453
+    },
+    {
+     "tag": "a",
+     "text": "See the work",
+     "top": 569
+    },
+    {
+     "tag": "a",
+     "text": "GitHub (opens in a new tab)",
+     "top": 569
+    },
+    {
+     "tag": "h2",
+     "text": "Selected work",
+     "top": 717
+    },
+    {
+     "tag": "p",
+     "text": "The products, the systems behind them, and what I learn",
+     "top": 770
+    }
+   ],
+   "pageHeight": 6656
+  }
+ ],
+ "anchors": [
+  {
+   "label": "Work",
+   "hash": "#projects",
+   "sectionTop": -24,
+   "headingTop": 96,
+   "headerHidden": true,
+   "headerTop": -72,
+   "active": "Work",
+   "navLinkClickable": false
+  },
+  {
+   "label": "Notes",
+   "hash": "#projects",
+   "sectionTop": 2790,
+   "headingTop": 2962,
+   "headerHidden": true,
+   "headerTop": -72,
+   "active": "Work",
+   "navLinkClickable": false
+  },
+  {
+   "label": "About",
+   "hash": "#about",
+   "sectionTop": -48,
+   "headingTop": 96,
+   "headerHidden": true,
+   "headerTop": -72,
+   "active": "About",
+   "navLinkClickable": false
+  }
+ ],
+ "anchorFocus": {
+  "afterJump": {
+   "hash": "#projects",
+   "scrollY": 924,
+   "active": {
+    "tag": "section",
+    "text": "Selected workThe products, the",
+    "href": null
+   },
+   "activeRect": {
+    "x": 112,
+    "y": -24,
+    "w": 1216,
+    "h": 2089
+   },
+   "activeInViewport": true,
+   "headerTop": -72,
+   "headerHidden": true,
+   "navRect": {
+    "y": -58,
+    "h": 44
+   },
+   "notesLinkRect": {
+    "x": 974,
+    "y": -58,
+    "w": 52,
+    "h": 44
+   },
+   "notesHit": null
+  },
+  "tab1": {
+   "text": "View all work",
+   "y": 173,
+   "inViewport": true
+  },
+  "tab2": {
+   "text": "AI EduTech2026 · BuiltGenCours",
+   "y": 258,
+   "inViewport": true
+  },
+  "notesJump": {
+   "hash": "#writing",
+   "headerHidden": true,
+   "headerTop": -72,
+   "writingTop": -48
+  }
+ },
+ "articleToc": {
+  "toc": {
+   "open": true,
+   "rect": {
+    "x": 1128,
+    "y": 564,
+    "w": 208,
+    "h": 0
+   },
+   "overflow": "visible",
+   "navRect": {
+    "x": 1128,
+    "y": 608,
+    "w": 208,
+    "h": 144
+   },
+   "links": [
+    {
+     "text": "ပထမဆုံး Idempotency ဆိုတာဘာလဲ?",
+     "href": "#ပထမဆုံး-idempotency-ဆိုတာဘာလဲ",
+     "rect": {
+      "x": 1128,
+      "y": 612,
+      "w": 208,
+      "h": 54
+     },
+     "hit": true,
+     "current": "location"
+    },
+    {
+     "text": "TL;DR",
+     "href": "#tldr",
+     "rect": {
+      "x": 1128,
+      "y": 668,
+      "w": 208,
+      "h": 34
+     },
+     "hit": true,
+     "current": null
+    },
+    {
+     "text": "References",
+     "href": "#references",
+     "rect": {
+      "x": 1128,
+      "y": 704,
+      "w": 208,
+      "h": 34
+     },
+     "hit": true,
+     "current": null
+    }
+   ]
+  },
+  "tocJump": {
+   "hash": "#tldr",
+   "headerTop": -72,
+   "headerHidden": true,
+   "targetTop": 110,
+   "current": "TL;DR"
+  },
+  "collapsed": {
+   "open": false,
+   "linkVisible": true,
+   "detailsH": 0
+  }
+ },
+ "projectRail": {
+  "rail": {
+   "display": "block",
+   "links": [
+    {
+     "text": "The challenge",
+     "href": "#the-challenge",
+     "rect": {
+      "x": 112,
+      "y": 1701,
+      "w": 274,
+      "h": 44
+     },
+     "current": null
+    },
+    {
+     "text": "The approach",
+     "href": "#the-approach",
+     "rect": {
+      "x": 112,
+      "y": 1745,
+      "w": 274,
+      "h": 44
+     },
+     "current": null
+    },
+    {
+     "text": "System architecture",
+     "href": "#system-architecture",
+     "rect": {
+      "x": 112,
+      "y": 1789,
+      "w": 274,
+      "h": 44
+     },
+     "current": null
+    },
+    {
+     "text": "How it is structured",
+     "href": "#how-it-is-structured",
+     "rect": {
+      "x": 112,
+      "y": 1833,
+      "w": 274,
+      "h": 44
+     },
+     "current": null
+    },
+    {
+     "text": "What it includes",
+     "href": "#what-it-includes",
+     "rect": {
+      "x": 112,
+      "y": 1877,
+      "w": 274,
+      "h": 44
+     },
+     "current": null
+    }
+   ],
+   "stickyTop": "128px",
+   "next": {
+    "href": "/project/url2short",
+    "rect": {
+     "w": 1216,
+     "h": 212
+    }
+   }
+  },
+  "railScrolled": {
+   "navTop": 128,
+   "current": "System architecture",
+   "headerHidden": true
+  },
+  "frame": {
+   "frame": {
+    "clientW": 1214,
+    "scrollW": 1214,
+    "clientH": 309,
+    "scrollH": 309,
+    "tabindex": 0
+   },
+   "enlarge": {
+    "display": "flex",
+    "rect": {
+     "w": 1228,
+     "h": 44
+    }
+   }
+  },
+  "dialog": {
+   "open": true,
+   "closeFocused": true,
+   "canvas": {
+    "clientW": 1374,
+    "scrollW": 1374,
+    "clientH": 315,
+    "scrollH": 315
+   },
+   "svg": {
+    "w": 1374,
+    "h": 315
+   }
+  },
+  "dialogClosed": {
+   "open": false,
+   "focusReturned": true
+  }
+ },
+ "projectMobileRail": {
+  "m": {
+   "frame": {
+    "clientW": 348,
+    "scrollW": 704
+   },
+   "enlarge": {
+    "display": "inline-flex",
+    "rect": {
+     "w": 157,
+     "h": 44
+    }
+   },
+   "onThisPage": "none",
+   "next": "/project/url2short"
+  },
+  "dlg": {
+   "open": true,
+   "closeFocused": true,
+   "canvas": {
+    "clientW": 324,
+    "scrollW": 1024
+   },
+   "svg": {
+    "w": 1024
+   },
+   "dialog": {
+    "w": 358,
+    "h": 325
+   }
+  },
+  "closed": {
+   "open": false,
+   "focusReturned": true
+  }
+ },
+ "themeFrames": [
+  {
+   "t": 60,
+   "light": true,
+   "switching": true,
+   "htmlBg": "rgb(250, 250, 250)",
+   "bodyBg": "rgb(250, 250, 250)",
+   "bodyColor": "rgb(39, 39, 42)",
+   "label": "Switch to dark theme",
+   "vt": [
+    {
+     "name": "-ua-view-transition-group-anim-root",
+     "pseudo": "::view-transition-group(root)",
+     "play": "running",
+     "time": 0
+    },
+    {
+     "name": "gif-then-expand",
+     "pseudo": "::view-transition-new(root)",
+     "play": "running",
+     "time": 0
+    }
+   ]
+  },
+  {
+   "t": 120,
+   "light": true,
+   "switching": true,
+   "htmlBg": "rgb(250, 250, 250)",
+   "bodyBg": "rgb(250, 250, 250)",
+   "bodyColor": "rgb(39, 39, 42)",
+   "label": "Switch to dark theme",
+   "vt": [
+    {
+     "name": "-ua-view-transition-group-anim-root",
+     "pseudo": "::view-transition-group(root)",
+     "play": "running",
+     "time": 67
+    },
+    {
+     "name": "gif-then-expand",
+     "pseudo": "::view-transition-new(root)",
+     "play": "running",
+     "time": 67
+    }
+   ]
+  },
+  {
+   "t": 260,
+   "light": true,
+   "switching": true,
+   "htmlBg": "rgb(250, 250, 250)",
+   "bodyBg": "rgb(250, 250, 250)",
+   "bodyColor": "rgb(39, 39, 42)",
+   "label": "Switch to dark theme",
+   "vt": [
+    {
+     "name": "-ua-view-transition-group-anim-root",
+     "pseudo": "::view-transition-group(root)",
+     "play": "running",
+     "time": 200
+    },
+    {
+     "name": "gif-then-expand",
+     "pseudo": "::view-transition-new(root)",
+     "play": "running",
+     "time": 200
+    }
+   ]
+  },
+  {
+   "t": 500,
+   "light": true,
+   "switching": true,
+   "htmlBg": "rgb(250, 250, 250)",
+   "bodyBg": "rgb(250, 250, 250)",
+   "bodyColor": "rgb(39, 39, 42)",
+   "label": "Switch to dark theme",
+   "vt": [
+    {
+     "name": "-ua-view-transition-group-anim-root",
+     "pseudo": "::view-transition-group(root)",
+     "play": "finished",
+     "time": 380
+    },
+    {
+     "name": "gif-then-expand",
+     "pseudo": "::view-transition-new(root)",
+     "play": "running",
+     "time": 450
+    }
+   ]
+  },
+  {
+   "t": 900,
+   "light": true,
+   "switching": false,
+   "htmlBg": "rgb(250, 250, 250)",
+   "bodyBg": "rgb(250, 250, 250)",
+   "bodyColor": "rgb(39, 39, 42)",
+   "label": "Switch to dark theme",
+   "vt": []
+  }
+ ],
+ "lightFocus": [
+  {
+   "sel": "#theme-toggle",
+   "outline": "rgb(24, 24, 27) none 3px",
+   "offset": "0px",
+   "rect": {
+    "w": 44,
+    "h": 44
+   },
+   "bg": "rgb(250, 250, 250)"
+  },
+  {
+   "sel": ".site-nav a[data-nav-section='projects']",
+   "outline": "rgb(24, 24, 27) none 3px",
+   "offset": "0px",
+   "rect": {
+    "w": 47,
+    "h": 44
+   },
+   "bg": "rgb(250, 250, 250)"
+  },
+  {
+   "sel": ".site-header a[href='/']",
+   "outline": "rgb(24, 24, 27) none 3px",
+   "offset": "0px",
+   "rect": {
+    "w": 748,
+    "h": 44
+   },
+   "bg": "rgb(250, 250, 250)"
+  }
+ ],
+ "homeIa": {
+  "writingLinks": [
+   {
+    "text": "Aug 29, 2026Idempotency Keys ဆိုတာဘာလဲHo",
+    "href": "/post/idempotency-keys-what-most-tutorials-dont-tell-you"
+   },
+   {
+    "text": "May 09, 2025Big O Notation ဆိုတာဘာလဲ? (B",
+    "href": "/post/what-is-big-o-notation-my"
+   },
+   {
+    "text": "Jan 09, 2025My Goals and Plan for 2025Th",
+    "href": "/post/my-plan-for-2025"
+   }
+  ],
+  "aboutLinks": [],
+  "writingHasIndex": false,
+  "aboutHasPage": false,
+  "footerIndexLinks": [
+   {
+    "text": "Notes",
+    "href": "/writing"
+   },
+   {
+    "text": "About",
+    "href": "/about"
+   }
+  ],
+  "postCount": 3,
+  "noteHrefs": [
+   "/post/idempotency-keys-what-most-tutorials-dont-tell-you",
+   "/post/what-is-big-o-notation-my",
+   "/post/my-plan-for-2025"
+  ]
+ }
+}

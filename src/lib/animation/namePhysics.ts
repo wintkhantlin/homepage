@@ -9,8 +9,8 @@ export type Target = { x: number; y: number; forceX: number; forceY: number };
 
 export function advanceChain(bodies: Body[], targets: Target[], size: number) {
   const forces = bodies.map((body, i) => ({
-    x: 210 * (targets[i].x - body.x.value) - 19 * body.x.velocity + targets[i].forceX,
-    y: 210 * (targets[i].y - body.y.value) - 19 * body.y.velocity + targets[i].forceY,
+    x: 210 * (targets[i].x - body.x.value) - 25 * body.x.velocity + targets[i].forceX,
+    y: 210 * (targets[i].y - body.y.value) - 25 * body.y.velocity + targets[i].forceY,
   }));
   for (let i = 1; i < bodies.length; i++) {
     const a = bodies[i - 1];
@@ -34,8 +34,8 @@ export function advanceChain(bodies: Body[], targets: Target[], size: number) {
         spring.velocity = 0;
       }
     }
-    const angle = body.x.value / size * 24;
-    body.rotation.velocity += (150 * (angle - body.rotation.value) - 16 * body.rotation.velocity) / body.mass * PHYSICS_STEP;
+    const angle = body.x.value / size * 14;
+    body.rotation.velocity += (150 * (angle - body.rotation.value) - 21 * body.rotation.velocity) / body.mass * PHYSICS_STEP;
     body.rotation.value += body.rotation.velocity * PHYSICS_STEP;
   });
 }

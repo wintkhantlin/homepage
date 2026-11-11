@@ -25,8 +25,7 @@ const isActive = (href: string) => {
       href="/"
       class="inline-flex min-h-11 min-w-11 items-center text-sm font-semibold tracking-[-0.01em] text-(--text-heading) transition-opacity duration-200 hover:opacity-60 active:opacity-45 sm:text-base"
     >
-      <span class="sm:hidden">WK</span>
-      <span class="hidden sm:inline">Wint Khant Lin</span>
+      Wint Khant Lin
     </a>
 
     <nav class="site-nav flex items-center gap-0 sm:gap-5" aria-label="Primary navigation">
@@ -49,11 +48,10 @@ const isActive = (href: string) => {
       <!--email_off-->
       <a
         href="mailto:wintkhantlin@gmail.com"
-        class="inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap px-1.5 text-[13px] font-medium text-(--text-heading) lg:ml-auto underline decoration-transparent underline-offset-8 transition-[text-decoration-color] duration-300 hover:decoration-(--text-heading) sm:text-[14px]"
+        class="hidden min-h-11 items-center gap-1.5 whitespace-nowrap px-1.5 text-[14px] font-medium text-(--text-heading) lg:ml-auto underline decoration-transparent underline-offset-8 transition-[text-decoration-color] duration-300 hover:decoration-(--text-heading) sm:inline-flex"
       >
         <Icon name="lucide:mail" class="size-3.5" aria-hidden="true" />
-        <span class="sm:hidden">Email</span>
-        <span class="hidden sm:inline">Say hello</span>
+        Say hello
       </a>
       <!--/email_off-->
 
@@ -174,6 +172,11 @@ const isActive = (href: string) => {
       .filter((section): section is HTMLElement => Boolean(section));
     if (!sections.length) return;
 
+    // Competition results belong to the work, so Work stays lit through them rather than going dark between sections.
+    const recognition = document.getElementById("recognition");
+    const owner = (id: string) => (id === "recognition" ? "projects" : id);
+    if (recognition) sections.push(recognition);
+
     const setCurrent = (id?: string) => {
       for (const link of navLinks) {
         const isCurrent = link.dataset.navSection === id;
@@ -190,7 +193,8 @@ const isActive = (href: string) => {
           if (entry.isIntersecting) visible.add(entry.target.id);
           else visible.delete(entry.target.id);
         }
-        setCurrent(sections.find((section) => visible.has(section.id))?.id);
+        const current = sections.find((section) => visible.has(section.id))?.id;
+        setCurrent(current && owner(current));
       },
       { rootMargin: "-40% 0px -55% 0px" },
     );

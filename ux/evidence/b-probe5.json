@@ -1,0 +1,315 @@
+{
+ "home_dark": {
+  "theme": "dark",
+  "failures": [],
+  "count": 0
+ },
+ "headings_dark": [
+  {
+   "l": 1,
+   "t": "Wint Khant Linalso known as Happer"
+  },
+  {
+   "l": 2,
+   "t": "Selected work"
+  },
+  {
+   "l": 3,
+   "t": "GenCourse"
+  },
+  {
+   "l": 3,
+   "t": "URL2Short"
+  },
+  {
+   "l": 3,
+   "t": "Zay Chin"
+  },
+  {
+   "l": 3,
+   "t": "Chate Sat"
+  },
+  {
+   "l": 2,
+   "t": "Competition results"
+  },
+  {
+   "l": 2,
+   "t": "Notes"
+  },
+  {
+   "l": 3,
+   "t": "Idempotency Keys ဆိုတာဘာလဲ"
+  },
+  {
+   "l": 3,
+   "t": "Big O Notation ဆိုတာဘာလဲ? (Beginner"
+  },
+  {
+   "l": 3,
+   "t": "My Goals and Plan for 2025"
+  },
+  {
+   "l": 2,
+   "t": "About"
+  },
+  {
+   "l": 2,
+   "t": "Say hello."
+  }
+ ],
+ "home_light": {
+  "theme": "light",
+  "failures": [],
+  "count": 0
+ },
+ "headings_light": [
+  {
+   "l": 1,
+   "t": "Wint Khant Linalso known as Happer"
+  },
+  {
+   "l": 2,
+   "t": "Selected work"
+  },
+  {
+   "l": 3,
+   "t": "GenCourse"
+  },
+  {
+   "l": 3,
+   "t": "URL2Short"
+  },
+  {
+   "l": 3,
+   "t": "Zay Chin"
+  },
+  {
+   "l": 3,
+   "t": "Chate Sat"
+  },
+  {
+   "l": 2,
+   "t": "Competition results"
+  },
+  {
+   "l": 2,
+   "t": "Notes"
+  },
+  {
+   "l": 3,
+   "t": "Idempotency Keys ဆိုတာဘာလဲ"
+  },
+  {
+   "l": 3,
+   "t": "Big O Notation ဆိုတာဘာလဲ? (Beginner"
+  },
+  {
+   "l": 3,
+   "t": "My Goals and Plan for 2025"
+  },
+  {
+   "l": 2,
+   "t": "About"
+  },
+  {
+   "l": 2,
+   "t": "Say hello."
+  }
+ ],
+ "headings/projects": [
+  {
+   "l": 1,
+   "t": "Work"
+  },
+  {
+   "l": 2,
+   "t": "GenCourse"
+  },
+  {
+   "l": 2,
+   "t": "URL2Short"
+  },
+  {
+   "l": 2,
+   "t": "Zay Chin"
+  },
+  {
+   "l": 2,
+   "t": "Chate Sat"
+  },
+  {
+   "l": 2,
+   "t": "ToolyDooly"
+  },
+  {
+   "l": 2,
+   "t": "Say hello."
+  }
+ ],
+ "headings/writing": [
+  {
+   "l": 1,
+   "t": "Notes"
+  },
+  {
+   "l": 2,
+   "t": "Idempotency Keys ဆိုတာဘာလဲ"
+  },
+  {
+   "l": 2,
+   "t": "Big O Notation ဆိုတာဘာလဲ? (Beginner"
+  },
+  {
+   "l": 2,
+   "t": "My Goals and Plan for 2025"
+  },
+  {
+   "l": 2,
+   "t": "Say hello."
+  }
+ ],
+ "headings/about": [
+  {
+   "l": 1,
+   "t": "About"
+  },
+  {
+   "l": 2,
+   "t": "Tools & technologies"
+  },
+  {
+   "l": 2,
+   "t": "Say hello."
+  }
+ ],
+ "headings/project/gencourse": [
+  {
+   "l": 1,
+   "t": "GenCourse"
+  },
+  {
+   "l": 2,
+   "t": "Engineering highlights"
+  },
+  {
+   "l": 3,
+   "t": "01 /Asynchronous processing"
+  },
+  {
+   "l": 3,
+   "t": "02 /Real-time communication"
+  },
+  {
+   "l": 2,
+   "t": "Technology"
+  },
+  {
+   "l": 2,
+   "t": "The challenge"
+  },
+  {
+   "l": 2,
+   "t": "The approach"
+  },
+  {
+   "l": 2,
+   "t": "System architecture"
+  },
+  {
+   "l": 2,
+   "t": "How it is structured"
+  },
+  {
+   "l": 2,
+   "t": "What it includes"
+  },
+  {
+   "l": 2,
+   "t": "URL2Short"
+  },
+  {
+   "l": 2,
+   "t": "Say hello."
+  }
+ ],
+ "headings/post/idempotency-keys-what-most-tutorials-dont-tell-you": [
+  {
+   "l": 1,
+   "t": "Idempotency Keys ဆိုတာဘာလဲ"
+  },
+  {
+   "l": 2,
+   "t": "ပထမဆုံး Idempotency ဆိုတာဘာလဲ?"
+  },
+  {
+   "l": 2,
+   "t": "TL;DR"
+  },
+  {
+   "l": 2,
+   "t": "References"
+  },
+  {
+   "l": 2,
+   "t": "Big O Notation ဆိုတာဘာလဲ? (Beginner"
+  },
+  {
+   "l": 2,
+   "t": "Say hello."
+  }
+ ],
+ "headings/404": [
+  {
+   "l": 1,
+   "t": "This page doesn’t exist"
+  },
+  {
+   "l": 2,
+   "t": "Say hello."
+  }
+ ],
+ "mobilePhoto": {
+  "open": true,
+  "dialog": {
+   "x": 16,
+   "y": 73,
+   "w": 358,
+   "h": 698
+  },
+  "stage": {
+   "w": 324,
+   "h": 523
+  },
+  "btns": [
+   {
+    "t": "Previous",
+    "w": 108,
+    "h": 44
+   },
+   {
+    "t": "Next",
+    "w": 81,
+    "h": 44
+   },
+   {
+    "t": "Close",
+    "w": 89,
+    "h": 44
+   }
+  ],
+  "htmlOverflow": "hidden",
+  "imgW": 324
+ },
+ "diagramKeyboard": {
+  "before": {
+   "sl": 0,
+   "active": "Scrollable system architecture diagram",
+   "outline": "rgb(202, 255, 119) solid 2px"
+  },
+  "after": {
+   "sl": 80,
+   "outline": "rgb(202, 255, 119) solid 2px"
+  }
+ }
+}

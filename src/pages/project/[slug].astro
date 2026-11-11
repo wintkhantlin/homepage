@@ -4,6 +4,7 @@ import { Icon } from "astro-icon/components";
 import BackLink from "../../components/BackLink.astro";
 import ProjectName from "../../components/ProjectName.astro";
 import CaseStudy from "../../components/project/CaseStudy.astro";
+import ProjectRail from "../../components/project/ProjectRail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getSortedProjects, type ProjectEntry } from "../../lib/content";
 import { absoluteUrl, createAuthorSchema, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
@@ -109,7 +110,7 @@ const structuredData = [
   keywords={[...(project.data.technologies || []), project.data.type || "software project", "software case study"]}
   structuredData={structuredData}
 >
-  <main id="main-content" class="mx-auto max-w-7xl px-5 pb-24 pt-36 text-(--text) sm:px-6 md:px-8">
+  <main id="main-content" class="mx-auto max-w-7xl px-5 pb-24 pt-(--page-top) text-(--text) sm:px-6 md:px-8">
     <BackLink
       href="/projects"
       label="All work"
@@ -120,7 +121,7 @@ const structuredData = [
       ]}
     />
 
-    <header class="pb-16 pt-16 md:pb-20 md:pt-24">
+    <header class="pb-10 pt-10 md:pb-12 md:pt-14">
       <ProjectName
         as="h1"
         name={project.data.name}
@@ -132,9 +133,9 @@ const structuredData = [
         {project.data.description}
       </p>
 
-      <dl class="mt-9 flex flex-wrap gap-x-10 gap-y-4 text-sm">
-        {facts.map((fact) => (
-          <div>
+      <dl class="mt-9 grid grid-cols-2 gap-x-6 gap-y-4 text-sm sm:flex sm:flex-wrap sm:gap-x-10">
+        {facts.map((fact, index) => (
+          <div class:list={[index === 0 && "col-span-2 sm:col-span-1"]}>
             <dt class="text-(--text-faint)">{fact.label}</dt>
             <dd class="mt-1 text-(--text-heading)">
               {fact.datetime ? <time datetime={fact.datetime} class="tabular-nums">{fact.value}</time> : fact.value}
@@ -165,21 +166,6 @@ const structuredData = [
           </a>
         )}
       </div>
-
-      <section class="mt-16 border-t border-(--border) pt-6" aria-labelledby="engineering-highlights">
-        <h2 id="engineering-highlights" class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">Engineering highlights</h2>
-        <ol class="mt-8 grid gap-8 md:grid-cols-2 md:gap-10">
-          {project.data.proofPoints.map((point, index) => (
-            <li>
-              <h3 class="text-xl font-semibold tracking-[-0.02em] text-(--text-heading)">
-                <span class="mr-2 font-mono text-sm font-normal tabular-nums text-(--text-faint)">{String(index + 1).padStart(2, "0")} /</span>
-                {point.title}
-              </h3>
-              <p class="mt-2 max-w-[52ch] text-base leading-relaxed text-(--text-muted)">{point.detail}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
     </header>
 
     <figure class="overflow-hidden rounded-2xl bg-(--border)">
@@ -192,73 +178,52 @@ const structuredData = [
       />
     </figure>
 
-    <div class="grid gap-16 py-24 md:grid-cols-12 md:gap-10 lg:py-32">
-      <aside class="md:col-span-4 lg:col-span-3">
-        <div class="md:sticky md:top-32">
-          {caseStudy && (
-            <nav class="mb-10 hidden md:block" aria-label="On this page">
-              <p class="text-sm font-semibold text-(--text-heading)">On this page</p>
-              <ul class="mt-3 border-t border-(--border) pt-3">
-                {caseStudySections.map((section) => (
-                  <li>
-                    <a
-                      href={`#${section.id}`}
-                      data-case-link={section.id}
-                      class="flex min-h-11 items-center text-sm text-(--text-muted) transition-colors duration-200 hover:text-(--text-heading) active:text-(--text-heading) aria-[current=location]:font-semibold aria-[current=location]:text-(--text-heading)"
-                    >
-                      {section.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
+    <section class="mt-16 border-t border-(--border) pt-6 md:mt-20" aria-labelledby="engineering-highlights">
+      <h2 id="engineering-highlights" class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">Engineering highlights</h2>
+      <ol class="mt-8 grid gap-8 md:grid-cols-2 md:gap-10">
+        {project.data.proofPoints.map((point, index) => (
+          <li>
+            <h3 class="text-xl font-semibold tracking-[-0.02em] text-(--text-heading)">
+              <span class="mr-2 font-mono text-sm font-normal tabular-nums text-(--text-faint)">{String(index + 1).padStart(2, "0")} /</span>
+              {point.title}
+            </h3>
+            <p class="mt-2 max-w-[52ch] text-base leading-relaxed text-(--text-muted)">{point.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
 
-          <h2 class="text-sm font-semibold text-(--text-heading)">
-            Technology
-          </h2>
-          {project.data.technologies?.length ? (
-            <ul class="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-(--border) pt-5 sm:grid-cols-3 md:grid-cols-1">
-              {project.data.technologies.map((technology) => (
-                <li class="text-sm text-(--text-muted)">{technology}</li>
-              ))}
-            </ul>
-          ) : (
-            <p class="mt-5 border-t border-(--border) pt-5 text-sm leading-6 text-(--text-muted)">
-              Technology details are available in the source repository.
-            </p>
+    <div class="pb-24 pt-16 lg:pb-32 lg:pt-20">
+      {caseStudy ? (
+        <CaseStudy
+          diagramLight={diagramSvg("light")}
+          diagramDark={diagramSvg("dark")}
+          challenge={caseStudy.challenge}
+          approach={caseStudy.approach}
+          architecture={caseStudy.architecture}
+          highlights={caseStudy.highlights}
+          technologies={project.data.technologies}
+          sections={caseStudySections}
+        >
+          {project.body && (
+            <section class="prose mt-20 max-w-[40rem] prose-p:leading-7 prose-p:text-(--text-muted) prose-headings:font-medium prose-headings:tracking-[-0.02em] prose-headings:text-(--text-heading) prose-strong:text-(--text-heading) prose-ul:text-(--text-muted) prose-ol:text-(--text-muted) prose-code:rounded-md prose-code:bg-(--border) prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[0.9em] prose-code:text-(--text-heading)">
+              <Content />
+            </section>
           )}
-          <p class="mt-9 max-w-xs text-xs leading-5 text-(--text-faint)">
-            This case study reflects the project documentation and current source repository.
-          </p>
+        </CaseStudy>
+      ) : (
+        <div class="grid gap-16 md:grid-cols-12 md:gap-10">
+          <ProjectRail class="md:col-span-4 lg:col-span-3" technologies={project.data.technologies} />
+          <div class="md:col-span-8 lg:col-span-9">
+            <section>
+              <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">Project overview</h2>
+              <p class="mt-6 max-w-[40rem] text-base leading-8 text-(--text-muted) sm:text-lg">
+                {project.data.description}
+              </p>
+            </section>
+          </div>
         </div>
-      </aside>
-
-      <div class="md:col-span-8 lg:col-span-9">
-        {caseStudy ? (
-          <CaseStudy
-            diagramLight={diagramSvg("light")}
-            diagramDark={diagramSvg("dark")}
-            challenge={caseStudy.challenge}
-            approach={caseStudy.approach}
-            architecture={caseStudy.architecture}
-            highlights={caseStudy.highlights}
-          />
-        ) : (
-          <section>
-            <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">Project overview</h2>
-            <p class="mt-6 max-w-[68ch] text-base leading-8 text-(--text-muted) sm:text-lg">
-              {project.data.description}
-            </p>
-          </section>
-        )}
-
-        {project.body && (
-          <section class="prose mt-20 max-w-[68ch] prose-p:leading-7 prose-p:text-(--text-muted) prose-headings:font-medium prose-headings:tracking-[-0.02em] prose-headings:text-(--text-heading) prose-strong:text-(--text-heading) prose-ul:text-(--text-muted) prose-ol:text-(--text-muted) prose-code:rounded-md prose-code:bg-(--border) prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[0.9em] prose-code:text-(--text-heading)">
-            <Content />
-          </section>
-        )}
-      </div>
+      )}
     </div>
 
     {nextProject && (

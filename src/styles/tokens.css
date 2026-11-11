@@ -12,6 +12,8 @@
   --section-gap-s: 120px;
   --section-gap: 144px;
   --section-gap-l: 176px;
+  /* Where a page's first heading starts below the fixed bar, so every inner page opens at the same height. */
+  --page-top: 9rem;
 }
 
 @media (max-width: 60rem) {
@@ -24,6 +26,7 @@
 
 @media (max-width: 40rem) {
   :root {
+    --page-top: 7rem;
     --section-gap-s: 56px;
     --section-gap: 72px;
     --section-gap-l: 96px;

@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import ProjectRail from "./ProjectRail.astro";
 
 interface Props {
   challenge: string;
@@ -8,48 +9,60 @@ interface Props {
   highlights: string[];
   diagramLight: string;
   diagramDark: string;
+  technologies?: string[];
+  sections: { id: string; label: string }[];
 }
 
-const { challenge, approach, architecture, highlights, diagramLight, diagramDark } = Astro.props as Props;
+const { challenge, approach, architecture, highlights, diagramLight, diagramDark, technologies, sections } = Astro.props as Props;
+
+// The text sections share one column beside the rail; the diagram alone spans the page, so its labels stay legible.
+const column = "md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4";
 ---
 
-<div class="space-y-20">
-  <section id="the-challenge">
+<div class="grid gap-y-20 md:grid-cols-12 md:gap-x-10">
+  <ProjectRail
+    class="md:col-span-4 md:col-start-1 md:row-span-5 md:row-start-1 lg:col-span-3 lg:col-start-1"
+    technologies={technologies}
+    sections={sections}
+  />
+
+  <section id="the-challenge" class:list={[column, "md:row-start-1"]}>
     <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
       The challenge
     </h2>
-    <p class="mt-6 max-w-[68ch] text-base leading-8 text-(--text-muted) sm:text-lg">
+    <p class="mt-6 max-w-[40rem] text-base leading-8 text-(--text-muted) sm:text-lg">
       {challenge}
     </p>
   </section>
 
-  <section id="the-approach">
+  <section id="the-approach" class:list={[column, "md:row-start-2"]}>
     <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
       The approach
     </h2>
-    <p class="mt-6 max-w-[68ch] text-base leading-8 text-(--text-muted) sm:text-lg">
+    <p class="mt-6 max-w-[40rem] text-base leading-8 text-(--text-muted) sm:text-lg">
       {approach}
     </p>
   </section>
 
-  <section id="system-architecture">
-    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
+  <!-- Spans every column, over the rail's track: the rail slides under it and is back once the diagram has passed. -->
+  <section id="system-architecture" class="relative z-10 bg-(--bg) md:col-span-12 md:col-start-1 md:row-start-3 md:grid md:grid-cols-subgrid">
+    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4">
       System architecture
     </h2>
     <div
-      class="diagram-frame mt-7 overscroll-x-contain overflow-x-auto rounded-2xl border border-(--border) bg-(--surface) p-4 sm:p-8"
+      class="diagram-frame mt-7 overscroll-x-contain overflow-x-auto rounded-2xl border border-(--border) bg-(--surface) p-4 sm:p-5 md:col-span-12"
       data-diagram
       tabindex="0"
       aria-label="Scrollable system architecture diagram"
     >
       <!-- Both themes ship as static SVG; CSS shows the one matching the active theme. -->
-      <div class="diagram-theme diagram-dark min-w-176" role="img" aria-label="System architecture diagram" set:html={diagramDark}></div>
-      <div class="diagram-theme diagram-light min-w-176" role="img" aria-label="System architecture diagram" set:html={diagramLight}></div>
+      <div class="diagram-theme diagram-dark min-w-168" role="img" aria-label="System architecture diagram" set:html={diagramDark}></div>
+      <div class="diagram-theme diagram-light min-w-168" role="img" aria-label="System architecture diagram" set:html={diagramLight}></div>
     </div>
 
     <button
       type="button"
-      class="-ml-3 mt-3 hidden min-h-11 cursor-pointer items-center gap-2 rounded-full px-3 text-sm font-medium text-(--text-muted) transition-[background-color,color] duration-200 hover:bg-(--surface-raised) hover:text-(--text-heading) active:bg-(--surface)"
+      class="-ml-3 mt-3 hidden md:col-span-12 min-h-11 cursor-pointer items-center gap-2 rounded-full px-3 text-sm font-medium text-(--text-muted) transition-[background-color,color] duration-200 hover:bg-(--surface-raised) hover:text-(--text-heading) active:bg-(--surface)"
       data-diagram-enlarge
     >
       <Icon name="lucide:maximize-2" class="size-4" aria-hidden="true" />
@@ -67,7 +80,7 @@ const { challenge, approach, architecture, highlights, diagramLight, diagramDark
     </dialog>
   </section>
 
-  <section id="how-it-is-structured">
+  <section id="how-it-is-structured" class:list={[column, "md:row-start-4"]}>
     <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
       How it is structured
     </h2>
@@ -81,7 +94,7 @@ const { challenge, approach, architecture, highlights, diagramLight, diagramDark
     </ol>
   </section>
 
-  <section id="what-it-includes">
+  <section id="what-it-includes" class:list={[column, "md:row-start-5"]}>
     <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
       What it includes
     </h2>
@@ -90,6 +103,7 @@ const { challenge, approach, architecture, highlights, diagramLight, diagramDark
         <li class="bg-(--surface) p-6 text-base leading-relaxed text-(--text-muted)">{item}</li>
       ))}
     </ul>
+    <slot />
   </section>
 </div>
 
@@ -132,6 +146,12 @@ const { challenge, approach, architecture, highlights, diagramLight, diagramDark
   .diagram-theme :global(svg) {
     display: block;
     margin-inline: auto;
+  }
+
+  /* Mermaid sets edge labels in the node text colour, which is the page colour here: invisible against it. */
+  .diagram-theme :global(.edgeLabel text),
+  .diagram-viewer-canvas :global(.edgeLabel text) {
+    fill: var(--text-heading) !important;
   }
 
   .diagram-dark {

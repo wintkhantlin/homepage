@@ -1,0 +1,2789 @@
+[
+  {
+    "key": "home-desktop",
+    "viewport": "desktop",
+    "route": "/",
+    "data": {
+      "url": "http://localhost:4321/",
+      "title": "Wint Khant Lin Portfolio",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Explore Wint Khant Lin's software engineer portfolio, backend projects, systems thinking, web experiments, and programming notes from Myanmar.",
+      "canonical": "https://wintkhantlin.com/",
+      "ogImage": "https://wintkhantlin.com/_image/?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fhapper.png%3ForigWidth%3D1280%26origHeight%3D961%26origFormat%3Dpng&w=1200&h=900&f=webp",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": 0,
+      "pageHeight": 5408,
+      "h1": [
+        "Wint Khant Linalso known as Happer"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "Wint Khant Linalso known as Happer",
+          "id": "hero-name"
+        },
+        {
+          "level": 2,
+          "text": "Selected work",
+          "id": "index-heading"
+        },
+        {
+          "level": 3,
+          "text": "GenCourse",
+          "id": "index-name-0"
+        },
+        {
+          "level": 3,
+          "text": "URL2Short",
+          "id": "index-name-1"
+        },
+        {
+          "level": 3,
+          "text": "Zay Chin",
+          "id": "index-name-2"
+        },
+        {
+          "level": 3,
+          "text": "Chate Sat",
+          "id": "index-name-3"
+        },
+        {
+          "level": 2,
+          "text": "Competition results",
+          "id": "recognition-heading"
+        },
+        {
+          "level": 2,
+          "text": "Notes",
+          "id": "writing-heading"
+        },
+        {
+          "level": 3,
+          "text": "Idempotency Keys ဆိုတာဘာလဲ"
+        },
+        {
+          "level": 3,
+          "text": "Big O Notation ဆိုတာဘာလဲ? (Beginner Guide)"
+        },
+        {
+          "level": 3,
+          "text": "My Goals and Plan for 2025"
+        },
+        {
+          "level": 2,
+          "text": "About",
+          "id": "about-heading"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 1,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 32,
+      "tapTargets": [],
+      "images": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fgencourse.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=720&h=403&f=webp",
+          "naturalWidth": 560,
+          "naturalHeight": 313,
+          "visible": true,
+          "x": 148,
+          "y": 1289,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Furl2short.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=720&h=403&f=webp",
+          "naturalWidth": 560,
+          "naturalHeight": 313,
+          "visible": true,
+          "x": 148,
+          "y": 1741,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fzay_chin.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 148,
+          "y": 2192,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fchatesat.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 148,
+          "y": 2644,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=700&h=933&q=70&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 848,
+          "y": 3352,
+          "w": 267,
+          "h": 357
+        },
+        {
+          "alt": "Two gold GUSTO College award medals held in one hand",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fgusto-innovation-golden-metals.png%3ForigWidth%3D800%26origHeight%3D1422%26origFormat%3Dpng&w=500&h=889&q=70&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 1127,
+          "y": 3352,
+          "w": 201,
+          "h": 357
+        },
+        {
+          "alt": "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+          "src": "",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": false,
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "alt": "",
+          "src": "",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": false,
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        }
+      ],
+      "brokenImages": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fzay_chin.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 148,
+          "y": 2192,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fchatesat.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 148,
+          "y": 2644,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=700&h=933&q=70&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 848,
+          "y": 3352,
+          "w": 267,
+          "h": 357
+        },
+        {
+          "alt": "Two gold GUSTO College award medals held in one hand",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fgusto-innovation-golden-metals.png%3ForigWidth%3D800%26origHeight%3D1422%26origFormat%3Dpng&w=500&h=889&q=70&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 1127,
+          "y": 3352,
+          "w": 201,
+          "h": 357
+        }
+      ],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "Wint Khant Linalso known as HapperSoftware engineer and college student from Myanmar, building reliable backend systems.wintkhantlin@gmail.comwwwwwiiiiinnnnntttttkkkkkhhhhhaaaaannnnntttttllllliiiiinnnnn@@@@@gggggmmmmmaaaaaiiiiilllll.....cccccooooommmmmCopy emailSee the workGitHub (opens in a new tab)Selected workThe products, the systems behind them, and what I learned building them.View all work AI EduTech2026 · BuiltGenCourseGenCourse, an AI web app that turns your learning prompts into structured, interactive courses.Built with RabbitMQ / Go / Python / PostgreSQLExplore the project ↗Utility2026 · BuiltURL2ShortA scalable URL shortener for custom links, fast redirects, and detailed click a",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 1296,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "projects-desktop",
+    "viewport": "desktop",
+    "route": "/projects",
+    "data": {
+      "url": "http://localhost:4321/projects",
+      "title": "Software Projects & Case Studies | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Explore Wint Khant Lin's software projects, including backend systems, distributed architectures, open-source builds, and technical experiments.",
+      "canonical": "https://wintkhantlin.com/projects/",
+      "ogImage": "https://wintkhantlin.com/og-default.png",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": 0,
+      "pageHeight": 3158,
+      "h1": [
+        "Work"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "Work"
+        },
+        {
+          "level": 2,
+          "text": "GenCourse",
+          "id": "index-name-0"
+        },
+        {
+          "level": 2,
+          "text": "URL2Short",
+          "id": "index-name-1"
+        },
+        {
+          "level": 2,
+          "text": "Zay Chin",
+          "id": "index-name-2"
+        },
+        {
+          "level": 2,
+          "text": "Chate Sat",
+          "id": "index-name-3"
+        },
+        {
+          "level": 2,
+          "text": "ToolyDooly",
+          "id": "index-name-4"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 0
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 21,
+      "tapTargets": [],
+      "images": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fgencourse.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=720&h=403&f=webp",
+          "naturalWidth": 560,
+          "naturalHeight": 313,
+          "visible": true,
+          "x": 148,
+          "y": 416,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Furl2short.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=720&h=403&f=webp",
+          "naturalWidth": 560,
+          "naturalHeight": 313,
+          "visible": true,
+          "x": 148,
+          "y": 868,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fzay_chin.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=720&h=403&f=webp",
+          "naturalWidth": 560,
+          "naturalHeight": 313,
+          "visible": true,
+          "x": 148,
+          "y": 1319,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fchatesat.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=720&h=403&f=webp",
+          "naturalWidth": 560,
+          "naturalHeight": 313,
+          "visible": true,
+          "x": 148,
+          "y": 1771,
+          "w": 521,
+          "h": 293
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Ftoolydooly.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 148,
+          "y": 2223,
+          "w": 521,
+          "h": 293
+        }
+      ],
+      "brokenImages": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Ftoolydooly.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 148,
+          "y": 2223,
+          "w": 521,
+          "h": 293
+        }
+      ],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "WorkOpen-source builds, product experiments, and hackathon work, with maturity and architectural evidence made explicit.AI EduTech2026 · BuiltGenCourseGenCourse, an AI web app that turns your learning prompts into structured, interactive courses.Built with RabbitMQ / Go / Python / PostgreSQLExplore the project ↗Utility2026 · BuiltURL2ShortA scalable URL shortener for custom links, fast redirects, and detailed click analytics.Built with Go / Redis / Kafka / ClickHouseExplore the project ↗Collaborative shopping2026 · BuiltZay ChinA collaborative shopping cart application that allows family members to create groups, add items to shared carts, and track shopping locations on a map.Built with Bun",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 1296,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "project-gencourse-desktop",
+    "viewport": "desktop",
+    "route": "/project/gencourse",
+    "data": {
+      "url": "http://localhost:4321/project/gencourse",
+      "title": "GenCourse AI Learning Platform Case Study | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Explore GenCourse, an AI learning platform that turns prompts into structured courses using React, Hono, Python, Go, RabbitMQ, and PostgreSQL.",
+      "canonical": "https://wintkhantlin.com/project/gencourse/",
+      "ogImage": "https://wintkhantlin.com/_image/?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fgencourse.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=1200&h=672&f=webp",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": 0,
+      "pageHeight": 4390,
+      "h1": [
+        "GenCourse"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "GenCourse"
+        },
+        {
+          "level": 2,
+          "text": "Engineering highlights",
+          "id": "engineering-highlights"
+        },
+        {
+          "level": 3,
+          "text": "01 /Asynchronous processing"
+        },
+        {
+          "level": 3,
+          "text": "02 /Real-time communication"
+        },
+        {
+          "level": 2,
+          "text": "Technology"
+        },
+        {
+          "level": 2,
+          "text": "The challenge"
+        },
+        {
+          "level": 2,
+          "text": "The approach"
+        },
+        {
+          "level": 2,
+          "text": "System architecture"
+        },
+        {
+          "level": 2,
+          "text": "How it is structured"
+        },
+        {
+          "level": 2,
+          "text": "What it includes"
+        },
+        {
+          "level": 2,
+          "text": "URL2Short"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 3,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 26,
+      "tapTargets": [],
+      "images": [
+        {
+          "alt": "GenCourse product interface",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fgencourse.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=1280&h=716&f=webp",
+          "naturalWidth": 1280,
+          "naturalHeight": 716,
+          "visible": true,
+          "x": 112,
+          "y": 948,
+          "w": 1216,
+          "h": 684
+        }
+      ],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [
+        {
+          "text": "WebSocket",
+          "tag": "tspan",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(12, 13, 12)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1,
+          "required": 4.5
+        },
+        {
+          "text": "progress",
+          "tag": "tspan",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(12, 13, 12)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1,
+          "required": 4.5
+        },
+        {
+          "text": "Learner",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "React + Vite",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Oathkeeper Gateway",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Course Management API",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Ory Kratos",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "PostgreSQL",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "RabbitMQ",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Python AI Worker",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Go Notification Service",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        }
+      ],
+      "lowContrastCount": 11,
+      "firstScreenText": "All work(function(){const origins = [{\"path\":\"/\",\"href\":\"/#work-gencourse\",\"label\":\"Back to selected work\"},{\"path\":\"/projects\",\"href\":\"/projects#work-gencourse\",\"label\":\"Back to all work\"}]; const siblingPrefix = \"/project/\"; const link = document.querySelector(\"[data-back-link]\"); const clean = (path) => path.replace(/\\/$/, \"\") || \"/\"; const storageKey = `list-origin:${siblingPrefix}`; const remember = (path) => { try { if (path) sessionStorage.setItem(storageKey, path); else sessionStorage.removeItem(storageKey); } catch {} }; const recall = () => { try { return sessionStorage.getItem(storageKey); } catch { return null; } }; let from = \"\"; try { const referrer = new URL(document.referrer)",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 1296,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "project-url2short-desktop",
+    "viewport": "desktop",
+    "route": "/project/url2short",
+    "data": {
+      "url": "http://localhost:4321/project/url2short",
+      "title": "URL2Short URL Shortener Case Study | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Explore URL2Short, a scalable URL shortener for custom links, low-latency redirects, and click analytics with Redis, Kafka, and ClickHouse.",
+      "canonical": "https://wintkhantlin.com/project/url2short/",
+      "ogImage": "https://wintkhantlin.com/_image/?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Furl2short.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=1200&h=672&f=webp",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": 0,
+      "pageHeight": 4268,
+      "h1": [
+        "URL2Short"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "URL2Short"
+        },
+        {
+          "level": 2,
+          "text": "Engineering highlights",
+          "id": "engineering-highlights"
+        },
+        {
+          "level": 3,
+          "text": "01 /Low-latency redirects"
+        },
+        {
+          "level": 3,
+          "text": "02 /Decoupled analytics"
+        },
+        {
+          "level": 2,
+          "text": "Technology"
+        },
+        {
+          "level": 2,
+          "text": "The challenge"
+        },
+        {
+          "level": 2,
+          "text": "The approach"
+        },
+        {
+          "level": 2,
+          "text": "System architecture"
+        },
+        {
+          "level": 2,
+          "text": "How it is structured"
+        },
+        {
+          "level": 2,
+          "text": "What it includes"
+        },
+        {
+          "level": 2,
+          "text": "Zay Chin"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 3,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 26,
+      "tapTargets": [],
+      "images": [
+        {
+          "alt": "URL2Short product interface",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Furl2short.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=1280&h=716&f=webp",
+          "naturalWidth": 1280,
+          "naturalHeight": 716,
+          "visible": true,
+          "x": 112,
+          "y": 918,
+          "w": 1216,
+          "h": 684
+        }
+      ],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [
+        {
+          "text": "destination",
+          "tag": "tspan",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(12, 13, 12)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1,
+          "required": 4.5
+        },
+        {
+          "text": "Visitor",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Redirect Service",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Redis Cache",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Kafka",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Management Dashboard",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Management API",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "PostgreSQL",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Go Analytics Service",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "ClickHouse",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        }
+      ],
+      "lowContrastCount": 10,
+      "firstScreenText": "All work(function(){const origins = [{\"path\":\"/\",\"href\":\"/#work-url2short\",\"label\":\"Back to selected work\"},{\"path\":\"/projects\",\"href\":\"/projects#work-url2short\",\"label\":\"Back to all work\"}]; const siblingPrefix = \"/project/\"; const link = document.querySelector(\"[data-back-link]\"); const clean = (path) => path.replace(/\\/$/, \"\") || \"/\"; const storageKey = `list-origin:${siblingPrefix}`; const remember = (path) => { try { if (path) sessionStorage.setItem(storageKey, path); else sessionStorage.removeItem(storageKey); } catch {} }; const recall = () => { try { return sessionStorage.getItem(storageKey); } catch { return null; } }; let from = \"\"; try { const referrer = new URL(document.referrer)",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 1296,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "writing-desktop",
+    "viewport": "desktop",
+    "route": "/writing",
+    "data": {
+      "url": "http://localhost:4321/writing",
+      "title": "Software Engineering Notes & Articles | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Read programming notes from Wint Khant Lin on algorithms, systems thinking, software goals, and learning in public as a Myanmar developer.",
+      "canonical": "https://wintkhantlin.com/writing/",
+      "ogImage": "https://wintkhantlin.com/og-default.png",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": 0,
+      "pageHeight": 1356,
+      "h1": [
+        "Notes"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "Notes"
+        },
+        {
+          "level": 2,
+          "text": "Idempotency Keys ဆိုတာဘာလဲ"
+        },
+        {
+          "level": 2,
+          "text": "Big O Notation ဆိုတာဘာလဲ? (Beginner Guide)"
+        },
+        {
+          "level": 2,
+          "text": "My Goals and Plan for 2025"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 0
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 19,
+      "tapTargets": [],
+      "images": [],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "NotesSoftware, systems, and learning in public, in English and Burmese.Aug 29, 2026Idempotency Keys ဆိုတာဘာလဲHow idempotency keys work, and how they stop a retried request from charging a payment twice.Software engineeringBurmese · 2 min readMay 09, 2025Big O Notation ဆိုတာဘာလဲ? (Beginner Guide)An easy-to-follow explanation of Big O notation and what it says about an algorithm's speed and memory usage.What isBurmese · 3 min readJan 09, 2025My Goals and Plan for 2025This article outlines my goals for 2025 and the steps I plan to take to achieve themMyself2 min read",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 1296,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "post-idempotency-desktop",
+    "viewport": "desktop",
+    "route": "/post/idempotency-keys-what-most-tutorials-dont-tell-you",
+    "data": {
+      "url": "http://localhost:4321/post/idempotency-keys-what-most-tutorials-dont-tell-you",
+      "title": "Idempotency Keys ဆိုတာဘာလဲ | Wint Khant Lin",
+      "lang": "my",
+      "theme": "dark",
+      "metaDescription": "Idempotency Key ဆိုတာဘာလဲ၊ payment request retry ဖြစ်တဲ့အခါ duplicate processing ကို ဘယ်လိုကာကွယ်ပြီး same operation အတွက် same key ကို ဘာကြောင့်ပြန်သုံးရသလဲ ရှင်းပြထားပါတယ်။",
+      "canonical": "https://wintkhantlin.com/post/idempotency-keys-what-most-tutorials-dont-tell-you/",
+      "ogImage": "https://wintkhantlin.com/og-default.png",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": 0,
+      "pageHeight": 4913,
+      "h1": [
+        "Idempotency Keys ဆိုတာဘာလဲ"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "Idempotency Keys ဆိုတာဘာလဲ"
+        },
+        {
+          "level": 2,
+          "text": "ပထမဆုံး Idempotency ဆိုတာဘာလဲ?",
+          "id": "ပထမဆုံး-idempotency-ဆိုတာဘာလဲ"
+        },
+        {
+          "level": 2,
+          "text": "TL;DR",
+          "id": "tldr"
+        },
+        {
+          "level": 2,
+          "text": "References",
+          "id": "references"
+        },
+        {
+          "level": 2,
+          "text": "Big O Notation ဆိုတာဘာလဲ? (Beginner Guide)"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 4,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 25,
+      "tapTargets": [
+        {
+          "tag": "a",
+          "text": "TL;DR",
+          "label": "",
+          "x": 1128,
+          "y": 668,
+          "w": 208,
+          "h": 34
+        },
+        {
+          "tag": "a",
+          "text": "References",
+          "label": "",
+          "x": 1128,
+          "y": 704,
+          "w": 208,
+          "h": 34
+        },
+        {
+          "tag": "a",
+          "text": "Original idempotency keys article on DEV Community",
+          "label": "",
+          "x": 392,
+          "y": 3917,
+          "w": 507,
+          "h": 25
+        },
+        {
+          "tag": "a",
+          "text": "More about me",
+          "label": "",
+          "x": 493,
+          "y": 4071,
+          "w": 116,
+          "h": 21
+        }
+      ],
+      "images": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fhapper.png%3ForigWidth%3D1280%26origHeight%3D961%26origFormat%3Dpng&w=40&h=40&f=webp",
+          "naturalWidth": 40,
+          "naturalHeight": 40,
+          "visible": true,
+          "x": 352,
+          "y": 220,
+          "w": 40,
+          "h": 40
+        }
+      ],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "All notes(function(){const origins = [{\"path\":\"/\",\"href\":\"/#note-idempotency-keys-what-most-tutorials-dont-tell-you\",\"label\":\"Back to notes\"},{\"path\":\"/writing\",\"href\":\"/writing#note-idempotency-keys-what-most-tutorials-dont-tell-you\",\"label\":\"Back to all notes\"}]; const siblingPrefix = \"/post/\"; const link = document.querySelector(\"[data-back-link]\"); const clean = (path) => path.replace(/\\/$/, \"\") || \"/\"; const storageKey = `list-origin:${siblingPrefix}`; const remember = (path) => { try { if (path) sessionStorage.setItem(storageKey, path); else sessionStorage.removeItem(storageKey); } catch {} }; const recall = () => { try { return sessionStorage.getItem(storageKey); } catch { return null",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 1296,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "about-desktop",
+    "viewport": "desktop",
+    "route": "/about",
+    "data": {
+      "url": "http://localhost:4321/about",
+      "title": "About Wint Khant Lin | Backend Software Engineer",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Wint Khant Lin, also known as Happer, is a college student and backend software engineer from Myanmar building distributed systems and writing in English and Burmese.",
+      "canonical": "https://wintkhantlin.com/about/",
+      "ogImage": "https://wintkhantlin.com/_image/?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fhapper.png%3ForigWidth%3D1280%26origHeight%3D961%26origFormat%3Dpng&w=1200&h=900&f=webp",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": 0,
+      "pageHeight": 1709,
+      "h1": [
+        "About"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "About",
+          "id": "about-heading"
+        },
+        {
+          "level": 2,
+          "text": "Tools & technologies",
+          "id": "tools-heading"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 1,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 18,
+      "tapTargets": [],
+      "images": [],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "About Hey, I’m Wint Khant Lin, also known as Happer. I’m a college student from Myanmar who’s deeply passionate about software engineering, especially backend systems, distributed architectures, and building tools that solve real problems.I started coding because I was curious about how things work under the hood. That curiosity turned into a love for over-engineering side projects, exploring system design, and learning in public. Every project I ship teaches me something new.Based inMyanmarCurrentlyCollege studentFocusBackend systems and distributed architectureWrites inEnglish and BurmeseElsewhereGitHub (opens in a new tab)LinkedIn (opens in a new tab) Tools & technologies LanguagesTypeScr",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 1296,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "404-desktop",
+    "viewport": "desktop",
+    "route": "/404",
+    "data": {
+      "url": "http://localhost:4321/404",
+      "title": "404 — Page Not Found | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "The requested page could not be found. Return to Wint Khant Lin's software engineering portfolio, projects, and programming notes.",
+      "canonical": "https://wintkhantlin.com/404/",
+      "ogImage": "https://wintkhantlin.com/og-default.png",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": 0,
+      "pageHeight": 1096,
+      "h1": [
+        "This page doesn’t exist"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "This page doesn’t exist"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 1,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 0
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 19,
+      "tapTargets": [],
+      "images": [],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "404This page doesn’t existYou might have followed an old link, or the page may have moved. Let’s get you back on track.Back to homeSee the workRead the notes",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 1296,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "failedRequests": [],
+    "badResponses": [
+      {
+        "url": "http://localhost:4321/404",
+        "status": 404
+      }
+    ]
+  },
+  {
+    "key": "interaction-theme",
+    "viewport": "desktop",
+    "data": {
+      "light": true,
+      "theme": "github-light-high-contrast",
+      "bg": "rgb(250, 250, 250)",
+      "stored": "light",
+      "toggleLabel": "Switch to dark theme"
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "interaction-keyboard",
+    "viewport": "desktop",
+    "data": [
+      {
+        "tag": "a",
+        "text": "Skip to main content",
+        "href": "#main-content",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 12,
+          "y": 12,
+          "w": 172,
+          "h": 45
+        }
+      },
+      {
+        "tag": "a",
+        "text": "WKWint Khant Lin",
+        "href": "/",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 112,
+          "y": 14,
+          "w": 748,
+          "h": 44
+        }
+      },
+      {
+        "tag": "a",
+        "text": "Work",
+        "href": "#projects",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 908,
+          "y": 14,
+          "w": 47,
+          "h": 44
+        }
+      },
+      {
+        "tag": "a",
+        "text": "Notes",
+        "href": "#writing",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 974,
+          "y": 14,
+          "w": 52,
+          "h": 44
+        }
+      },
+      {
+        "tag": "a",
+        "text": "About",
+        "href": "#about",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 1047,
+          "y": 14,
+          "w": 53,
+          "h": 44
+        }
+      },
+      {
+        "tag": "a",
+        "text": "EmailSay hello",
+        "href": "mailto:wintkhantlin@gmail.com",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 1184,
+          "y": 14,
+          "w": 92,
+          "h": 44
+        }
+      },
+      {
+        "tag": "button",
+        "text": "",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 1296,
+          "y": 14,
+          "w": 44,
+          "h": 44
+        }
+      },
+      {
+        "tag": "a",
+        "text": "wintkhantlin@gmail.comwwwwwiiiiinnnnntttttkkkkkhhhhhaaaaannn",
+        "href": "mailto:wintkhantlin@gmail.com",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 908,
+          "y": 712,
+          "w": 260,
+          "h": 48
+        }
+      },
+      {
+        "tag": "button",
+        "text": "Copy email",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 1175,
+          "y": 714,
+          "w": 123,
+          "h": 44
+        }
+      },
+      {
+        "tag": "a",
+        "text": "See the work",
+        "href": "#projects",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 908,
+          "y": 776,
+          "w": 121,
+          "h": 44
+        }
+      },
+      {
+        "tag": "a",
+        "text": "GitHub (opens in a new tab)",
+        "href": "https://github.com/wintkhantlin",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 1053,
+          "y": 776,
+          "w": 77,
+          "h": 44
+        }
+      },
+      {
+        "tag": "a",
+        "text": "View all work",
+        "href": "/projects",
+        "outline": "solid 2px rgb(24, 24, 27)",
+        "outlineOffset": "4px",
+        "rect": {
+          "x": 1220,
+          "y": 448,
+          "w": 108,
+          "h": 44
+        }
+      }
+    ],
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "interaction-photo-dialog",
+    "viewport": "desktop",
+    "data": {
+      "dialog": {
+        "open": true,
+        "busy": null,
+        "activeText": "Close",
+        "activeTag": "button",
+        "imgSrc": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=1400&h=1867&f=webp",
+        "imgAlt": "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+        "count": "1 of 2",
+        "caption": "The team's recommerce marketplace display, GUSTO Innovation Awards & Forum, August 2026"
+      },
+      "afterClose": {
+        "open": true,
+        "active": "Close"
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "interaction-article",
+    "viewport": "desktop",
+    "data": {
+      "tocOpen": true,
+      "tocLinks": [
+        "ပထမဆုံး Idempotency ဆိုတာဘာလဲ?",
+        "TL;DR",
+        "References"
+      ],
+      "tocPosition": "sticky",
+      "progressDisplay": "block",
+      "progressAnimation": "read-progress",
+      "articleWidth": 736
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "home-mobile",
+    "viewport": "mobile",
+    "route": "/",
+    "data": {
+      "url": "http://localhost:4321/",
+      "title": "Wint Khant Lin Portfolio",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Explore Wint Khant Lin's software engineer portfolio, backend projects, systems thinking, web experiments, and programming notes from Myanmar.",
+      "canonical": "https://wintkhantlin.com/",
+      "ogImage": "https://wintkhantlin.com/_image/?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fhapper.png%3ForigWidth%3D1280%26origHeight%3D961%26origFormat%3Dpng&w=1200&h=900&f=webp",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": 0,
+      "pageHeight": 6636,
+      "h1": [
+        "Wint Khant Linalso known as Happer"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "Wint Khant Linalso known as Happer",
+          "id": "hero-name"
+        },
+        {
+          "level": 2,
+          "text": "Selected work",
+          "id": "index-heading"
+        },
+        {
+          "level": 3,
+          "text": "GenCourse",
+          "id": "index-name-0"
+        },
+        {
+          "level": 3,
+          "text": "URL2Short",
+          "id": "index-name-1"
+        },
+        {
+          "level": 3,
+          "text": "Zay Chin",
+          "id": "index-name-2"
+        },
+        {
+          "level": 3,
+          "text": "Chate Sat",
+          "id": "index-name-3"
+        },
+        {
+          "level": 2,
+          "text": "Competition results",
+          "id": "recognition-heading"
+        },
+        {
+          "level": 2,
+          "text": "Notes",
+          "id": "writing-heading"
+        },
+        {
+          "level": 3,
+          "text": "Idempotency Keys ဆိုတာဘာလဲ"
+        },
+        {
+          "level": 3,
+          "text": "Big O Notation ဆိုတာဘာလဲ? (Beginner Guide)"
+        },
+        {
+          "level": 3,
+          "text": "My Goals and Plan for 2025"
+        },
+        {
+          "level": 2,
+          "text": "About",
+          "id": "about-heading"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 1,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 32,
+      "tapTargets": [],
+      "images": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fgencourse.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=480&h=269&f=webp",
+          "naturalWidth": 389,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 36,
+          "y": 985,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Furl2short.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=480&h=269&f=webp",
+          "naturalWidth": 389,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 36,
+          "y": 1554,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fzay_chin.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=480&h=269&f=webp",
+          "naturalWidth": 389,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 36,
+          "y": 2096,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fchatesat.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 36,
+          "y": 2692,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=700&h=933&q=70&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 20,
+          "y": 3927,
+          "w": 193,
+          "h": 258
+        },
+        {
+          "alt": "Two gold GUSTO College award medals held in one hand",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fgusto-innovation-golden-metals.png%3ForigWidth%3D800%26origHeight%3D1422%26origFormat%3Dpng&w=500&h=889&q=70&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 225,
+          "y": 3927,
+          "w": 145,
+          "h": 258
+        },
+        {
+          "alt": "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+          "src": "",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": false,
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        },
+        {
+          "alt": "",
+          "src": "",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": false,
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        }
+      ],
+      "brokenImages": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fchatesat.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 36,
+          "y": 2692,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "The team's secured recommerce marketplace display at the GUSTO Innovation Awards & Forum",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fpolo-gusto-innovation-1.jpeg%3ForigWidth%3D1152%26origHeight%3D1536%26origFormat%3Djpg&w=700&h=933&q=70&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 20,
+          "y": 3927,
+          "w": 193,
+          "h": 258
+        },
+        {
+          "alt": "Two gold GUSTO College award medals held in one hand",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fawards%2Fgusto-innovation-golden-metals.png%3ForigWidth%3D800%26origHeight%3D1422%26origFormat%3Dpng&w=500&h=889&q=70&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 225,
+          "y": 3927,
+          "w": 145,
+          "h": 258
+        }
+      ],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "Wint Khant Linalso known as HapperSoftware engineer and college student from Myanmar, building reliable backend systems.wintkhantlin@gmail.comwwwwwiiiiinnnnntttttkkkkkhhhhhaaaaannnnntttttllllliiiiinnnnn@@@@@gggggmmmmmaaaaaiiiiilllll.....cccccooooommmmmCopy emailSee the workGitHub (opens in a new tab)Selected workThe products, the systems behind them, and what I learned building them.View all work AI EduTech2026 · BuiltGenCourseGenCourse, an AI web app that turns your learning prompts into structured, interactive courses.Built with RabbitMQ / Go / Python / PostgreSQLExplore the project ↗Utility2026 · BuiltURL2ShortA scalable URL shortener for custom links, fast redirects, and detailed click a",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 338,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "projects-mobile",
+    "viewport": "mobile",
+    "route": "/projects",
+    "data": {
+      "url": "http://localhost:4321/projects",
+      "title": "Software Projects & Case Studies | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Explore Wint Khant Lin's software projects, including backend systems, distributed architectures, open-source builds, and technical experiments.",
+      "canonical": "https://wintkhantlin.com/projects/",
+      "ogImage": "https://wintkhantlin.com/og-default.png",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": 0,
+      "pageHeight": 3811,
+      "h1": [
+        "Work"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "Work"
+        },
+        {
+          "level": 2,
+          "text": "GenCourse",
+          "id": "index-name-0"
+        },
+        {
+          "level": 2,
+          "text": "URL2Short",
+          "id": "index-name-1"
+        },
+        {
+          "level": 2,
+          "text": "Zay Chin",
+          "id": "index-name-2"
+        },
+        {
+          "level": 2,
+          "text": "Chate Sat",
+          "id": "index-name-3"
+        },
+        {
+          "level": 2,
+          "text": "ToolyDooly",
+          "id": "index-name-4"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 0
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 21,
+      "tapTargets": [],
+      "images": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fgencourse.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=480&h=269&f=webp",
+          "naturalWidth": 389,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 36,
+          "y": 387,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Furl2short.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=480&h=269&f=webp",
+          "naturalWidth": 389,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 36,
+          "y": 956,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fzay_chin.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=480&h=269&f=webp",
+          "naturalWidth": 389,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 36,
+          "y": 1498,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fchatesat.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=480&h=269&f=webp",
+          "naturalWidth": 389,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 36,
+          "y": 2094,
+          "w": 318,
+          "h": 179
+        },
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Ftoolydooly.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 36,
+          "y": 2663,
+          "w": 318,
+          "h": 179
+        }
+      ],
+      "brokenImages": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Ftoolydooly.png%3ForigWidth%3D1440%26origHeight%3D806%26origFormat%3Dpng&w=1440&h=806&f=webp",
+          "naturalWidth": 0,
+          "naturalHeight": 0,
+          "visible": true,
+          "x": 36,
+          "y": 2663,
+          "w": 318,
+          "h": 179
+        }
+      ],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "WorkOpen-source builds, product experiments, and hackathon work, with maturity and architectural evidence made explicit.AI EduTech2026 · BuiltGenCourseGenCourse, an AI web app that turns your learning prompts into structured, interactive courses.Built with RabbitMQ / Go / Python / PostgreSQLExplore the project ↗Utility2026 · BuiltURL2ShortA scalable URL shortener for custom links, fast redirects, and detailed click analytics.Built with Go / Redis / Kafka / ClickHouseExplore the project ↗Collaborative shopping2026 · BuiltZay ChinA collaborative shopping cart application that allows family members to create groups, add items to shared carts, and track shopping locations on a map.Built with Bun",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 338,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "project-gencourse-mobile",
+    "viewport": "mobile",
+    "route": "/project/gencourse",
+    "data": {
+      "url": "http://localhost:4321/project/gencourse",
+      "title": "GenCourse AI Learning Platform Case Study | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Explore GenCourse, an AI learning platform that turns prompts into structured courses using React, Hono, Python, Go, RabbitMQ, and PostgreSQL.",
+      "canonical": "https://wintkhantlin.com/project/gencourse/",
+      "ogImage": "https://wintkhantlin.com/_image/?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fgencourse.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=1200&h=672&f=webp",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": 0,
+      "pageHeight": 5188,
+      "h1": [
+        "GenCourse"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "GenCourse"
+        },
+        {
+          "level": 2,
+          "text": "Engineering highlights",
+          "id": "engineering-highlights"
+        },
+        {
+          "level": 3,
+          "text": "01 /Asynchronous processing"
+        },
+        {
+          "level": 3,
+          "text": "02 /Real-time communication"
+        },
+        {
+          "level": 2,
+          "text": "Technology"
+        },
+        {
+          "level": 2,
+          "text": "The challenge"
+        },
+        {
+          "level": 2,
+          "text": "The approach"
+        },
+        {
+          "level": 2,
+          "text": "System architecture"
+        },
+        {
+          "level": 2,
+          "text": "How it is structured"
+        },
+        {
+          "level": 2,
+          "text": "What it includes"
+        },
+        {
+          "level": 2,
+          "text": "URL2Short"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 3,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 21,
+      "tapTargets": [],
+      "images": [
+        {
+          "alt": "GenCourse product interface",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fgencourse.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=400&h=224&f=webp",
+          "naturalWidth": 390,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 20,
+          "y": 1107,
+          "w": 350,
+          "h": 197
+        }
+      ],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [
+        {
+          "text": "WebSocket",
+          "tag": "tspan",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(12, 13, 12)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1,
+          "required": 4.5
+        },
+        {
+          "text": "progress",
+          "tag": "tspan",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(12, 13, 12)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1,
+          "required": 4.5
+        },
+        {
+          "text": "Learner",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "React + Vite",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Oathkeeper Gateway",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Course Management API",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Ory Kratos",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "PostgreSQL",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "RabbitMQ",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Python AI Worker",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Go Notification Service",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        }
+      ],
+      "lowContrastCount": 11,
+      "firstScreenText": "All work(function(){const origins = [{\"path\":\"/\",\"href\":\"/#work-gencourse\",\"label\":\"Back to selected work\"},{\"path\":\"/projects\",\"href\":\"/projects#work-gencourse\",\"label\":\"Back to all work\"}]; const siblingPrefix = \"/project/\"; const link = document.querySelector(\"[data-back-link]\"); const clean = (path) => path.replace(/\\/$/, \"\") || \"/\"; const storageKey = `list-origin:${siblingPrefix}`; const remember = (path) => { try { if (path) sessionStorage.setItem(storageKey, path); else sessionStorage.removeItem(storageKey); } catch {} }; const recall = () => { try { return sessionStorage.getItem(storageKey); } catch { return null; } }; let from = \"\"; try { const referrer = new URL(document.referrer)",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 338,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "project-url2short-mobile",
+    "viewport": "mobile",
+    "route": "/project/url2short",
+    "data": {
+      "url": "http://localhost:4321/project/url2short",
+      "title": "URL2Short URL Shortener Case Study | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Explore URL2Short, a scalable URL shortener for custom links, low-latency redirects, and click analytics with Redis, Kafka, and ClickHouse.",
+      "canonical": "https://wintkhantlin.com/project/url2short/",
+      "ogImage": "https://wintkhantlin.com/_image/?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Furl2short.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=1200&h=672&f=webp",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": 0,
+      "pageHeight": 5005,
+      "h1": [
+        "URL2Short"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "URL2Short"
+        },
+        {
+          "level": 2,
+          "text": "Engineering highlights",
+          "id": "engineering-highlights"
+        },
+        {
+          "level": 3,
+          "text": "01 /Low-latency redirects"
+        },
+        {
+          "level": 3,
+          "text": "02 /Decoupled analytics"
+        },
+        {
+          "level": 2,
+          "text": "Technology"
+        },
+        {
+          "level": 2,
+          "text": "The challenge"
+        },
+        {
+          "level": 2,
+          "text": "The approach"
+        },
+        {
+          "level": 2,
+          "text": "System architecture"
+        },
+        {
+          "level": 2,
+          "text": "How it is structured"
+        },
+        {
+          "level": 2,
+          "text": "What it includes"
+        },
+        {
+          "level": 2,
+          "text": "Zay Chin"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 3,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 21,
+      "tapTargets": [],
+      "images": [
+        {
+          "alt": "URL2Short product interface",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Furl2short.png%3ForigWidth%3D2880%26origHeight%3D1612%26origFormat%3Dpng&w=400&h=224&f=webp",
+          "naturalWidth": 390,
+          "naturalHeight": 218,
+          "visible": true,
+          "x": 20,
+          "y": 1107,
+          "w": 350,
+          "h": 197
+        }
+      ],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [
+        {
+          "text": "destination",
+          "tag": "tspan",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(12, 13, 12)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1,
+          "required": 4.5
+        },
+        {
+          "text": "Visitor",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Redirect Service",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Redis Cache",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Kafka",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Management Dashboard",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Management API",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "PostgreSQL",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "Go Analytics Service",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        },
+        {
+          "text": "ClickHouse",
+          "tag": "p",
+          "color": "rgb(12, 13, 12)",
+          "bg": "rgb(19, 21, 19)",
+          "fontSize": 16,
+          "fontWeight": 400,
+          "ratio": 1.06,
+          "required": 4.5
+        }
+      ],
+      "lowContrastCount": 10,
+      "firstScreenText": "All work(function(){const origins = [{\"path\":\"/\",\"href\":\"/#work-url2short\",\"label\":\"Back to selected work\"},{\"path\":\"/projects\",\"href\":\"/projects#work-url2short\",\"label\":\"Back to all work\"}]; const siblingPrefix = \"/project/\"; const link = document.querySelector(\"[data-back-link]\"); const clean = (path) => path.replace(/\\/$/, \"\") || \"/\"; const storageKey = `list-origin:${siblingPrefix}`; const remember = (path) => { try { if (path) sessionStorage.setItem(storageKey, path); else sessionStorage.removeItem(storageKey); } catch {} }; const recall = () => { try { return sessionStorage.getItem(storageKey); } catch { return null; } }; let from = \"\"; try { const referrer = new URL(document.referrer)",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 338,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "writing-mobile",
+    "viewport": "mobile",
+    "route": "/writing",
+    "data": {
+      "url": "http://localhost:4321/writing",
+      "title": "Software Engineering Notes & Articles | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Read programming notes from Wint Khant Lin on algorithms, systems thinking, software goals, and learning in public as a Myanmar developer.",
+      "canonical": "https://wintkhantlin.com/writing/",
+      "ogImage": "https://wintkhantlin.com/og-default.png",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": 0,
+      "pageHeight": 1598,
+      "h1": [
+        "Notes"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "Notes"
+        },
+        {
+          "level": 2,
+          "text": "Idempotency Keys ဆိုတာဘာလဲ"
+        },
+        {
+          "level": 2,
+          "text": "Big O Notation ဆိုတာဘာလဲ? (Beginner Guide)"
+        },
+        {
+          "level": 2,
+          "text": "My Goals and Plan for 2025"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 0
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 19,
+      "tapTargets": [],
+      "images": [],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "NotesSoftware, systems, and learning in public, in English and Burmese.Aug 29, 2026Idempotency Keys ဆိုတာဘာလဲHow idempotency keys work, and how they stop a retried request from charging a payment twice.Software engineeringBurmese · 2 min readMay 09, 2025Big O Notation ဆိုတာဘာလဲ? (Beginner Guide)An easy-to-follow explanation of Big O notation and what it says about an algorithm's speed and memory usage.What isBurmese · 3 min readJan 09, 2025My Goals and Plan for 2025This article outlines my goals for 2025 and the steps I plan to take to achieve themMyself2 min read",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 338,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "post-idempotency-mobile",
+    "viewport": "mobile",
+    "route": "/post/idempotency-keys-what-most-tutorials-dont-tell-you",
+    "data": {
+      "url": "http://localhost:4321/post/idempotency-keys-what-most-tutorials-dont-tell-you",
+      "title": "Idempotency Keys ဆိုတာဘာလဲ | Wint Khant Lin",
+      "lang": "my",
+      "theme": "dark",
+      "metaDescription": "Idempotency Key ဆိုတာဘာလဲ၊ payment request retry ဖြစ်တဲ့အခါ duplicate processing ကို ဘယ်လိုကာကွယ်ပြီး same operation အတွက် same key ကို ဘာကြောင့်ပြန်သုံးရသလဲ ရှင်းပြထားပါတယ်။",
+      "canonical": "https://wintkhantlin.com/post/idempotency-keys-what-most-tutorials-dont-tell-you/",
+      "ogImage": "https://wintkhantlin.com/og-default.png",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": 0,
+      "pageHeight": 5985,
+      "h1": [
+        "Idempotency Keys ဆိုတာဘာလဲ"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "Idempotency Keys ဆိုတာဘာလဲ"
+        },
+        {
+          "level": 2,
+          "text": "ပထမဆုံး Idempotency ဆိုတာဘာလဲ?",
+          "id": "ပထမဆုံး-idempotency-ဆိုတာဘာလဲ"
+        },
+        {
+          "level": 2,
+          "text": "TL;DR",
+          "id": "tldr"
+        },
+        {
+          "level": 2,
+          "text": "References",
+          "id": "references"
+        },
+        {
+          "level": 2,
+          "text": "Big O Notation ဆိုတာဘာလဲ? (Beginner Guide)"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 2,
+        "nav": 4,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 27,
+      "tapTargets": [
+        {
+          "tag": "a",
+          "text": "ပထမဆုံး Idempotency ဆိုတာဘာလဲ?",
+          "label": "",
+          "x": 20,
+          "y": 694,
+          "w": 350,
+          "h": 34
+        },
+        {
+          "tag": "a",
+          "text": "TL;DR",
+          "label": "",
+          "x": 20,
+          "y": 730,
+          "w": 350,
+          "h": 34
+        },
+        {
+          "tag": "a",
+          "text": "References",
+          "label": "",
+          "x": 20,
+          "y": 766,
+          "w": 350,
+          "h": 34
+        },
+        {
+          "tag": "a",
+          "text": "More about me",
+          "label": "",
+          "x": 219,
+          "y": 5063,
+          "w": 116,
+          "h": 21
+        }
+      ],
+      "images": [
+        {
+          "alt": "",
+          "src": "_image?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fhapper.png%3ForigWidth%3D1280%26origHeight%3D961%26origFormat%3Dpng&w=40&h=40&f=webp",
+          "naturalWidth": 40,
+          "naturalHeight": 40,
+          "visible": true,
+          "x": 20,
+          "y": 204,
+          "w": 40,
+          "h": 40
+        }
+      ],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "All notes(function(){const origins = [{\"path\":\"/\",\"href\":\"/#note-idempotency-keys-what-most-tutorials-dont-tell-you\",\"label\":\"Back to notes\"},{\"path\":\"/writing\",\"href\":\"/writing#note-idempotency-keys-what-most-tutorials-dont-tell-you\",\"label\":\"Back to all notes\"}]; const siblingPrefix = \"/post/\"; const link = document.querySelector(\"[data-back-link]\"); const clean = (path) => path.replace(/\\/$/, \"\") || \"/\"; const storageKey = `list-origin:${siblingPrefix}`; const remember = (path) => { try { if (path) sessionStorage.setItem(storageKey, path); else sessionStorage.removeItem(storageKey); } catch {} }; const recall = () => { try { return sessionStorage.getItem(storageKey); } catch { return null",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 338,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "about-mobile",
+    "viewport": "mobile",
+    "route": "/about",
+    "data": {
+      "url": "http://localhost:4321/about",
+      "title": "About Wint Khant Lin | Backend Software Engineer",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "Wint Khant Lin, also known as Happer, is a college student and backend software engineer from Myanmar building distributed systems and writing in English and Burmese.",
+      "canonical": "https://wintkhantlin.com/about/",
+      "ogImage": "https://wintkhantlin.com/_image/?href=%2F%40fs%2FUsers%2Fhapper%2FProjects%2Fhomepage%2Fsrc%2Fassets%2Fimg%2Fhapper.png%3ForigWidth%3D1280%26origHeight%3D961%26origFormat%3Dpng&w=1200&h=900&f=webp",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": 0,
+      "pageHeight": 2529,
+      "h1": [
+        "About"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "About",
+          "id": "about-heading"
+        },
+        {
+          "level": 2,
+          "text": "Tools & technologies",
+          "id": "tools-heading"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 1,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 1
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 18,
+      "tapTargets": [],
+      "images": [],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "About Hey, I’m Wint Khant Lin, also known as Happer. I’m a college student from Myanmar who’s deeply passionate about software engineering, especially backend systems, distributed architectures, and building tools that solve real problems.I started coding because I was curious about how things work under the hood. That curiosity turned into a love for over-engineering side projects, exploring system design, and learning in public. Every project I ship teaches me something new.Based inMyanmarCurrentlyCollege studentFocusBackend systems and distributed architectureWrites inEnglish and BurmeseElsewhereGitHub (opens in a new tab)LinkedIn (opens in a new tab) Tools & technologies LanguagesTypeScr",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 338,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "404-mobile",
+    "viewport": "mobile",
+    "route": "/404",
+    "data": {
+      "url": "http://localhost:4321/404",
+      "title": "404 — Page Not Found | Wint Khant Lin",
+      "lang": "en",
+      "theme": "dark",
+      "metaDescription": "The requested page could not be found. Return to Wint Khant Lin's software engineering portfolio, projects, and programming notes.",
+      "canonical": "https://wintkhantlin.com/404/",
+      "ogImage": "https://wintkhantlin.com/og-default.png",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": 0,
+      "pageHeight": 1123,
+      "h1": [
+        "This page doesn’t exist"
+      ],
+      "headings": [
+        {
+          "level": 1,
+          "text": "This page doesn’t exist"
+        },
+        {
+          "level": 2,
+          "text": "Say hello.",
+          "id": "say-hello"
+        }
+      ],
+      "landmarks": {
+        "header": 1,
+        "nav": 2,
+        "main": 1,
+        "footer": 1,
+        "aside": 0
+      },
+      "skipLink": {
+        "text": "Skip to main content",
+        "x": 12,
+        "y": -78,
+        "w": 172,
+        "h": 45
+      },
+      "focusableCount": 19,
+      "tapTargets": [],
+      "images": [],
+      "brokenImages": [],
+      "linksWithoutText": [],
+      "externalLinksWithoutRel": [],
+      "lowContrast": [],
+      "lowContrastCount": 0,
+      "firstScreenText": "404This page doesn’t existYou might have followed an old link, or the page may have moved. Let’s get you back on track.Back to homeSee the workRead the notes",
+      "header": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 72,
+        "position": "fixed",
+        "hidden": false
+      },
+      "themeToggle": {
+        "label": "Switch to light theme",
+        "x": 338,
+        "y": 14,
+        "w": 44,
+        "h": 44
+      }
+    },
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "failedRequests": [],
+    "badResponses": [
+      {
+        "url": "http://localhost:4321/404",
+        "status": 404
+      }
+    ]
+  },
+  {
+    "key": "interaction-mobile-scroll",
+    "viewport": "mobile",
+    "data": {
+      "hidden": true,
+      "scrolled": true,
+      "top": -72,
+      "height": 72,
+      "active": "Work"
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  {
+    "key": "reduced-motion-home",
+    "viewport": "desktop",
+    "data": {
+      "letters": 12,
+      "words": 3,
+      "nameLabel": "Wint Khant Lin also known as Happer",
+      "transitions": "0s",
+      "headerPosition": "fixed",
+      "copyButtonDisplay": "flex"
+    },
+    "consoleErrors": [],
+    "failedRequests": [],
+    "badResponses": []
+  }
+]

@@ -1,4 +1,6 @@
 ---
+import { Icon } from "astro-icon/components";
+
 type Post = Awaited<
   ReturnType<typeof import("../../lib/content").getSortedPosts>
 >[number];
@@ -26,17 +28,13 @@ const notes = posts.slice(0, 3).map((post) => {
 <!-- Grid: the latest notes three across, each a column under a rule, the date leading. -->
 <section id="writing" aria-labelledby="writing-heading" class="scroll-mt-[calc(var(--section-gap)*-1)] pt-(--section-gap)">
   <div class="writing-head">
-    <h2 id="writing-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">
-      Notes
-    </h2>
-    {posts.length > notes.length && (
-      <a
-        href="/writing"
-        class="inline-flex min-h-11 w-fit items-center text-base font-semibold text-(--text-muted) underline decoration-(--border-strong) underline-offset-[0.3em] transition-colors duration-200 hover:text-(--text-heading) hover:decoration-(--text-heading)"
-      >
-        View all notes
-      </a>
-    )}
+    <div>
+      <h2 id="writing-heading" class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">
+        Notes
+      </h2>
+      <p class="mt-4 max-w-md text-base leading-relaxed text-(--text-muted)">Software, systems, and learning in public, in English and Burmese.</p>
+    </div>
+    <a href="/writing" class="writing-all">All notes <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
   </div>
 
   {
@@ -84,6 +82,21 @@ const notes = posts.slice(0, 3).map((post) => {
     justify-content: space-between;
     gap: 1rem 2rem;
     padding-bottom: 2rem;
+  }
+
+  /* The same link as the work section's, so both heads match. */
+  .writing-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    border-bottom: 1px solid var(--border-strong);
+    color: var(--text-heading);
+    font-size: 0.875rem;
+  }
+
+  .writing-all:hover {
+    border-color: var(--text-heading);
   }
 
   .writing-grid {
@@ -136,7 +149,7 @@ const notes = posts.slice(0, 3).map((post) => {
     text-decoration-color: currentColor;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 720px) {
     .writing-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }

@@ -1,0 +1,15 @@
+import { chromium } from "playwright-core";
+const b = await chromium.launch({ channel: "chrome", headless: true });
+const c = await b.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
+const p = await c.newPage();
+const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
+await p.goto("http://localhost:4321/", { waitUntil: "networkidle" });
+await p.evaluate(()=>document.fonts.ready); await sleep(900);
+const st=()=>p.evaluate(()=>{const h=document.querySelector('.site-header');const l=[...document.querySelectorAll('.site-nav a')].find(a=>a.textContent.trim()==='Notes');const r=l.getBoundingClientRect();const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {y:scrollY,hidden:h.hasAttribute('data-hidden'),top:Math.round(h.getBoundingClientRect().top),linkY:Math.round(r.y),hit:hit?hit.tagName+':'+(hit.textContent||'').trim().slice(0,20):null};});
+console.log('start',await st());
+await p.locator('.site-nav a',{hasText:'Work'}).first().click(); await sleep(1200);
+console.log('after work',await st());
+await p.evaluate(()=>{document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0);});
+await sleep(200); console.log('after scroll0 200',await st());
+await sleep(800); console.log('after scroll0 1000',await st());
+await b.close();

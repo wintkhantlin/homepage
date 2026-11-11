@@ -60,7 +60,7 @@ const largePhotos = await Promise.all(
 ---
 
 <!-- Events and outcomes stay distinct; the adjacent photographs document the GUSTO forum. -->
-<section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-[calc(var(--section-gap-l)*-1)] pt-(--section-gap-l)">
+<section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-[calc(var(--section-gap)*-1)] pt-(--section-gap)">
   <h2 data-spring-reveal
     id="recognition-heading"
     class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)"
@@ -448,7 +448,7 @@ const largePhotos = await Promise.all(
     aspect-ratio: 9 / 16;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     .recognition-split {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: 3rem;

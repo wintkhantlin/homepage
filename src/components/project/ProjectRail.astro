@@ -1,0 +1,50 @@
+---
+interface Props {
+  technologies?: string[];
+  /** Section links for the "On this page" list; omit it when the page has no sections to jump between. */
+  sections?: { id: string; label: string }[];
+  class?: string;
+}
+
+const { technologies, sections = [], class: className } = Astro.props as Props;
+---
+
+<!-- The case study's side rail: where you are on the page, then the stack. It sticks while the sections beside it scroll. -->
+<aside class:list={[className]}>
+  <div class="md:sticky md:top-32">
+    {sections.length > 0 && (
+      <nav class="mb-10 hidden md:block" aria-label="On this page">
+        <p class="text-sm font-semibold text-(--text-heading)">On this page</p>
+        <ul class="mt-3 border-t border-(--border) pt-3">
+          {sections.map((section) => (
+            <li>
+              <a
+                href={`#${section.id}`}
+                data-case-link={section.id}
+                class="flex min-h-11 items-center text-sm text-(--text-muted) transition-colors duration-200 hover:text-(--text-heading) active:text-(--text-heading) aria-[current=location]:font-semibold aria-[current=location]:text-(--text-heading)"
+              >
+                {section.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+
+    <h2 class="text-sm font-semibold text-(--text-heading)">Technology</h2>
+    {technologies?.length ? (
+      <ul class="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-(--border) pt-5 sm:grid-cols-3 md:grid-cols-1">
+        {technologies.map((technology) => (
+          <li class="text-sm text-(--text-muted)">{technology}</li>
+        ))}
+      </ul>
+    ) : (
+      <p class="mt-5 border-t border-(--border) pt-5 text-sm leading-6 text-(--text-muted)">
+        Technology details are available in the source repository.
+      </p>
+    )}
+    <p class="mt-9 max-w-xs text-xs leading-5 text-(--text-faint)">
+      This case study reflects the project documentation and current source repository.
+    </p>
+  </div>
+</aside>

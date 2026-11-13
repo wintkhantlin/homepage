@@ -55,7 +55,7 @@ const maturityLabels = {
             aria-labelledby={`index-name-${index}`} aria-describedby={`index-about-${index}`}>
             <div class="index-preview" aria-hidden="true">
               <span class="index-thumb" data-spring-image>
-                <Image src={project.data.img} alt="" widths={[480, 720, 960]} sizes="(min-width: 1024px) 560px, (min-width: 640px) 45vw, 100vw" loading="lazy" class="h-full w-full object-contain" />
+                <Image src={project.data.img} alt="" widths={[480, 720, 960]} sizes="(min-width: 1024px) 560px, (min-width: 640px) 45vw, 100vw" loading={index === 0 && heading ? "eager" : "lazy"} fetchpriority={index === 0 && heading ? "high" : "auto"} class="h-full w-full object-contain" />
               </span>
             </div>
             <div class="index-detail">

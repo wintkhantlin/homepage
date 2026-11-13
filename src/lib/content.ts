@@ -41,14 +41,15 @@ export async function getSortedProjects(): Promise<ProjectEntry[]> {
 }
 
 export async function getFeaturedProjects(): Promise<ProjectEntry[]> {
-  const projects = await getSortedProjects();
+  // Filter the raw collection first so only featured entries are rendered via MDX,
+  // avoiding the cost of rendering every project when most pages only need the featured subset.
+  const all = await getCollection("projects", ({ data }) => data.featured);
+  const entries = await renderEntries<"projects">(all);
 
-  return projects
-    .filter((project) => project.data.featured)
-    .sort(
-      (a, b) =>
-        (a.data.featuredOrder ?? Number.MAX_SAFE_INTEGER) -
-          (b.data.featuredOrder ?? Number.MAX_SAFE_INTEGER) ||
-        b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
-    );
+  return entries.sort(
+    (a, b) =>
+      (a.data.featuredOrder ?? Number.MAX_SAFE_INTEGER) -
+        (b.data.featuredOrder ?? Number.MAX_SAFE_INTEGER) ||
+      b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+  );
 }

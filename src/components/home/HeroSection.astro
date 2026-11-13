@@ -64,7 +64,7 @@ const email = siteConfig.social.email.replace("mailto:", "");
     const show = () => document.documentElement.classList.add("hero-shown");
     const [navigation] = performance.getEntriesByType("navigation");
     if (navigation?.type === "back_forward") show();
-    else setTimeout(show, 3000);
+    else setTimeout(show, 1500);
   })();
 </script>
 

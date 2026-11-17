@@ -1,0 +1,204 @@
+<!-- The site's pointer for mouse users (src/lib/cursor.ts): a little cartoon set, inked and wobbly.
+     Decorative: it only mirrors the native cursor's job. Each shape's hotspot is its data-hot x,y in a 40-unit box;
+     data-com is its centre of mass in px from that hotspot, which the physics swings it about. -->
+<div class="cursor" data-cursor-root data-state="default" aria-hidden="true">
+  <div class="cursor-body" data-cursor-body>
+    <!-- Arrow: the tip is the hotspot. -->
+    <svg class="cursor-shape" data-shape="default" data-hot="7,4" data-com="10,16" viewBox="0 0 40 40">
+      <path class="ink-fill" d="M7 4 L7 31 L13.5 25.5 L18.5 35.5 L23.5 33 L18.6 23.2 L27 23 Z" />
+      <path class="shine" d="M10 10 L10 19" />
+    </svg>
+
+    <!-- Pointing glove, for anything that opens. The fingertip is the hotspot. -->
+    <svg class="cursor-shape" data-shape="link" data-hot="15.5,3" data-com="2,18" viewBox="0 0 40 40">
+      <rect class="ink-fill" x="12" y="3" width="7" height="20" rx="3.5" />
+      <path class="ink-fill" d="M9 21 Q9 17 13 17 L28 17 Q32 17 32 21 L32 29 Q32 36 25 36 L16 36 Q9 36 9 29 Z" />
+      <rect class="ink-fill" x="19" y="15" width="5.5" height="8" rx="2.75" />
+      <rect class="ink-fill" x="24.5" y="16" width="5.5" height="7.5" rx="2.75" />
+      <rect class="ink-fill" x="3.5" y="21" width="9" height="5.5" rx="2.75" transform="rotate(-28 8 23.75)" />
+      <rect class="ink-fill" x="12.5" y="34" width="16" height="4.5" rx="1.5" />
+      <path class="shine" d="M14.5 6.5 L14.5 11" />
+    </svg>
+
+    <!-- Open hand, over a letter that can be picked up. -->
+    <svg class="cursor-shape" data-shape="grab" data-hot="20,20" data-com="1,9" viewBox="0 0 40 40">
+      <rect class="ink-fill" x="10" y="8" width="5.5" height="16" rx="2.75" />
+      <rect class="ink-fill" x="15.5" y="5" width="5.5" height="18" rx="2.75" />
+      <rect class="ink-fill" x="21" y="6" width="5.5" height="17" rx="2.75" />
+      <rect class="ink-fill" x="26.5" y="10" width="5.5" height="14" rx="2.75" />
+      <path class="ink-fill" d="M9 22 Q9 19 12 19 L29 19 Q32 19 32 22 L32 29 Q32 36 25 36 L16 36 Q9 36 9 29 Z" />
+      <rect class="ink-fill" x="3" y="20" width="9" height="5.5" rx="2.75" transform="rotate(-38 7.5 22.75)" />
+      <rect class="ink-fill" x="12.5" y="34" width="16" height="4.5" rx="1.5" />
+    </svg>
+
+    <!-- Fist, while a letter is held. -->
+    <svg class="cursor-shape" data-shape="grabbing" data-hot="20,20" data-com="1,8" viewBox="0 0 40 40">
+      <path class="ink-fill" d="M9 20 Q9 16 13 16 L28 16 Q32 16 32 20 L32 28 Q32 35 25 35 L16 35 Q9 35 9 28 Z" />
+      <rect class="ink-fill" x="10" y="12" width="5.5" height="8" rx="2.75" />
+      <rect class="ink-fill" x="15.5" y="11" width="5.5" height="8.5" rx="2.75" />
+      <rect class="ink-fill" x="21" y="11" width="5.5" height="8.5" rx="2.75" />
+      <rect class="ink-fill" x="26.5" y="12.5" width="5.5" height="7.5" rx="2.75" />
+      <rect class="ink-fill" x="5" y="21" width="12" height="5.5" rx="2.75" transform="rotate(-8 11 23.75)" />
+      <rect class="ink-fill" x="12.5" y="33" width="16" height="4.5" rx="1.5" />
+    </svg>
+
+    <!-- Magnifier, over a photo that opens larger. The lens centre is the hotspot. -->
+    <svg class="cursor-shape" data-shape="zoom" data-hot="16,16" data-com="7,7" viewBox="0 0 40 40">
+      <rect class="ink-fill handle" x="23" y="21.5" width="15" height="7" rx="3.5" transform="rotate(45 23 25)" />
+      <circle class="ink-fill glass" cx="16" cy="16" r="11" />
+      <path class="ink-line" d="M16 11 V21 M11 16 H21" />
+      <path class="shine" d="M9.5 13 Q10.5 9.5 13.5 8.5" />
+    </svg>
+  </div>
+</div>
+
+<script>
+  import { mountCursor } from "../lib/cursor";
+
+  const root = document.querySelector<HTMLElement>("[data-cursor-root]");
+  if (root) mountCursor(root);
+</script>
+
+<style is:global>
+  /* Only once the script has taken over a fine pointer does the native cursor go. Text fields keep their I-beam. */
+  html[data-custom-cursor],
+  html[data-custom-cursor] * {
+    cursor: none !important;
+  }
+
+  html[data-custom-cursor] :is(input:not([type=button], [type=submit], [type=reset], [type=checkbox], [type=radio], [type=range], [type=color], [type=file]), textarea, [contenteditable]:not([contenteditable=false])) {
+    cursor: text !important;
+  }
+
+  .cursor {
+    --cursor-ink: #121212;
+    --cursor-paper: #fffaf0;
+    --cursor-glass: #bfe7ff;
+    --cursor-pop: var(--text-heading);
+    --cursor-rim: #e9e6dc;
+
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 160ms ease;
+  }
+
+  .cursor[data-visible] {
+    opacity: 1;
+  }
+
+  .cursor[data-state="text"] {
+    opacity: 0;
+  }
+
+  /* Sits on the pointer; rotation and squash pivot on the hotspot, which is this element's origin. */
+  .cursor-body {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 0;
+    height: 0;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+
+  .cursor-shape {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    overflow: visible;
+    display: none;
+    /* A hard, offset cartoon shadow. */
+    filter: drop-shadow(2px 2.5px 0 rgb(0 0 0 / 0.35));
+  }
+
+  /* On the dark page the ink outline would vanish, so the shapes get a sticker's pale rim. */
+  :root:not(.light) .cursor-shape {
+    filter:
+      drop-shadow(1.25px 0 0 var(--cursor-rim))
+      drop-shadow(-1.25px 0 0 var(--cursor-rim))
+      drop-shadow(0 1.25px 0 var(--cursor-rim))
+      drop-shadow(0 -1.25px 0 var(--cursor-rim))
+      drop-shadow(2px 2.5px 0 rgb(0 0 0 / 0.6));
+  }
+
+  .cursor-shape.is-current {
+    display: block;
+  }
+
+  .cursor[data-state="disabled"] .cursor-shape {
+    opacity: 0.45;
+  }
+
+  .cursor .ink-fill {
+    fill: var(--cursor-paper);
+    stroke: var(--cursor-ink);
+    stroke-width: 2.4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  .cursor .glass {
+    fill: var(--cursor-glass);
+  }
+
+  .cursor .handle {
+    fill: #8b5a3c;
+  }
+
+  .cursor .ink-line {
+    fill: none;
+    stroke: var(--cursor-ink);
+    stroke-width: 2.6;
+    stroke-linecap: round;
+  }
+
+  .cursor .shine {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    opacity: 0.9;
+  }
+
+  /* Comic "action lines" that burst out of the hotspot on a click. */
+  .cursor-pop {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 9px;
+    height: 3px;
+    margin-block-start: -1.5px;
+    border-radius: 3px;
+    background: var(--cursor-pop);
+    transform-origin: 0 50%;
+    animation: cursor-pop 420ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes cursor-pop {
+    from {
+      transform: translate(var(--x), var(--y)) rotate(var(--a)) translateX(6px) scaleX(0.3);
+      opacity: 1;
+    }
+    60% {
+      opacity: 1;
+    }
+    to {
+      transform: translate(var(--x), var(--y)) rotate(var(--a)) translateX(22px) scaleX(1);
+      opacity: 0;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .cursor {
+      display: none;
+    }
+
+    html[data-custom-cursor],
+    html[data-custom-cursor] * {
+      cursor: auto !important;
+    }
+  }
+</style>

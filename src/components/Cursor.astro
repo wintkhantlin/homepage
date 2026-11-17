@@ -1,7 +1,7 @@
 <!-- The site's pointer for mouse users (src/lib/cursor.ts): a little cartoon set, inked and wobbly.
      Decorative: it only mirrors the native cursor's job. Each shape's hotspot is its data-hot x,y in a 40-unit box;
      data-com is its centre of mass in px from that hotspot, which the physics swings it about. -->
-<div class="cursor" data-cursor-root data-state="default" aria-hidden="true">
+<div class="cursor" data-cursor-root data-state="default" aria-hidden="true" popover="manual">
   <div class="cursor-body" data-cursor-body>
     <!-- Arrow: the tip is the hotspot. -->
     <svg class="cursor-shape" data-shape="default" data-hot="7,4" data-com="10,16" viewBox="0 0 40 40">
@@ -62,7 +62,8 @@
 <style is:global>
   /* Only once the script has taken over a fine pointer does the native cursor go. Text fields keep their I-beam. */
   html[data-custom-cursor],
-  html[data-custom-cursor] * {
+  html[data-custom-cursor] *,
+  html[data-custom-cursor] ::backdrop {
     cursor: none !important;
   }
 
@@ -77,8 +78,18 @@
     --cursor-pop: var(--text-heading);
     --cursor-rim: #e9e6dc;
 
+    /* It lives in the top layer as a popover, so modal dialogs can't cover it; undo the popover's own box. */
     position: fixed;
     inset: 0;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+    background: transparent;
     z-index: 2147483647;
     pointer-events: none;
     opacity: 0;

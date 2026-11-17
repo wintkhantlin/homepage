@@ -315,14 +315,49 @@ export function mountCursor(root: HTMLElement) {
     [window, 'scroll', onScroll, { passive: true }],
   ];
 
+  // Modal dialogs render in the browser's top layer, above any z-index, and the native cursor is hidden,
+  // so the pointer would vanish under them. The cursor is a popover in that same layer instead; whatever
+  // enters the top layer after it (a dialog opening, another popover) is stacked higher, so it climbs
+  // back on top each time. Without popover support it hands the native cursor back while a modal is open.
+  const layered = typeof root.showPopover === 'function';
+  if (!layered) root.removeAttribute('popover');
+  let enabled = false;
+
+  const raise = () => {
+    if (!enabled || !layered) return;
+    try {
+      if (root.matches(':popover-open')) root.hidePopover();
+      root.showPopover();
+    } catch {}
+  };
+  const onTopLayerChange = () => {
+    if (!enabled) return;
+    if (layered) raise();
+    else html.toggleAttribute('data-custom-cursor', !document.querySelector('dialog:modal'));
+  };
+  const dialogs = new MutationObserver((records) => {
+    if (records.some((record) => record.target instanceof HTMLDialogElement)) onTopLayerChange();
+  });
+  const onToggle = (event: Event) => {
+    if (event.target !== root && (event as ToggleEvent).newState === 'open') onTopLayerChange();
+  };
+
   const enable = () => {
+    enabled = true;
     html.setAttribute('data-custom-cursor', '');
     for (const [where, type, fn, options] of listeners) where.addEventListener(type, fn, options);
+    dialogs.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
+    document.addEventListener('toggle', onToggle, true);
+    raise();
   };
   const disable = () => {
+    enabled = false;
     html.removeAttribute('data-custom-cursor');
     show(false);
     for (const [where, type, fn] of listeners) where.removeEventListener(type, fn);
+    dialogs.disconnect();
+    document.removeEventListener('toggle', onToggle, true);
+    if (layered && root.matches(':popover-open')) root.hidePopover();
   };
 
   reducedMotion.addEventListener('change', halt);

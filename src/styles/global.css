@@ -116,6 +116,153 @@ body {
     outline-offset: 4px;
 }
 
+/* Headings marked data-physics-text are split into letters in the browser (src/lib/animation/physicsText.ts).
+   Words stay unbroken so the text wraps exactly as before; each letter turns about its base. */
+.physics-word {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.physics-letter {
+    display: inline-block;
+    white-space: pre;
+    transform-origin: 50% 80%;
+}
+
+/* Letters that can be picked up and thrown (src/lib/animation/fling.ts), and their stand-in while in flight. */
+.throwable {
+    cursor: grab;
+}
+
+.fling-ghost {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 2147483000;
+    display: block;
+    margin: 0;
+    white-space: pre;
+    transform-origin: 50% 50%;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    will-change: transform;
+}
+
+.fling-ghost.is-held {
+    cursor: grabbing;
+}
+
+/* A piece of shattered glass: a wedge of the letter's stand-in, falling on its own. */
+.fling-shard {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 2147483000;
+    display: block;
+    margin: 0;
+    white-space: pre;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform;
+}
+
+/* What each throwable letter is made of, as a surface (src/lib/animation/fling.ts sets data-material).
+   The skin sits over the glyph and shows as much as --reveal says: under the pointer on the hero name,
+   fully while a letter is held or in flight, fading as it is reeled home. */
+/* The flying stand-in keeps its own fixed positioning. */
+[data-material]:not(.fling-ghost, .fling-shard) {
+    position: relative;
+}
+
+[data-material]::after {
+    content: attr(data-char);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    white-space: pre;
+    color: transparent;
+    background: var(--skin);
+    -webkit-background-clip: text;
+    background-clip: text;
+    opacity: var(--reveal, 0);
+}
+
+[data-material="iron"] {
+    --skin:
+        repeating-linear-gradient(90deg, rgb(255 255 255 / 0.07) 0 1px, transparent 1px 3px),
+        linear-gradient(160deg, #6b7079 0%, #2b2e33 45%, #7b818a 55%, #33363b 100%);
+}
+
+[data-material="steel"] {
+    --skin: linear-gradient(180deg, #f6f8fa 0%, #b3bcc5 36%, #48505a 50%, #dde2e7 63%, #8b949e 100%);
+}
+
+[data-material="concrete"] {
+    --skin:
+        radial-gradient(circle at 30% 40%, rgb(0 0 0 / 0.35) 0 1px, transparent 1.6px) 0 0 / 7px 7px,
+        radial-gradient(circle at 70% 60%, rgb(255 255 255 / 0.35) 0 1px, transparent 1.6px) 3px 2px / 11px 11px,
+        linear-gradient(180deg, #a8a7a2, #8b8a85);
+}
+
+[data-material="glass"] {
+    --skin:
+        var(--cracks, linear-gradient(transparent, transparent)) 0 0 / 100% 100% no-repeat,
+        linear-gradient(125deg, transparent 0 46%, rgb(255 255 255 / 0.85) 48%, transparent 52%),
+        linear-gradient(160deg, rgb(170 225 255 / 0.75), rgb(90 170 225 / 0.45) 60%, rgb(150 210 245 / 0.7));
+}
+
+[data-material="oak"] {
+    --skin:
+        repeating-linear-gradient(97deg, rgb(70 40 15 / 0.28) 0 1px, transparent 1px 4px, rgb(70 40 15 / 0.18) 4px 5px, transparent 5px 9px),
+        linear-gradient(180deg, #c48d55, #9c6634);
+}
+
+[data-material="rubber"] {
+    --skin: linear-gradient(180deg, #ff6b4a, #e23d2b);
+}
+
+[data-material="cork"] {
+    --skin:
+        radial-gradient(circle at 35% 35%, rgb(90 50 20 / 0.55) 0 1.2px, transparent 1.8px) 0 0 / 6px 6px,
+        radial-gradient(circle at 60% 70%, rgb(90 50 20 / 0.4) 0 1px, transparent 1.6px) 2px 3px / 9px 9px,
+        linear-gradient(180deg, #d6aa78, #b88655);
+}
+
+[data-material="jelly"] {
+    --skin:
+        radial-gradient(ellipse at 30% 22%, rgb(255 255 255 / 0.8) 0 8%, transparent 22%),
+        linear-gradient(165deg, rgb(140 255 180 / 0.95), rgb(40 205 120 / 0.8) 60%, rgb(15 150 90 / 0.95));
+}
+
+/* Names a thrown letter's material while it is held. */
+.fling-label {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 2147483000;
+    pointer-events: none;
+    border-radius: 999px;
+    background: var(--surface-raised);
+    padding: 0.15rem 0.5rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+}
+
+.fling-label.is-shown {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fling-label {
+        transition: none;
+    }
+}
+
 /* Keep inline code chips out of fenced code blocks. */
 .article-body :not(pre) > code {
     border-radius: 0.25rem;

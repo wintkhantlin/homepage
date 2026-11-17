@@ -1,5 +1,6 @@
 /** Exact solution of m*x'' + c*x' + k*(x-target) = 0.
  * Changing a target preserves velocity. One scheduler sleeps when all springs rest.
+ * render receives the value and its velocity (units per second), so motion-driven effects can read real momentum.
  */
 type Options = { mass?: number; stiffness?: number; damping?: number };
 const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -17,7 +18,7 @@ function wake() {
   previous = performance.now();
   frame = requestAnimationFrame(tick);
 }
-export function spring(initial: number, render: (value: number) => void, options: Options = {}) {
+export function spring(initial: number, render: (value: number, velocity: number) => void, options: Options = {}) {
   const { mass = 1, stiffness = 210, damping = 23 } = options;
   const decay = damping / (2 * mass);
   const frequency = Math.sqrt(stiffness / mass - decay * decay);
@@ -34,7 +35,7 @@ export function spring(initial: number, render: (value: number) => void, options
       wake();
     },
     jump(next: number) { target = next; controller.finish(); },
-    finish() { value = target; velocity = 0; render(value); active.delete(controller); },
+    finish() { value = target; velocity = 0; render(value, 0); active.delete(controller); },
     advance(dt: number) {
       const displacement = value - target;
       const coefficient = (velocity + decay * displacement) / frequency;
@@ -44,10 +45,10 @@ export function spring(initial: number, render: (value: number) => void, options
       value = target + envelope * (displacement * cosine + coefficient * sine);
       velocity = envelope * (velocity * cosine - (decay * coefficient + frequency * displacement) * sine);
       if (Math.abs(value - target) + Math.abs(velocity) < 0.001) controller.finish();
-      else render(value);
+      else render(value, velocity);
     },
   };
-  render(initial);
+  render(initial, 0);
   return controller;
 }
 function finishAll() { for (const item of active) item.finish(); cancelAnimationFrame(frame); frame = 0; }

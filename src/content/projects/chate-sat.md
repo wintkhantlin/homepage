@@ -9,7 +9,7 @@ technologies: ["PostgreSQL", "Next.js", "Leaflet", "Better Auth", "TypeScript", 
 img: ../../assets/img/chatesat.png
 publishedDate: 2025-11-09
 featured: true
-featuredOrder: 4
+featuredOrder: 6
 maturity: prototype
 context: hackathon
 role: Product and application engineering

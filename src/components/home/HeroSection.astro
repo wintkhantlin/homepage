@@ -71,6 +71,7 @@ const email = siteConfig.social.email.replace("mailto:", "");
 <script>
   import { advanceChain, PHYSICS_STEP, type Spring } from "../../lib/animation/namePhysics";
   import { spring, reducedMotion } from "../../lib/animation/spring";
+  import { makeThrowable } from "../../lib/animation/fling";
   // The name answers the pointer: letters close to it swell heavy and take the accent, the ones around them
   // thin out and lean away. Everything rides on springs, so it overshoots a little and settles on its own.
   const REACH_EM = 0.62;
@@ -84,6 +85,12 @@ const email = siteConfig.social.email.replace("mailto:", "");
   const LIFT_EM = 0.035;
   // How far a letter under the pointer goes toward the accent colour.
   const TINT = 0.7;
+  // What each letter of the name is made of, in reading order (W-i-n-t K-h-a-n-t L-i-n). Pick one up to find out.
+  const NAME_MATERIALS = [
+    "iron", "cork", "rubber", "oak",
+    "steel", "oak", "rubber", "jelly", "cork",
+    "concrete", "glass", "jelly",
+  ];
   // Seconds-based damped oscillator: identical response at any display refresh rate.
   const FREQUENCY = 17;
   const DAMPING_RATIO = 0.86;
@@ -102,17 +109,19 @@ const email = siteConfig.social.email.replace("mailto:", "");
   };
 
   // Moves a spring one step toward its goal and reports how far it still has to go.
+  // decay/frequency depend only on the constants above, so they're computed once instead of on every call
+  // (this runs per letter, per physics substep — the hottest loop in the page).
+  const PULL_DECAY = FREQUENCY * DAMPING_RATIO;
+  const PULL_FREQUENCY = FREQUENCY * Math.sqrt(1 - DAMPING_RATIO ** 2);
   const pull = (spring: Spring, goal: number, step: number) => {
     const displacement = spring.value - goal;
-    const decay = FREQUENCY * DAMPING_RATIO;
-    const frequency = FREQUENCY * Math.sqrt(1 - DAMPING_RATIO ** 2);
-    const envelope = Math.exp(-decay * step);
-    const sine = Math.sin(frequency * step);
-    const cosine = Math.cos(frequency * step);
-    const coefficient = (spring.velocity + decay * displacement) / frequency;
+    const envelope = Math.exp(-PULL_DECAY * step);
+    const sine = Math.sin(PULL_FREQUENCY * step);
+    const cosine = Math.cos(PULL_FREQUENCY * step);
+    const coefficient = (spring.velocity + PULL_DECAY * displacement) / PULL_FREQUENCY;
     spring.value = goal + envelope * (displacement * cosine + coefficient * sine);
     spring.velocity = envelope * (
-      spring.velocity * cosine - (decay * coefficient + frequency * displacement) * sine
+      spring.velocity * cosine - (PULL_DECAY * coefficient + PULL_FREQUENCY * displacement) * sine
     );
     return Math.abs(goal - spring.value) + Math.abs(spring.velocity) / FREQUENCY;
   };
@@ -149,6 +158,8 @@ const email = siteConfig.social.email.replace("mailto:", "");
         element.className = "hero-letter";
         element.textContent = character;
         element.style.width = `${box.width / startSize}em`;
+        const material = NAME_MATERIALS[letters.length];
+        if (material) element.dataset.material = material;
         word.append(element);
 
         letters.push({
@@ -168,7 +179,11 @@ const email = siteConfig.social.email.replace("mailto:", "");
       textNode.replaceWith(word);
     });
 
-    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // Any letter can be picked up and thrown; it swings from where it was grabbed and is reeled back home.
+    makeThrowable(letters.map((letter) => letter.element));
+
+    // Shares the one matchMedia query (and its change listeners) the whole page already keeps open, instead of registering a second.
+    const motionPreference = reducedMotion;
     let visible = true;
     let size = startSize;
     let pointerTargetX = 0;
@@ -221,6 +236,7 @@ const email = siteConfig.social.email.replace("mailto:", "");
         letter.element.style.removeProperty("rotate");
         letter.element.style.removeProperty("font-variation-settings");
         letter.element.style.removeProperty("--crest");
+        letter.element.style.removeProperty("--reveal");
       }
     };
 
@@ -281,6 +297,8 @@ const email = siteConfig.social.email.replace("mailto:", "");
         letter.element.style.rotate = `${letter.rotation.value.toFixed(3)}deg`;
         letter.element.style.fontVariationSettings = `"wght" ${Math.round(letter.weight.value)}`;
         letter.element.style.setProperty("--crest", letter.tint.toFixed(3));
+        // Under the pointer the name shows what each letter is made of.
+        letter.element.style.setProperty("--reveal", (letter.tint / TINT).toFixed(3));
       }
 
       if (restless) frame = requestAnimationFrame(tick);

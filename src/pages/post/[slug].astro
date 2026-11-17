@@ -109,6 +109,8 @@ const structuredData = [
             width={40}
             height={40}
             format="webp"
+            loading="eager"
+            decoding="async"
             class="size-10 rounded-md object-cover"
           />
           <div class="text-sm leading-5">
@@ -142,6 +144,7 @@ const structuredData = [
         </div>
 
         <h1
+          data-physics-text={isMyanmar ? undefined : true}
           class:list={[
             "text-[clamp(2.25rem,5vw,3.25rem)] font-bold tracking-[-0.025em] text-(--text-heading)",
             isMyanmar ? "leading-[1.28]" : "leading-[1.12]",

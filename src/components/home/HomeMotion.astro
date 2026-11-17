@@ -40,7 +40,7 @@
     card.addEventListener('focusout', () => { focused = false; update(); });
   }
 
-  for (const control of document.querySelectorAll<HTMLElement>('a:not(.index-row):not(.photo-open), button')) {
+  for (const control of document.querySelectorAll<HTMLElement>('a:not(.index-row):not(.photo-open):not(.drift-frame), button')) {
     const icon = control.querySelector<SVGElement>('svg');
     const isTheme = control.id === 'theme-toggle';
     const press = spring(1, value => { control.style.scale = String(value); }, { stiffness: 300, damping: 24 });

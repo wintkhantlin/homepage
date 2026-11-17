@@ -1,0 +1,121 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import ProjectName from "../ProjectName.astro";
+
+type Project = Awaited<
+  ReturnType<typeof import("../../lib/content").getFeaturedProjects>
+>[number];
+
+interface Props {
+  projects: Project[];
+  heading?: string;
+}
+
+const { projects, heading = "Selected work" } = Astro.props as Props;
+
+const contextLabels = {
+  "open-source": "Open source",
+  personal: "Personal project",
+  hackathon: "Hackathon",
+} as const;
+
+const projectKind = (project: Project) => {
+  const type = project.data.type;
+  return type ? type.charAt(0).toUpperCase() + type.slice(1) : contextLabels[project.data.context];
+};
+const count = projects.length;
+---
+
+<!-- A filmstrip of project frames. On wide screens with motion allowed, vertical scroll drifts it sideways while the stage stays pinned;
+     everywhere else it is a native, swipeable strip. The WebGL bend at the edges is decoration over real images and links. -->
+<section id="projects" class="drift" aria-labelledby="index-heading" data-drift>
+  <div class="drift-stage" data-drift-stage>
+    <div class="drift-head">
+      <div class="drift-title">
+        <h2 id="index-heading" data-physics-text class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">{heading}</h2>
+        <p class="drift-label" aria-hidden="true">
+          <span class="drift-label-scroll">Scroll to drift</span><span class="drift-label-swipe">Swipe to browse</span> — {count} {count === 1 ? "frame" : "frames"}
+        </p>
+      </div>
+      <a href="/projects" class="drift-all">View all work <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+    </div>
+
+    <div class="drift-viewport" data-drift-viewport>
+      <ul class="drift-track" data-drift-track aria-label="Selected projects">
+        {projects.map((project, index) => (
+          <li class="drift-item">
+            <a id={`work-${project.id}`} href={`/project/${project.id}`} class="drift-frame" data-list-item data-drift-frame
+              aria-labelledby={`drift-name-${index}`} aria-describedby={`drift-about-${index}`}>
+              <span class="drift-media" data-drift-media aria-hidden="true">
+                <Image src={project.data.img} alt="" widths={[640, 960, 1280]} sizes="(min-width: 768px) 56vw, 84vw"
+                  loading="eager" decoding="async" fetchpriority="low" />
+              </span>
+              <span class="drift-caption">
+                <ProjectName as="h3" id={`drift-name-${index}`} name={project.data.name} slug={project.id} class="drift-name" />
+                <span class="drift-dash" aria-hidden="true">—</span>
+                <span class="drift-kind">{projectKind(project)}</span>
+              </span>
+              <span id={`drift-about-${index}`} class="drift-about">{project.data.description}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .drift {
+    /* Full-bleed: the strip runs to both edges of the window, past the page's content column. */
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding-top: var(--section-gap-s);
+    --gutter: max(1.25rem, calc((100vw - 80rem) / 2 + 2rem));
+    --frame-w: 78vw;
+    --gap: 1rem;
+  }
+  .drift-stage { position: relative; display: flex; flex-direction: column; justify-content: center; gap: clamp(2rem, 6vh, 4.5rem); }
+  .drift-head { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; padding-inline: var(--gutter); }
+  .drift-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 2.5rem; }
+  .drift-label { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-muted); }
+  .drift-label-scroll { display: none; }
+  .drift-all { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; color: var(--text-heading); border-bottom: 1px solid var(--border-strong); }
+
+  .drift-viewport {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .drift-viewport::-webkit-scrollbar { display: none; }
+  .drift-track { display: flex; gap: var(--gap); width: max-content; padding-inline: var(--gutter); list-style: none; }
+  .drift-item { width: var(--frame-w); scroll-snap-align: start; }
+  .drift-frame { display: block; color: var(--text-heading); }
+  .drift-media { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--surface); }
+  .drift-media :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .drift-caption { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6em; margin-top: 1.1rem; font-size: .8125rem; letter-spacing: .16em; text-transform: uppercase; color: var(--text-muted); }
+  .drift-caption :global(.drift-name) { font-size: inherit; font-weight: 500; letter-spacing: inherit; color: var(--text-heading); }
+  .drift-about { display: block; max-width: 34rem; margin-top: .5rem; font-size: .9375rem; line-height: 1.6; color: var(--text-faint); text-wrap: pretty; }
+  .drift-frame:hover :global(.drift-name), .drift-frame:focus-visible :global(.drift-name) { text-decoration: underline; text-underline-offset: .35em; }
+
+  @media (min-width: 640px) {
+    .drift { --frame-w: min(54vw, 38rem); --gap: 1.375rem; }
+    .drift-label-scroll { display: inline; }
+    .drift-label-swipe { display: none; }
+  }
+
+  /* Pinned: JS sets the section height so the stage stays put while the strip travels its full width. */
+  .drift.is-pinned { height: var(--drift-height, auto); padding-top: 0; margin-top: var(--section-gap-s); }
+  .drift.is-pinned .drift-stage { position: sticky; top: 0; height: 100svh; overflow: clip; padding-top: 4.5rem; }
+  .drift.is-pinned .drift-viewport { overflow: visible; scroll-snap-type: none; }
+  .drift.is-pinned .drift-track { will-change: transform; }
+  .drift.is-pinned .drift-item { width: calc(min(44svh, 30rem) * 16 / 9); max-width: 58vw; }
+</style>
+
+<script>
+  import { initDrift } from '../../lib/animation/drift';
+  initDrift();
+</script>

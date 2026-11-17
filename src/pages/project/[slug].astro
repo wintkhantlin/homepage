@@ -124,6 +124,7 @@ const structuredData = [
     <header class="pb-10 pt-10 md:pb-12 md:pt-14">
       <ProjectName
         as="h1"
+        data-physics-text
         name={project.data.name}
         slug={project.id}
         class="max-w-5xl font-sans text-[clamp(3rem,6.4vw,4.5rem)] font-semibold tracking-[-0.04em] text-(--text-heading)"
@@ -174,6 +175,9 @@ const structuredData = [
         alt={`${project.data.name} product interface`}
         widths={[400, 720, 1024, 1280]}
         sizes="(max-width: 1280px) 100vw, 1280px"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
         class="aspect-video h-auto w-full object-contain"
       />
     </figure>

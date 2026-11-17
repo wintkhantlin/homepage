@@ -9,7 +9,7 @@ img: ../../assets/img/url2short.png
 technologies: ["Go", "Redis", "Kafka", "ClickHouse", "PostgreSQL", "React", "TypeScript"]
 publishedDate: 2026-01-01
 featured: true
-featuredOrder: 2
+featuredOrder: 4
 maturity: built
 context: open-source
 role: Backend and systems engineering

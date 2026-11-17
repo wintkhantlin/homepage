@@ -61,7 +61,8 @@ export default defineConfig({
     {
       provider: fontProviders.google(),
       name: "Plus Jakarta Sans",
-      weights: ["400", "500", "600", "700", "800"],
+      // 800 (font-extrabold) is never used by any class or font-weight declaration in src/.
+      weights: ["400", "500", "600", "700"],
       styles: ["normal"],
       cssVariable: "--font-heading",
       display: "swap",
@@ -69,7 +70,8 @@ export default defineConfig({
     {
       provider: fontProviders.google(),
       name: "JetBrains Mono",
-      weights: ["400", "500", "700"],
+      // 400 for labels; 700 backs the font-weight: 600 inline code chips in articles (global.css).
+      weights: ["400", "700"],
       styles: ["normal"],
       cssVariable: "--font-body",
       display: "swap",

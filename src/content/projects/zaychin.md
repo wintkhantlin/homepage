@@ -9,7 +9,7 @@ img: ../../assets/img/zay_chin.png
 technologies: ["Bun", "Fastify", "WebSocket", "PostGIS", "PostgreSQL", "Flutter", "Dart"]
 publishedDate: 2026-01-01
 featured: true
-featuredOrder: 3
+featuredOrder: 5
 maturity: built
 context: personal
 role: Full-stack product engineering

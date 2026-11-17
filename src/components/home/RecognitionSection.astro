@@ -61,7 +61,7 @@ const largePhotos = await Promise.all(
 
 <!-- Events and outcomes stay distinct; the adjacent photographs document the GUSTO forum. -->
 <section id="recognition" aria-labelledby="recognition-heading" class="scroll-mt-[calc(var(--section-gap)*-1)] pt-(--section-gap)">
-  <h2 data-spring-reveal
+  <h2 data-spring-reveal data-physics-text
     id="recognition-heading"
     class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)"
   >
@@ -97,6 +97,7 @@ const largePhotos = await Promise.all(
           quality={70}
           sizes="(min-width: 1024px) 330px, min(57vw, 286px)"
           loading="lazy"
+          decoding="async"
           class="h-full w-full object-cover" data-spring-image
         />
         </a>
@@ -111,6 +112,7 @@ const largePhotos = await Promise.all(
           quality={70}
           sizes="(min-width: 1024px) 245px, min(43vw, 215px)"
           loading="lazy"
+          decoding="async"
           class="h-full w-full object-cover" data-spring-image
         />
         </a>

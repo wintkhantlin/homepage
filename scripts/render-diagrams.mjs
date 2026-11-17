@@ -47,6 +47,90 @@ function mermaidConfig(tokens) {
   };
 }
 
+// Mermaid's static output embeds one <style> block covering every shape/feature the
+// renderer knows about (clusters, icon-shapes, tooltips, error states, dash animations,
+// "neo" look, katex, …), even when a given diagram uses none of them. Since these are
+// frozen, non-interactive SVGs (no hover states, no JS), a rule whose selector never
+// matches anything in the markup can only ever be dead weight. Strip those rules and
+// collapse incidental whitespace; keep every rule that could possibly apply, so the
+// diagram stays pixel-identical.
+function minifySvg(svg) {
+  const styleMatch = svg.match(/<style>([\s\S]*?)<\/style>/);
+  if (!styleMatch) return svg.replace(/>\s+</g, "><").trim();
+
+  const markupWithoutStyle = svg.slice(0, styleMatch.index) + svg.slice(styleMatch.index + styleMatch[0].length);
+  const usedClasses = new Set([...markupWithoutStyle.matchAll(/class="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)));
+  const usedTags = new Set([...markupWithoutStyle.matchAll(/<([a-zA-Z][\w-]*)/g)].map((m) => m[1]));
+  const usedAttrs = new Set([...markupWithoutStyle.matchAll(/\s([\w-]+)=/g)].map((m) => m[1]));
+
+  // A selector survives if every one of its comma-separated parts could match something
+  // real: the diagram's own id/root selectors, an element tag that's actually in the
+  // markup, a class that's actually applied, or an attribute selector that's in use.
+  // Every rule here is prefixed with the diagram's own "#diagram-<id>-<theme>" id (so a
+  // leading "#…" token is always live — it's not what makes a rule dead weight); pseudo-
+  // classes, combinators and bracket text are stripped before the check so e.g.
+  // ".node.clickable" is judged on "node" and "clickable", not the dot between them.
+  function selectorIsLive(selector) {
+    const trimmed = selector.trim();
+    if (trimmed === "" || trimmed === ":root") return true;
+    const tokens = trimmed
+      .replace(/::?[\w-]+(\([^)]*\))?/g, "")
+      .split(/[\s>+~]+/)
+      .filter(Boolean);
+    return tokens.every((token) => {
+      if (token.startsWith("[")) {
+        const attr = token.match(/\[([\w-]+)/)?.[1];
+        return attr ? usedAttrs.has(attr) : true;
+      }
+      const parts = token.match(/[.#]?[\w-]+/g) ?? [];
+      return parts.every((part) => {
+        if (part.startsWith(".")) return usedClasses.has(part.slice(1));
+        if (part.startsWith("#")) return true;
+        return usedTags.has(part) || part === "*";
+      });
+    });
+  }
+
+  const css = styleMatch[1];
+  const keptRules = [];
+  const usedAnimationNames = new Set();
+
+  // Split top-level rules (the style has no nested @media here, so brace-depth 0 is enough).
+  let depth = 0;
+  let ruleStart = 0;
+  for (let i = 0; i < css.length; i++) {
+    if (css[i] === "{") depth++;
+    else if (css[i] === "}") {
+      depth--;
+      if (depth === 0) {
+        const rule = css.slice(ruleStart, i + 1);
+        ruleStart = i + 1;
+        if (/^@keyframes/.test(rule.trim())) {
+          keptRules.push({ rule, kind: "keyframes", name: rule.match(/^@keyframes\s+([\w-]+)/)?.[1] });
+          continue;
+        }
+        const braceIndex = rule.indexOf("{");
+        const selectorList = rule.slice(0, braceIndex);
+        const body = rule.slice(braceIndex);
+        const selectors = selectorList.split(",");
+        const liveSelectors = selectors.filter(selectorIsLive);
+        if (liveSelectors.length === 0) continue;
+        for (const match of body.matchAll(/animation(?:-name)?:\s*([\w-]+)/g)) usedAnimationNames.add(match[1]);
+        keptRules.push({ rule: liveSelectors.join(",") + body, kind: "rule" });
+      }
+    }
+  }
+
+  const minifiedCss = keptRules
+    .filter((entry) => entry.kind === "rule" || usedAnimationNames.has(entry.name))
+    .map((entry) => entry.rule)
+    .join("");
+
+  return (svg.slice(0, styleMatch.index) + `<style>${minifiedCss}</style>` + svg.slice(styleMatch.index + styleMatch[0].length))
+    .replace(/>\s+</g, "><")
+    .trim();
+}
+
 // The `diagram: |` block scalar in a project's frontmatter, dedented.
 function extractDiagram(markdown) {
   const lines = markdown.split("\n");
@@ -99,7 +183,7 @@ try {
       );
       const file = `${id}.${theme}.svg`;
       expected.add(file);
-      writeFileSync(join(outputDir, file), `${svg}\n`);
+      writeFileSync(join(outputDir, file), `${minifySvg(svg)}\n`);
       console.log(`rendered ${file}`);
     }
   }

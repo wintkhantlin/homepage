@@ -9,7 +9,7 @@ technologies: ["RabbitMQ", "Go", "Python", "PostgreSQL", "Hono", "TypeScript", "
 img: ../../assets/img/gencourse.png
 publishedDate: 2026-03-14
 featured: true
-featuredOrder: 1
+featuredOrder: 3
 maturity: built
 context: open-source
 role: Product and systems engineering

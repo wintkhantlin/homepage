@@ -5,6 +5,7 @@ interface Props {
   slug: string;
   class?: string;
   id?: string;
+  "data-physics-text"?: boolean;
 }
 
 const { as: Tag, name, slug, class: className, ...rest } = Astro.props;

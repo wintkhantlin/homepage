@@ -62,9 +62,9 @@ const email = siteConfig.social.email.replace("mailto:", "");
 <script is:inline>
   (() => {
     const show = () => document.documentElement.classList.add("hero-shown");
-    const [navigation] = performance.getEntriesByType("navigation");
+    const [navigation] = (typeof performance !== "undefined" && performance.getEntriesByType?.("navigation")) || [];
     if (navigation?.type === "back_forward") show();
-    else setTimeout(show, 1500);
+    else setTimeout(show, 600);
   })();
 </script>
 
@@ -469,6 +469,13 @@ const email = siteConfig.social.email.replace("mailto:", "");
     font-size: var(--text-display);
     line-height: 0.92;
     letter-spacing: -0.05em;
+  }
+
+  /* Phones: the name carries the first screen, so it grows with the width (CSS only; the scripts keep their own transform/translate). */
+  @media (max-width: 39.98rem) {
+    .hero-name {
+      font-size: clamp(3.25rem, 16vw, 4.5rem);
+    }
   }
 
   /* The letters are created in the browser, once the name is ready to answer the pointer. */

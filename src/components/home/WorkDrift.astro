@@ -14,17 +14,9 @@ interface Props {
 
 const { projects, heading = "Selected work" } = Astro.props as Props;
 
-const contextLabels = {
-  "open-source": "Open source",
-  personal: "Personal project",
-  hackathon: "Hackathon",
-} as const;
-
-const projectKind = (project: Project) => {
-  const type = project.data.type;
-  return type ? type.charAt(0).toUpperCase() + type.slice(1) : contextLabels[project.data.context];
-};
 const count = projects.length;
+// The two proof-point titles from each project's own content, shown as one line under the caption.
+const proofLine = (project: Project) => (project.data.proofPoints ?? []).map(point => point.title).join(" · ");
 ---
 
 <!-- A filmstrip of project frames. On wide screens with motion allowed, vertical scroll drifts it sideways while the stage stays pinned;
@@ -34,11 +26,13 @@ const count = projects.length;
     <div class="drift-head">
       <div class="drift-title">
         <h2 id="index-heading" data-physics-text class="text-section font-semibold leading-[1.02] tracking-[-0.04em] text-(--text-heading)">{heading}</h2>
+        <!-- Pinned: "Scroll to drift — 1 / N". Phones: "Swipe to browse — 1 / N". Unpinned 640px+ (all frames in a grid): "N projects". -->
         <p class="drift-label" aria-hidden="true">
-          <span class="drift-label-scroll">Scroll to drift</span><span class="drift-label-swipe">Swipe to browse</span> — {count} {count === 1 ? "frame" : "frames"}
+          <span class="drift-label-scroll">Scroll to drift</span><span class="drift-label-swipe">Swipe to browse</span><span class="drift-label-index"> — <span class="drift-count" data-drift-count>1</span> / {count}</span><span class="drift-label-total">{count} {count === 1 ? "project" : "projects"}</span>
         </p>
       </div>
-      <a href="/projects" class="drift-all">View all work <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+      <a href="/projects" class="drift-all drift-all--head">View all work <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
+      <span class="drift-progress" aria-hidden="true"><span class="drift-progress-fill" data-drift-progress></span></span>
     </div>
 
     <div class="drift-viewport" data-drift-viewport>
@@ -46,21 +40,25 @@ const count = projects.length;
         {projects.map((project, index) => (
           <li class="drift-item">
             <a id={`work-${project.id}`} href={`/project/${project.id}`} class="drift-frame" data-list-item data-drift-frame
-              aria-labelledby={`drift-name-${index}`} aria-describedby={`drift-about-${index}`}>
+              aria-labelledby={`drift-name-${index}`} aria-describedby={proofLine(project) ? `drift-about-${index} drift-proof-${index}` : `drift-about-${index}`}>
               <span class="drift-media" data-drift-media aria-hidden="true">
-                <Image src={project.data.img} alt="" widths={[640, 960, 1280]} sizes="(min-width: 768px) 56vw, 84vw"
+                <Image src={project.data.img} alt="" widths={[640, 960, 1280]} sizes="(min-width: 768px) 56vw, 86vw"
                   loading="eager" decoding="async" fetchpriority="low" />
               </span>
               <span class="drift-caption">
                 <ProjectName as="h3" id={`drift-name-${index}`} name={project.data.name} slug={project.id} class="drift-name" />
-                <span class="drift-dash" aria-hidden="true">—</span>
-                <span class="drift-kind">{projectKind(project)}</span>
               </span>
               <span id={`drift-about-${index}`} class="drift-about">{project.data.description}</span>
+              {proofLine(project) && <span id={`drift-proof-${index}`} class="drift-proof">{proofLine(project)}</span>}
             </a>
           </li>
         ))}
       </ul>
+    </div>
+
+    <!-- Phones: the way out to every project sits after the strip, so the first frame reaches the first screen. -->
+    <div class="drift-foot">
+      <a href="/projects" class="drift-all drift-all--foot">View all work <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" /></a>
     </div>
   </div>
 </section>
@@ -73,15 +71,31 @@ const count = projects.length;
     margin-left: calc(50% - 50vw);
     padding-top: var(--section-gap-s);
     --gutter: max(1.25rem, calc((100vw - 80rem) / 2 + 2rem));
-    --frame-w: 78vw;
+    --frame-w: 86vw;
     --gap: 1rem;
   }
   .drift-stage { position: relative; display: flex; flex-direction: column; justify-content: center; gap: clamp(2rem, 6vh, 4.5rem); }
   .drift-head { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; padding-inline: var(--gutter); }
   .drift-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 2.5rem; }
   .drift-label { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-muted); }
-  .drift-label-scroll { display: none; }
+  .drift-label-scroll, .drift-label-total { display: none; }
+  .drift-count { font-variant-numeric: tabular-nums; }
   .drift-all { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; color: var(--text-heading); border-bottom: 1px solid var(--border-strong); }
+
+  .drift-all--head { display: none; }
+  /* Sits closer to the strip than the stage gap: frames share the tallest caption's height, so that gap is already loose. */
+  .drift-foot { margin-top: calc(1.25rem - clamp(2rem, 6vh, 4.5rem)); padding-inline: var(--gutter); }
+
+  /* Pinned-strip progress: a hairline under the head, filled by drift.ts from the offset spring (transform only). */
+  .drift-progress {
+    display: none;
+    position: absolute;
+    inset-inline: var(--gutter);
+    bottom: calc(clamp(2rem, 6vh, 4.5rem) / -2);
+    height: 1px;
+    background: color-mix(in oklch, var(--text-heading) 12%, transparent);
+  }
+  .drift-progress-fill { display: block; height: 100%; background: var(--text-heading); opacity: .5; transform: scaleX(0); transform-origin: left; }
 
   .drift-viewport {
     overflow-x: auto;
@@ -99,12 +113,34 @@ const count = projects.length;
   .drift-caption { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6em; margin-top: 1.1rem; font-size: .8125rem; letter-spacing: .16em; text-transform: uppercase; color: var(--text-muted); }
   .drift-caption :global(.drift-name) { font-size: inherit; font-weight: 500; letter-spacing: inherit; color: var(--text-heading); }
   .drift-about { display: block; max-width: 34rem; margin-top: .5rem; font-size: .9375rem; line-height: 1.6; color: var(--text-faint); text-wrap: pretty; }
+  .drift-proof { display: block; max-width: 34rem; margin-top: .5rem; font-size: .8125rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
   .drift-frame:hover :global(.drift-name), .drift-frame:focus-visible :global(.drift-name) { text-decoration: underline; text-underline-offset: .35em; }
 
   @media (min-width: 640px) {
     .drift { --frame-w: min(54vw, 38rem); --gap: 1.375rem; }
-    .drift-label-scroll { display: inline; }
-    .drift-label-swipe { display: none; }
+    .drift-label-swipe, .drift-label-index { display: none; }
+    .drift-label-total { display: inline; }
+    .drift-all--head { display: inline-flex; }
+    .drift-foot { display: none; }
+  }
+
+  /* The label only says "Scroll to drift" where drift.ts pins: the same media condition (initDrift's roomy && !reducedMotion), with scripting on. */
+  @media (min-width: 768px) and (min-height: 520px) and (prefers-reduced-motion: no-preference) {
+    :global(html.js) .drift-label-scroll, :global(html.js) .drift-label-index { display: inline; }
+    :global(html.js) .drift-label-total { display: none; }
+  }
+
+  /* Unpinned at 640px+ (640–767px wide, under 520px tall, reduced motion, or no script): a wheel can't move a sideways strip,
+     so every frame sits in a two-column grid instead. Mirrors drift.ts's pin condition, and never applies once pinned. */
+  @media (min-width: 640px) and (max-width: 767.98px), (min-width: 640px) and (max-height: 519.98px), (min-width: 640px) and (prefers-reduced-motion: reduce) {
+    .drift:not(.is-pinned) .drift-viewport { overflow: visible; scroll-snap-type: none; }
+    .drift:not(.is-pinned) .drift-track { width: auto; flex-wrap: wrap; row-gap: clamp(2rem, 4vw, 3rem); }
+    .drift:not(.is-pinned) .drift-item { width: calc((100% - var(--gap)) / 2); }
+  }
+  @media (min-width: 640px) {
+    :global(html:not(.js)) .drift .drift-viewport { overflow: visible; scroll-snap-type: none; }
+    :global(html:not(.js)) .drift .drift-track { width: auto; flex-wrap: wrap; row-gap: clamp(2rem, 4vw, 3rem); }
+    :global(html:not(.js)) .drift .drift-item { width: calc((100% - var(--gap)) / 2); }
   }
 
   /* Pinned: JS sets the section height so the stage stays put while the strip travels its full width. */
@@ -112,6 +148,9 @@ const count = projects.length;
   .drift.is-pinned .drift-stage { position: sticky; top: 0; height: 100svh; overflow: clip; padding-top: 4.5rem; }
   .drift.is-pinned .drift-viewport { overflow: visible; scroll-snap-type: none; }
   .drift.is-pinned .drift-track { will-change: transform; }
+  .drift.is-pinned .drift-progress { display: block; }
+  /* The pinned stage is one screen tall and clips: short screens have no room for the proof line under the description. */
+  @media (max-height: 640px) { .drift.is-pinned .drift-proof { display: none; } }
   .drift.is-pinned .drift-item { width: calc(min(44svh, 30rem) * 16 / 9); max-width: 58vw; }
 </style>
 

@@ -1,5 +1,5 @@
-/* Hallmark · shape: Marquee Hero (draw ddc0b9) · genre: modern-minimal · theme: brand · redesign: full
- * paper: #0c0d0c dark, #fafafa light · accent: #caff77, focus and selection only · display: Plus Jakarta Sans · body: Plus Jakarta Sans · hero: Ledge · nav: split bar 64/36 (swapped from search-led: the site has no search) · footer: colophon block · signature: the staggered name at full scale, resting at the base of the first screen
+/* Hallmark · shape: Marquee Hero (/), Split Studio (/project/*) · genre: modern-minimal · theme: brand · redesign: full
+ * paper: #0c0d0c dark, #fafafa light · accent: #caff77, focus and selection only · display: Plus Jakarta Sans · body: Plus Jakarta Sans · hero: Ledge (/), Stage (/project/*) · nav: split bar 64/36 (swapped from search-led: the site has no search) · footer: colophon block · signature: the staggered name at full scale, resting at the base of the first screen (/), the system map with its numbered legend beside the sticky spec sheet on /project/*
  * axes: dark/geometric-sans/chromatic-lime · posture: Restrained · contrast: pass · fold: pass · imagery: screenshots 4 in the index (the projects' own), award photos 2 (no people) · v2.0.0 */
 /* Hallmark · pre-emit critique: P3 H4 E4 S4 R5 V4 · weakest: P, a portfolio has little to argue, so the work leads straight after the name as an index with its screens in view */
 /* Hallmark · dropped the GenCourse case section · the owner found one project opened in full too much; every project sits in the index */
@@ -10,6 +10,19 @@
 /* Hallmark · dropped "Say hello." link at the end of About · 69 names it, the footer closes with the same line */
 /* Hallmark · dropped the 01, 02, 03 ordinals on competition results · decoration text (66); the list is an ol */
 /* Hallmark · reworded the hero lede from "Software engineer and college student from Myanmar, building reliable backend systems for useful products. I document the engineering decisions as I go, in English and Burmese." to "Software engineer and college student from Myanmar, building reliable backend systems." · 58 names it; the bilingual fact stays in About */
+/* Hallmark · dropped engineering-highlights · the "Engineering highlights" section on the case study pages is gone and its two proof points are now a two-column ruled list under the story block in the case study's right column, their text unchanged, so a standalone block would say them twice */
+/* Hallmark · dropped lucide:arrow-right, lucide:arrow-up-right · the case study pages no longer carry arrows glued to the GitHub, Live demo and Next case study links (63); the links and their destinations stay */
+/* Hallmark · dropped "Project overview" · the case study pages lost their fallback branch and its heading, because the schema requires caseStudy and the branch could never render */
+/* Hallmark · dropped .stage-band, .stage-figure · the full-bleed screenshot band is gone; the screenshot is the first item of the case study's right column, beside the sticky spec sheet */
+/* Hallmark · dropped {project.data.demo}, {project.data.source} · both links moved into ProjectSpec.astro and arrive as the props demo and source; the GitHub repository and Live demo destinations are unchanged */
+/* Hallmark · dropped architecture, highlights · the content keys became components and features, every line kept word for word and only the diagram node keys added, so no text is lost */
+/* Hallmark · reworded "Technology" to "Stack" · the technology line is now the Stack row of the spec sheet's facts list, still carrying id="stack" so old links land */
+/* Hallmark · dropped the canvas "Stack" heading and section · the technology line moved into the spec sheet, and the provenance note and second GitHub link sit under "What it includes", their text unchanged */
+/* Hallmark · dropped ProjectRail · its "On this page" nav and its [data-case-link] scroll-spy are gone because the case study is now a 12-column split: a sticky spec sheet on the left and a canvas on the right, so the rail has nowhere to sit; every section id still works as a deep link */
+/* Hallmark · dropped ChapterTree and its chapter spy · the page has four to five one-line components, so a left chapter tree duplicated the legend; the numbered legend under the map replaces it */
+/* Hallmark · dropped the pinned mini-map band and its ResizeObserver scroll margin · the diagram now appears once, with its legend directly beneath it */
+/* Hallmark · dropped the component-chapter view() fade · the new layout has no scroll pattern; content is simply there */
+/* Hallmark · dropped the "Select a component to read its chapter." hint and the second Enlarge button · one map, one Enlarge button */
 
 @import "tailwindcss";
 @import "./tokens.css";
@@ -82,7 +95,7 @@ html {
     background: var(--bg);
     scroll-behavior: smooth;
     /* Clears the bar for article headings. Home sections cancel their own top gap with a negative scroll margin, so their headings land here too. */
-    scroll-padding-top: 6rem;
+    scroll-padding-top: var(--scroll-pad-top);
 }
 
 body {

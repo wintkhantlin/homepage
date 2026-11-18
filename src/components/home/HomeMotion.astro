@@ -106,7 +106,8 @@
 <style is:global>
   /* Static states remain available without JS. All animated homepage changes use spring.ts. */
   html[data-physics-home], html[data-physics-home] * { scroll-behavior: auto !important; }
-  html[data-physics-home] *, html[data-physics-home] *::before, html[data-physics-home] *::after {
+  /* .cursor-pop is exempt: its burst is a one-shot keyframe whose animationend removes the span. */
+  html[data-physics-home] *:not(.cursor-pop), html[data-physics-home] *::before, html[data-physics-home] *::after {
     transition: none !important;
     animation: none !important;
   }

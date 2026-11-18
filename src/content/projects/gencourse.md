@@ -23,17 +23,26 @@ caseStudy:
   status: Open-source project
   challenge: A learner expects a useful course from only a short prompt, but generating an outline, lessons, and quizzes is a long-running AI workflow. The product must coordinate that work without freezing the interface, losing progress, or coupling the learning experience to one model provider.
   approach: GenCourse treats course generation as an asynchronous system. A management service owns course data, a Python worker handles model orchestration through RabbitMQ, and a Go notification service streams progress back to the browser. Ory handles identity at the gateway so each service can remain focused on one responsibility.
-  architecture:
-    - React and Vite provide the learner-facing course workspace behind the Oathkeeper gateway.
-    - A TypeScript management service built with Hono and Drizzle persists course state in PostgreSQL.
-    - A Python worker consumes RabbitMQ jobs, coordinates AI providers, and publishes course-generation events.
-    - A Go notification service converts progress events into WebSocket updates for the active browser session.
-    - Ory Kratos manages identity and sessions while Oathkeeper protects service boundaries.
-  highlights:
-    - Generates a structured outline, lessons, and quizzes from a learner's prompt.
-    - Keeps long-running work visible through real-time progress notifications.
-    - Allows model providers to change inside the worker without rewriting the product interface.
-    - Reproduces the supporting services locally through Docker Compose.
+  components:
+    - nodes: [B, C]
+      detail: React and Vite provide the learner-facing course workspace behind the Oathkeeper gateway.
+    - nodes: [D, E]
+      detail: A TypeScript management service built with Hono and Drizzle persists course state in PostgreSQL.
+    - nodes: [G, F]
+      detail: A Python worker consumes RabbitMQ jobs, coordinates AI providers, and publishes course-generation events.
+    - nodes: [H]
+      detail: A Go notification service converts progress events into WebSocket updates for the active browser session.
+    - nodes: [I, C]
+      detail: Ory Kratos manages identity and sessions while Oathkeeper protects service boundaries.
+  features:
+    - text: Generates a structured outline, lessons, and quizzes from a learner's prompt.
+      nodes: []
+    - text: Keeps long-running work visible through real-time progress notifications.
+      nodes: [H]
+    - text: Allows model providers to change inside the worker without rewriting the product interface.
+      nodes: [G]
+    - text: Reproduces the supporting services locally through Docker Compose.
+      nodes: []
   diagram: |
     flowchart LR
       A["Learner"] --> B["React + Vite"]

@@ -26,17 +26,26 @@ caseStudy:
     Satellite products are not crop plans. A farmer in the Ayeyarwady Delta or the Central Dry Zone needs to know what to plant after this harvest and what could go wrong, but raw NASA data arrives at regional scale, with gaps and scientific terminology that make it hard to act on.
   approach: >-
     Green Ally compares whole crop sequences rather than ranking single crops. Candidate rotations come from regional crop templates and sowing windows, then are replayed against ten past seasons of NASA POWER weather to find dry spells, heat and rain shortfalls that hit sensitive growth stages. A minimax-regret comparison highlights options that are rarely a poor choice, and every result explains why in plain language.
-  architecture:
-    - A phone-first Next.js app stores fields in the browser with IndexedDB, so no account is needed.
-    - Route handlers fetch weather, soil and remote-sensing data in separate lanes, because each source arrives at a different speed.
-    - NASA POWER drives FAO-56 reference evapotranspiration; SoilGrids supplies soil texture, pH and water retention.
-    - A rotation engine scores suitability, water demand, disease carryover and income ranges against farmer priorities.
-    - An evidence layer attaches source, resolution and date to every claim and shows what is unknown.
-  highlights:
-    - Compares the current rotation with at least two alternatives over the same historical weather.
-    - Lets farmers weight soil health, water saving and income to decide what "best" means.
-    - Screens flood, heat, water and erosion vulnerability for a drawn field.
-    - Reports a 51% NASA POWER rainfall underestimate in Mandalay instead of hiding it.
+  components:
+    - nodes: [A]
+      detail: A phone-first Next.js app stores fields in the browser with IndexedDB, so no account is needed.
+    - nodes: [C, E]
+      detail: Route handlers fetch weather, soil and remote-sensing data in separate lanes, because each source arrives at a different speed.
+    - nodes: [E, C]
+      detail: NASA POWER drives FAO-56 reference evapotranspiration; SoilGrids supplies soil texture, pH and water retention.
+    - nodes: [B, A]
+      detail: A rotation engine scores suitability, water demand, disease carryover and income ranges against farmer priorities.
+    - nodes: [G]
+      detail: An evidence layer attaches source, resolution and date to every claim and shows what is unknown.
+  features:
+    - text: Compares the current rotation with at least two alternatives over the same historical weather.
+      nodes: []
+    - text: Lets farmers weight soil health, water saving and income to decide what "best" means.
+      nodes: [A]
+    - text: Screens flood, heat, water and erosion vulnerability for a drawn field.
+      nodes: []
+    - text: Reports a 51% NASA POWER rainfall underestimate in Mandalay instead of hiding it.
+      nodes: [C]
   diagram: |
     flowchart LR
       A["Farmer's field and priorities"] --> B["Rotation candidates"]

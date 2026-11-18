@@ -26,17 +26,26 @@ caseStudy:
     Local delivery loses visibility the moment a parcel leaves the seller. Customers cannot see where it is, riders plan routes by hand, managers reconcile cash on delivery manually, and support staff answer complaints with no shared context.
   approach: >-
     Oern puts customers, riders, managers, sellers and support on one workflow. Dispatch recommends riders and vehicles from availability, workload, proximity and parcel capacity; ETAs are recalculated from route progress, vehicle speed and manager-verified road reports, and cash on delivery is tracked from collection to hand-over.
-  architecture:
-    - Next.js workspaces for customers, riders, managers, sellers and support share Supabase Auth.
-    - PostgreSQL row-level security enforces each role's access, with versioned migrations and transactional SQL workflow tests.
-    - Supabase Realtime streams rider location to the customer's tracking map once a parcel is collected.
-    - An adaptive large neighbourhood search plans multi-stop, multi-vehicle routes using the Mapbox Matrix API.
-    - Complaints are classified by an LLM through OpenRouter, with a pattern-based fallback when it is unavailable.
-  highlights:
-    - Customers request a pickup in three steps and follow their own orders on a live map.
-    - Riders verify each parcel ID at handover and record cash on delivery per stop.
-    - Managers reconcile expected against collected cash and flag short payments.
-    - Playwright suites cover customer, rider and manager flows, accessibility and dark mode.
+  components:
+    - nodes: [B]
+      detail: Next.js workspaces for customers, riders, managers, sellers and support share Supabase Auth.
+    - nodes: [C]
+      detail: PostgreSQL row-level security enforces each role's access, with versioned migrations and transactional SQL workflow tests.
+    - nodes: [D]
+      detail: Supabase Realtime streams rider location to the customer's tracking map once a parcel is collected.
+    - nodes: [E, F]
+      detail: An adaptive large neighbourhood search plans multi-stop, multi-vehicle routes using the Mapbox Matrix API.
+    - nodes: [G]
+      detail: Complaints are classified by an LLM through OpenRouter, with a pattern-based fallback when it is unavailable.
+  features:
+    - text: Customers request a pickup in three steps and follow their own orders on a live map.
+      nodes: [A]
+    - text: Riders verify each parcel ID at handover and record cash on delivery per stop.
+      nodes: [R]
+    - text: Managers reconcile expected against collected cash and flag short payments.
+      nodes: [M]
+    - text: Playwright suites cover customer, rider and manager flows, accessibility and dark mode.
+      nodes: []
   diagram: |
     flowchart LR
       A["Customer"] --> B["Next.js workspaces"]

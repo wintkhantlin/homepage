@@ -36,7 +36,7 @@ const isActive = (href: string) => {
             aria-current={isActive(link.href) ? "page" : undefined}
             data-nav-section={link.section}
             class:list={[
-              "inline-flex min-h-11 items-center whitespace-nowrap px-1.5 text-[13px] text-(--text-muted) underline decoration-transparent underline-offset-8 transition-[color,text-decoration-color] duration-300 hover:text-(--text-heading) active:text-(--text-heading) data-[current]:text-(--text-heading) data-[current]:decoration-(--text-faint) sm:text-[14px]",
+              "inline-flex min-h-11 min-w-11 justify-center items-center whitespace-nowrap px-2 text-[13px] text-(--text-muted) underline decoration-transparent underline-offset-8 transition-[color,text-decoration-color] duration-300 hover:text-(--text-heading) active:text-(--text-heading) data-[current]:text-(--text-heading) data-[current]:decoration-(--text-faint) sm:text-[14px]",
               { "text-(--text-heading) decoration-(--text-faint)": isActive(link.href) },
             ]}
           >
@@ -167,15 +167,19 @@ const isActive = (href: string) => {
   // On the homepage, mark the nav link whose section is in view.
   function trackActiveSection() {
     const navLinks = [...document.querySelectorAll<HTMLAnchorElement>("[data-nav-section]")];
-    const sections = navLinks
-      .map((link) => document.getElementById(link.dataset.navSection ?? ""))
-      .filter((section): section is HTMLElement => Boolean(section));
+    if (!navLinks.length) return;
+
+    // Sections in page DOM order:
+    const sections = [
+      document.getElementById("projects"),
+      document.getElementById("recognition"),
+      document.getElementById("writing"),
+      document.getElementById("about"),
+    ].filter((section): section is HTMLElement => Boolean(section));
     if (!sections.length) return;
 
     // Competition results belong to the work, so Work stays lit through them rather than going dark between sections.
-    const recognition = document.getElementById("recognition");
     const owner = (id: string) => (id === "recognition" ? "projects" : id);
-    if (recognition) sections.push(recognition);
 
     const setCurrent = (id?: string) => {
       for (const link of navLinks) {
@@ -187,18 +191,32 @@ const isActive = (href: string) => {
     };
 
     const visible = new Set<string>();
+    const updateActive = () => {
+      if (window.scrollY < 120) {
+        setCurrent(undefined);
+        return;
+      }
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) {
+        setCurrent("about");
+        return;
+      }
+      const current = sections.find((section) => visible.has(section.id))?.id;
+      setCurrent(current ? owner(current) : undefined);
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) visible.add(entry.target.id);
           else visible.delete(entry.target.id);
         }
-        const current = sections.find((section) => visible.has(section.id))?.id;
-        setCurrent(current && owner(current));
+        updateActive();
       },
-      { rootMargin: "-40% 0px -55% 0px" },
+      { rootMargin: "-25% 0px -45% 0px" },
     );
     sections.forEach((section) => observer.observe(section));
+
+    window.addEventListener("scroll", updateActive, { passive: true });
   }
 
   trackActiveSection();

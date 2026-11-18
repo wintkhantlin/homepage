@@ -1,12 +1,11 @@
 ---
 import { Image, getImage } from "astro:assets";
-import { Icon } from "astro-icon/components";
-import BackLink from "../../components/BackLink.astro";
-import ProjectName from "../../components/ProjectName.astro";
 import CaseStudy from "../../components/project/CaseStudy.astro";
-import ProjectRail from "../../components/project/ProjectRail.astro";
+import ProjectSpec from "../../components/project/ProjectSpec.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getSortedProjects, type ProjectEntry } from "../../lib/content";
+import { buildChapters, enhanceDiagram, parseDiagram } from "../../lib/diagramNodes";
+import { projectTint } from "../../lib/projectTint";
 import { absoluteUrl, createAuthorSchema, createBreadcrumbSchema, siteConfig } from "../../lib/seo";
 
 interface Props {
@@ -42,6 +41,14 @@ function diagramSvg(theme: "light" | "dark") {
   return diagramSvgs[path];
 }
 
+// The system map, drawn once: every node is marked for the legend's light, and each node a component explains links to
+// that component's legend item.
+const diagramLabels = parseDiagram(caseStudy.diagram);
+const { targets: nodeTargets } = buildChapters(caseStudy.components, caseStudy.features, diagramLabels);
+function systemMap(theme: "light" | "dark") {
+  return enhanceDiagram(diagramSvg(theme), { idBase: `diagram-${project.id}-${theme}`, targets: nodeTargets });
+}
+
 const maturityLabels = {
   built: "Built",
   prototype: "Prototype",
@@ -49,7 +56,7 @@ const maturityLabels = {
 } as const;
 const projectType = project.data.type || "Product";
 const maturity = maturityLabels[project.data.maturity];
-const facts: { label: string; value: string; datetime?: string }[] = [
+const facts: { label: string; value: string; datetime?: string; id?: string }[] = [
   { label: "My role", value: project.data.role },
   { label: "Type", value: projectType.charAt(0).toUpperCase() + projectType.slice(1) },
   {
@@ -57,17 +64,20 @@ const facts: { label: string; value: string; datetime?: string }[] = [
     value: String(project.data.publishedDate.getFullYear()),
     datetime: project.data.publishedDate.toISOString(),
   },
-  ...(caseStudy?.status && caseStudy.status !== maturity ? [{ label: "Context", value: caseStudy.status }] : []),
+  ...(caseStudy.status && caseStudy.status !== maturity ? [{ label: "Context", value: caseStudy.status }] : []),
   { label: "Stage", value: maturity },
+  // The stack sits with the other facts, one line beside its name; the row keeps the old Stack chapter's address.
+  {
+    label: "Stack",
+    value: project.data.technologies?.length
+      ? project.data.technologies.join(", ")
+      : "Technology details are available in the source repository.",
+    id: "stack",
+  },
 ];
-// Each id matches a section in CaseStudy.astro.
-const caseStudySections = [
-  { id: "the-challenge", label: "The challenge" },
-  { id: "the-approach", label: "The approach" },
-  { id: "system-architecture", label: "System architecture" },
-  { id: "how-it-is-structured", label: "How it is structured" },
-  { id: "what-it-includes", label: "What it includes" },
-];
+// A colour too dark or too light to tint a surface (#000 on two projects) leaves the page on its neutral surface.
+const tint = projectTint(project.data.color);
+const nextTint = nextProject ? projectTint(nextProject.data.color) : null;
 const canonicalPath = `/project/${project.id}`;
 const metaTitle = project.data.seoTitle ?? `${project.data.name} Case Study | ${siteConfig.siteName}`;
 const metaDescription = project.data.seoDescription ?? project.data.description;
@@ -110,160 +120,198 @@ const structuredData = [
   keywords={[...(project.data.technologies || []), project.data.type || "software project", "software case study"]}
   structuredData={structuredData}
 >
-  <main id="main-content" class="mx-auto max-w-7xl px-5 pb-24 pt-(--page-top) text-(--text) sm:px-6 md:px-8">
-    <BackLink
-      href="/projects"
-      label="All work"
-      siblingPrefix="/project/"
-      origins={[
-        { path: "/", href: project.data.featured ? `/#work-${project.id}` : "/#projects", label: "Back to selected work" },
-        { path: "/projects", href: `/projects#work-${project.id}`, label: "Back to all work" },
-      ]}
-    />
-
-    <header class="pb-10 pt-10 md:pb-12 md:pt-14">
-      <ProjectName
-        as="h1"
-        data-physics-text
-        name={project.data.name}
+  <main id="main-content" class="project-page text-(--text)" style={tint ? `--project: ${tint}` : undefined}>
+    <!-- Spec sheet + canvas: the name, actions and facts on the left (sticky while they fit), the story and the real artifacts on the right. -->
+    <div class="split mx-auto w-full max-w-7xl px-5 pt-(--page-top) sm:px-6 md:px-8">
+      <ProjectSpec
         slug={project.id}
-        class="max-w-5xl font-sans text-[clamp(3rem,6.4vw,4.5rem)] font-semibold tracking-[-0.04em] text-(--text-heading)"
+        name={project.data.name}
+        description={project.data.description}
+        featured={project.data.featured}
+        source={project.data.source}
+        demo={project.data.demo}
+        facts={facts}
       />
 
-      <p class="mt-9 max-w-3xl text-lg leading-relaxed text-(--text-muted)">
-        {project.data.description}
-      </p>
-
-      <dl class="mt-9 grid grid-cols-2 gap-x-6 gap-y-4 text-sm sm:flex sm:flex-wrap sm:gap-x-10">
-        {facts.map((fact, index) => (
-          <div class:list={[index === 0 && "col-span-2 sm:col-span-1"]}>
-            <dt class="text-(--text-faint)">{fact.label}</dt>
-            <dd class="mt-1 text-(--text-heading)">
-              {fact.datetime ? <time datetime={fact.datetime} class="tabular-nums">{fact.value}</time> : fact.value}
-            </dd>
-          </div>
-        ))}
-      </dl>
-
-      <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <a
-          href={project.data.source}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group inline-flex min-h-12 w-fit items-center gap-3 rounded-full bg-(--text-heading) px-6 text-sm font-semibold text-(--bg) transition-colors duration-300 hover:bg-(--text)"
-        >
-          GitHub repository<span class="sr-only"> (opens in a new tab)</span>
-          <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-        </a>
-        {project.data.demo && (
-          <a
-            href={project.data.demo}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group inline-flex min-h-11 items-center gap-2 text-sm font-medium text-(--text-muted) transition-colors hover:text-(--text-heading)"
-          >
-            Live demo<span class="sr-only"> (opens in a new tab)</span>
-            <Icon name="lucide:arrow-up-right" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-          </a>
-        )}
-      </div>
-    </header>
-
-    <figure class="overflow-hidden rounded-2xl bg-(--border)">
-      <Image
-        src={project.data.img}
-        alt={`${project.data.name} product interface`}
-        widths={[400, 720, 1024, 1280]}
-        sizes="(max-width: 1280px) 100vw, 1280px"
-        loading="eager"
-        decoding="async"
-        fetchpriority="high"
-        class="aspect-video h-auto w-full object-contain"
-      />
-    </figure>
-
-    <section class="mt-16 border-t border-(--border) pt-6 md:mt-20" aria-labelledby="engineering-highlights">
-      <h2 id="engineering-highlights" class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">Engineering highlights</h2>
-      <ol class="mt-8 grid gap-8 md:grid-cols-2 md:gap-10">
-        {project.data.proofPoints.map((point, index) => (
-          <li>
-            <h3 class="text-xl font-semibold tracking-[-0.02em] text-(--text-heading)">
-              <span class="mr-2 font-mono text-sm font-normal tabular-nums text-(--text-faint)">{String(index + 1).padStart(2, "0")} /</span>
-              {point.title}
-            </h3>
-            <p class="mt-2 max-w-[52ch] text-base leading-relaxed text-(--text-muted)">{point.detail}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
-
-    <div class="pb-24 pt-16 lg:pb-32 lg:pt-20">
-      {caseStudy ? (
+      <div class="canvas">
         <CaseStudy
-          diagramLight={diagramSvg("light")}
-          diagramDark={diagramSvg("dark")}
+          name={project.data.name}
+          source={project.data.source}
           challenge={caseStudy.challenge}
           approach={caseStudy.approach}
-          architecture={caseStudy.architecture}
-          highlights={caseStudy.highlights}
-          technologies={project.data.technologies}
-          sections={caseStudySections}
+          proofPoints={project.data.proofPoints}
+          decisions={caseStudy.decisions}
+          diagramLight={systemMap("light")}
+          diagramDark={systemMap("dark")}
+          components={caseStudy.components}
+          features={caseStudy.features}
+          labels={diagramLabels}
         >
+          <figure slot="product" class="product-shot">
+            <Image
+              src={project.data.img}
+              alt={`${project.data.name} product interface`}
+              widths={[480, 768, 1024, 1504]}
+              sizes="(max-width: 60rem) 100vw, 752px"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              class="aspect-video h-auto w-full object-contain"
+            />
+          </figure>
           {project.body && (
-            <section class="prose mt-20 max-w-[40rem] prose-p:leading-7 prose-p:text-(--text-muted) prose-headings:font-medium prose-headings:tracking-[-0.02em] prose-headings:text-(--text-heading) prose-strong:text-(--text-heading) prose-ul:text-(--text-muted) prose-ol:text-(--text-muted) prose-code:rounded-md prose-code:bg-(--border) prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[0.9em] prose-code:text-(--text-heading)">
+            <div class="prose mt-16 max-w-[40rem] prose-p:leading-7 prose-p:text-(--text-muted) prose-headings:font-semibold prose-headings:tracking-[-0.02em] prose-headings:text-(--text-heading) prose-strong:text-(--text-heading) prose-ul:text-(--text-muted) prose-ol:text-(--text-muted) prose-code:rounded-md prose-code:bg-(--border) prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[0.9em] prose-code:text-(--text-heading)">
               <Content />
-            </section>
+            </div>
           )}
         </CaseStudy>
-      ) : (
-        <div class="grid gap-16 md:grid-cols-12 md:gap-10">
-          <ProjectRail class="md:col-span-4 lg:col-span-3" technologies={project.data.technologies} />
-          <div class="md:col-span-8 lg:col-span-9">
-            <section>
-              <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">Project overview</h2>
-              <p class="mt-6 max-w-[40rem] text-base leading-8 text-(--text-muted) sm:text-lg">
-                {project.data.description}
-              </p>
-            </section>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
 
     {nextProject && (
-      <a href={`/project/${nextProject.id}`} class="group block border-y border-(--border) py-12 sm:py-16">
-        <span class="text-sm text-(--text-faint)">Next case study</span>
-        <div class="mt-4 flex items-end justify-between gap-8">
-          <h2 class="font-sans text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-(--text-heading)">
-            {nextProject.data.name}
-          </h2>
-          <Icon name="lucide:arrow-right" class="mb-1 size-6 shrink-0 text-(--text-heading) transition-transform duration-300 group-hover:translate-x-2" />
+      <a href={`/project/${nextProject.id}`} class="next-band" style={`--project: ${nextTint ?? "initial"}`}>
+        <div class="next-inner mx-auto w-full max-w-7xl px-5 sm:px-6 md:px-8">
+          <div class="next-text">
+            <h2 class="next-name">{nextProject.data.name}</h2>
+            <p class="mt-4 text-(--text-muted)">Next case study</p>
+          </div>
+          <div class="next-shot">
+            <Image
+              src={nextProject.data.img}
+              alt=""
+              widths={[400, 720, 1024]}
+              sizes="(max-width: 60rem) 100vw, 50vw"
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover object-top"
+            />
+          </div>
         </div>
       </a>
     )}
   </main>
 </BaseLayout>
 
-<script>
-  // Marks the rail link whose section is crossing the reading line, and keeps it marked through the gaps between sections.
-  const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-case-link]")];
-  const sections = links
-    .map((link) => document.getElementById(link.dataset.caseLink ?? ""))
-    .filter((section): section is HTMLElement => Boolean(section));
-
-  if (sections.length && "IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          for (const link of links) {
-            if (link.dataset.caseLink === entry.target.id) link.setAttribute("aria-current", "location");
-            else link.removeAttribute("aria-current");
-          }
-        }
-      },
-      { rootMargin: "-30% 0px -60% 0px" },
-    );
-    sections.forEach((section) => observer.observe(section));
+<style>
+  /* One tint per page: the colour from the content, mixed into the page colour so both themes keep their ground.
+     With no --project set (a near-black or near-white colour) the var() fails and the neutral wash is used.
+     The next band sets its own --project ("initial" when its colour cannot tint) and so recomputes the wash itself. */
+  .project-page,
+  .next-band {
+    /* The screenshot's ground: a trace of the project's colour, never a field of it. */
+    --project-trace: color-mix(in oklab, var(--project) 6%, var(--bg));
+    --project-wash: color-mix(in oklab, var(--project) 14%, var(--bg));
+    --project-wash-strong: color-mix(in oklab, var(--project) 24%, var(--bg));
+    /* The neutral wash for colours that cannot tint: a step of ink into the page, visible in both themes. */
+    --neutral-trace: color-mix(in oklab, var(--text-heading) 3%, var(--bg));
+    --neutral-wash: color-mix(in oklab, var(--text-heading) 5%, var(--bg));
+    --neutral-wash-strong: color-mix(in oklab, var(--text-heading) 9%, var(--bg));
   }
-</script>
+
+  /* Under 60rem: one column in reading order (name, sentence, actions, properties, then the canvas: screenshot, story,
+     map, features, provenance). */
+  .canvas {
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-gap-s);
+    margin-top: 2.5rem;
+    min-width: 0;
+  }
+
+  .product-shot {
+    min-width: 0;
+    margin: 0 0 calc(2.5rem - var(--section-gap-s));
+    overflow: hidden;
+    border-radius: 0.75rem;
+    outline: 1px solid var(--border);
+    outline-offset: -1px;
+    background: var(--project-trace, var(--neutral-trace));
+  }
+
+  /* 60rem wide and tall enough for the sheet: twelve columns, the sheet on 1 to 4 and the canvas on 6 to 12, both from
+     the top of the page. When the sheet cannot fit under the bar (data-loose, set by its script) the page keeps the one
+     column, so the left never stands empty beside a static sheet. */
+  @media (min-width: 60rem) and (min-height: 40rem) {
+    .split:not(:has(> [data-spec][data-loose])) {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 2rem;
+      align-items: start;
+    }
+
+    .split:not(:has(> [data-spec][data-loose])) .canvas {
+      /* The canvas's parts follow each other closer than page sections: they are one sheet of artifacts. */
+      gap: 3rem;
+      grid-column: 6 / span 7;
+      margin-top: 0;
+    }
+
+    .split:not(:has(> [data-spec][data-loose])) .product-shot {
+      margin-bottom: 0;
+    }
+  }
+
+  /* The next case study: a band in that project's own tint, its screen cropped wide beside its name. */
+  .next-band {
+    display: block;
+    margin-top: var(--section-gap-s);
+    background: var(--project-wash, var(--neutral-wash));
+    color: var(--text-heading);
+    text-decoration: none;
+    transition: background-color 200ms ease-out;
+  }
+
+  .next-band:hover,
+  .next-band:active {
+    background: var(--project-wash-strong, var(--neutral-wash-strong));
+  }
+
+  .next-band:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: -6px;
+    transition: none;
+  }
+
+  .next-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding-block: 3.5rem;
+  }
+
+  .next-name {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
+    font-size: var(--text-section);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text-heading);
+  }
+
+  .next-shot {
+    aspect-ratio: 21 / 9;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    outline: 1px solid var(--border);
+    outline-offset: -1px;
+    background: var(--surface);
+  }
+
+  @media (min-width: 60rem) {
+    .next-inner {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: center;
+      gap: 4rem;
+      padding-block: 5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .next-band {
+      transition: none;
+    }
+  }
+</style>

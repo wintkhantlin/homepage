@@ -23,17 +23,26 @@ caseStudy:
   status: Cross-platform project
   challenge: Family shopping is collaborative and location-aware, but ordinary lists do not keep group changes, item locations, and invitations synchronized.
   approach: Zay Chin combines a Flutter mobile client with a Fastify API, WebSocket updates, and PostGIS-backed location data so a group can maintain one shared view of a shopping trip.
-  architecture:
-    - Flutter application for iOS and Android.
-    - Bun and Fastify backend with Drizzle ORM.
-    - PostgreSQL with PostGIS geometry for item locations.
-    - RS256 JWT authentication and secure device storage.
-    - WebSocket channel for real-time cart synchronization.
-  highlights:
-    - Creates family groups and member invitations.
-    - Synchronizes shared cart changes in real time.
-    - Associates shopping items with map locations.
-    - Displays saved locations through OpenStreetMap.
+  components:
+    - nodes: [B]
+      detail: Flutter application for iOS and Android.
+    - nodes: [C]
+      detail: Bun and Fastify backend with Drizzle ORM.
+    - nodes: [F]
+      detail: PostgreSQL with PostGIS geometry for item locations.
+    - nodes: [D]
+      detail: RS256 JWT authentication and secure device storage.
+    - nodes: [G]
+      detail: WebSocket channel for real-time cart synchronization.
+  features:
+    - text: Creates family groups and member invitations.
+      nodes: []
+    - text: Synchronizes shared cart changes in real time.
+      nodes: [E]
+    - text: Associates shopping items with map locations.
+      nodes: []
+    - text: Displays saved locations through OpenStreetMap.
+      nodes: [H]
   diagram: |
     flowchart LR
       A["Family Member"] --> B["Flutter Application"]

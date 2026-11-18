@@ -1,130 +1,174 @@
 ---
 import { Icon } from "astro-icon/components";
-import ProjectRail from "./ProjectRail.astro";
+import { buildChapters, type Component, type Feature, type NodeLabels } from "../../lib/diagramNodes";
 
 interface Props {
+  name: string;
+  source: string;
   challenge: string;
   approach: string;
-  architecture: string[];
-  highlights: string[];
+  proofPoints: { title: string; detail: string }[];
+  decisions?: { title: string; context: string; decision: string; tradeoff: string }[];
+  components: Component[];
+  features: Feature[];
+  labels: NodeLabels;
+  /** The system map for each theme, its nodes marked and linked to their legend items (enhanceDiagram). */
   diagramLight: string;
   diagramDark: string;
-  technologies?: string[];
-  sections: { id: string; label: string }[];
 }
 
-const { challenge, approach, architecture, highlights, diagramLight, diagramDark, technologies, sections } = Astro.props as Props;
+const { name, source, challenge, approach, proofPoints, decisions, components, features, labels, diagramLight, diagramDark } = Astro.props as Props;
 
-// The text sections share one column beside the rail; the diagram alone spans the page, so its labels stay legible.
-const column = "md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4";
+const { chapters: legend, tooling, productFeatures } = buildChapters(components, features, labels);
 ---
 
-<div class="grid gap-y-20 md:grid-cols-12 md:gap-x-10">
-  <ProjectRail
-    class="md:col-span-4 md:col-start-1 md:row-span-5 md:row-start-1 lg:col-span-3 lg:col-start-1"
-    technologies={technologies}
-    sections={sections}
-  />
+<!-- The canvas: the screenshot, the story, the system map once with its numbered legend, the features no node holds, and where it all comes from. -->
+<slot name="product" />
 
-  <section id="the-challenge" class:list={[column, "md:row-start-1"]}>
-    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
-      The challenge
-    </h2>
-    <p class="mt-6 max-w-[40rem] text-base leading-8 text-(--text-muted) sm:text-lg">
-      {challenge}
-    </p>
-  </section>
+<div class="canvas-part story">
+  <div class="story-pair">
+    <section id="the-challenge" class="story-part">
+      <h2>The challenge</h2>
+      <p>{challenge}</p>
+    </section>
 
-  <section id="the-approach" class:list={[column, "md:row-start-2"]}>
-    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
-      The approach
-    </h2>
-    <p class="mt-6 max-w-[40rem] text-base leading-8 text-(--text-muted) sm:text-lg">
-      {approach}
-    </p>
-  </section>
+    <section id="the-approach" class="story-part">
+      <h2>The approach</h2>
+      <p>{approach}</p>
+    </section>
+  </div>
 
-  <!-- Spans every column, over the rail's track: the rail slides under it and is back once the diagram has passed. -->
-  <section id="system-architecture" class="relative z-10 bg-(--bg) md:col-span-12 md:col-start-1 md:row-start-3 md:grid md:grid-cols-subgrid">
-    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4">
-      System architecture
-    </h2>
-    <div
-      class="diagram-frame mt-7 overscroll-x-contain overflow-x-auto rounded-2xl border border-(--border) bg-(--surface) p-4 sm:p-5 md:col-span-12"
-      data-diagram
-      tabindex="0"
-      aria-label="Scrollable system architecture diagram"
-    >
-      <!-- Both themes ship as static SVG; CSS shows the one matching the active theme. -->
-      <div class="diagram-theme diagram-dark min-w-168" role="img" aria-label="System architecture diagram" set:html={diagramDark}></div>
-      <div class="diagram-theme diagram-light min-w-168" role="img" aria-label="System architecture diagram" set:html={diagramLight}></div>
-    </div>
-
-    <button
-      type="button"
-      class="-ml-3 mt-3 hidden md:col-span-12 min-h-11 cursor-pointer items-center gap-2 rounded-full px-3 text-sm font-medium text-(--text-muted) transition-[background-color,color] duration-200 hover:bg-(--surface-raised) hover:text-(--text-heading) active:bg-(--surface)"
-      data-diagram-enlarge
-    >
-      <Icon name="lucide:maximize-2" class="size-4" aria-hidden="true" />
-      Enlarge diagram
-    </button>
-
-    <dialog class="diagram-viewer" aria-label="System architecture diagram, enlarged" data-diagram-viewer>
-      <div class="diagram-viewer-canvas" tabindex="0" aria-label="Scrollable system architecture diagram" data-diagram-canvas></div>
-      <div class="mt-3 flex justify-end">
-        <button type="button" class="viewer-button" data-diagram-close>
-          <Icon name="lucide:x" class="size-4" aria-hidden="true" />
-          Close
-        </button>
-      </div>
-    </dialog>
-  </section>
-
-  <section id="how-it-is-structured" class:list={[column, "md:row-start-4"]}>
-    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
-      How it is structured
-    </h2>
-    <ol class="mt-7 border-t border-(--border)">
-      {architecture.map((item, index) => (
-        <li class="grid gap-4 border-b border-(--border) py-5 sm:grid-cols-[2rem_1fr]">
-          <span class="font-mono text-xs text-(--text-faint)">{String(index + 1).padStart(2, "0")}</span>
-          <span class="text-base leading-relaxed text-(--text-muted)">{item}</span>
+  <ul class="story-proof" aria-label="Engineering highlights">
+    {
+      proofPoints.map((point) => (
+        <li>
+          <h3>{point.title}</h3>
+          <p>{point.detail}</p>
         </li>
-      ))}
-    </ol>
-  </section>
+      ))
+    }
+  </ul>
 
-  <section id="what-it-includes" class:list={[column, "md:row-start-5"]}>
-    <h2 class="text-3xl font-semibold tracking-[-0.03em] text-(--text-heading) sm:text-4xl">
-      What it includes
-    </h2>
-    <ul class="mt-7 grid gap-px overflow-hidden rounded-xl border border-(--border) bg-(--border) sm:grid-cols-2">
-      {highlights.map((item) => (
-        <li class="bg-(--surface) p-6 text-base leading-relaxed text-(--text-muted)">{item}</li>
-      ))}
-    </ul>
-    <slot />
-  </section>
+  {
+    decisions?.length ? (
+      <section id="decisions" class="story-part story-decisions">
+        <h2>Decisions</h2>
+        <ol>
+          {decisions.map((entry) => (
+            <li>
+              <h3>{entry.title}</h3>
+              <dl>
+                <div>
+                  <dt>Context</dt>
+                  <dd>{entry.context}</dd>
+                </div>
+                <div>
+                  <dt>Decision</dt>
+                  <dd>{entry.decision}</dd>
+                </div>
+                <div>
+                  <dt>Trade-off</dt>
+                  <dd>{entry.tradeoff}</dd>
+                </div>
+              </dl>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ) : null
+  }
+</div>
+
+<section id="system-architecture" class="canvas-part" aria-labelledby="system-head">
+  <h2 id="system-head" class="canvas-head">System architecture</h2>
+
+  <div class="map-frame overscroll-x-contain overflow-x-auto" data-diagram tabindex="0" aria-label="Scrollable system map">
+    <!-- Both themes ship as static SVG; CSS shows the one matching the active theme. Each linked node leads to its legend item. -->
+    <div class="diagram-theme diagram-dark min-w-168" role="group" aria-label={`${name} system map`} set:html={diagramDark} />
+    <div class="diagram-theme diagram-light min-w-168" role="group" aria-label={`${name} system map`} set:html={diagramLight} />
+  </div>
+
+  <button type="button" class="enlarge-button" data-diagram-enlarge>
+    <Icon name="lucide:maximize-2" class="size-4" aria-hidden="true" />
+    Enlarge diagram
+  </button>
+
+  <dialog class="diagram-viewer" aria-label={`${name} system map, enlarged`} data-diagram-viewer>
+    <div class="diagram-viewer-canvas" tabindex="0" aria-label="Scrollable system map" data-diagram-canvas></div>
+    <div class="mt-3 flex justify-end">
+      <button type="button" class="viewer-button" data-diagram-close>
+        <Icon name="lucide:x" class="size-4" aria-hidden="true" />
+        Close
+      </button>
+    </div>
+  </dialog>
+
+  <h3 id="how-it-is-structured-head" class="legend-head">How it is structured</h3>
+  <ol id="how-it-is-structured" class="legend" aria-labelledby="how-it-is-structured-head">
+    {
+      legend.map((item) => (
+        <li id={item.id} class="legend-item" tabindex="-1" data-legend data-nodes={item.nodes.join(" ")}>
+          <h4>{item.title}</h4>
+          <p>{item.detail}</p>
+          {item.features.length > 0 && (
+            <ul class="legend-features">
+              {item.features.map((text) => (
+                <li>{text}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+  {
+    tooling.length > 0 && (
+      <div id="tooling" class="tooling">
+        <h4>Tooling</h4>
+        {tooling.map((text) => (
+          <p>{text}</p>
+        ))}
+      </div>
+    )
+  }
+</section>
+
+{
+  productFeatures.length > 0 && (
+    <section id="what-it-includes" class="canvas-part" aria-labelledby="features-head">
+      <h2 id="features-head" class="canvas-head">What it includes</h2>
+      <ul class:list={["ruled-list", productFeatures.length % 3 === 0 && "ruled-list-thirds"]}>
+        {productFeatures.map((feature) => (
+          <li data-legend data-nodes={feature.nodes.join(" ")}>{feature.text}</li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<!-- Where the account comes from; the stack itself is a row in the spec sheet beside the canvas. -->
+<div class="canvas-part provenance">
+  <p>This case study reflects the project documentation and current source repository.</p>
+  <a href={source} target="_blank" rel="noopener noreferrer" class="stack-link">
+    GitHub repository<span class="sr-only"> (opens in a new tab)</span>
+  </a>
+  <slot />
 </div>
 
 <script>
   const diagram = document.querySelector<HTMLElement>("[data-diagram]");
-  const enlarge = document.querySelector<HTMLButtonElement>("[data-diagram-enlarge]");
   const viewer = document.querySelector<HTMLDialogElement>("[data-diagram-viewer]");
   const canvas = viewer?.querySelector<HTMLElement>("[data-diagram-canvas]");
   const closeViewer = viewer?.querySelector<HTMLButtonElement>("[data-diagram-close]");
 
-  // Enlarging needs the viewer script, so the button stays hidden without JavaScript.
-  enlarge?.classList.remove("hidden");
-  enlarge?.classList.add("inline-flex");
-
-  // The viewer shows a copy of the diagram variant for the active theme.
-  enlarge?.addEventListener("click", () => {
+  // The viewer shows a copy of the map for the active theme, with its node links taken out: it is for looking.
+  document.querySelector<HTMLButtonElement>("[data-diagram-enlarge]")?.addEventListener("click", () => {
     const theme = document.documentElement.classList.contains("light") ? "light" : "dark";
     const svg = diagram?.querySelector<SVGSVGElement>(`.diagram-${theme} svg`);
     if (!viewer || !canvas || !svg) return;
     const copy = svg.cloneNode(true) as SVGSVGElement;
     copy.style.maxWidth = "none";
+    for (const link of copy.querySelectorAll("a")) link.replaceWith(...link.childNodes);
     canvas.replaceChildren(copy);
     viewer.showModal();
     closeViewer?.focus();
@@ -136,33 +180,445 @@ const column = "md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4";
   viewer?.addEventListener("click", (event) => {
     if (event.target === viewer) viewer.close();
   });
+
+  // The legend and the map point at each other: a legend item under the pointer or in focus lights its nodes (the rest
+  // step back), and a node, clicked or entered, brings its legend item into view and focus. Without scripting the
+  // nodes are plain links to the legend.
+  const nodes = diagram ? [...diagram.querySelectorAll<SVGGElement>("g.node[data-node]")] : [];
+
+  function light(ids: string[]) {
+    if (!diagram) return;
+    if (ids.length) diagram.setAttribute("data-focus", "");
+    else diagram.removeAttribute("data-focus");
+    for (const node of nodes) node.toggleAttribute("data-lit", ids.includes(node.dataset.node ?? ""));
+  }
+
+  const idsOf = (item: HTMLElement) => item.dataset.nodes?.split(" ").filter(Boolean) ?? [];
+  const focused = () => document.activeElement?.closest<HTMLElement>("[data-legend]");
+
+  for (const item of document.querySelectorAll<HTMLElement>("[data-legend]")) {
+    if (!idsOf(item).length) continue;
+    item.addEventListener("pointerenter", () => light(idsOf(item)));
+    item.addEventListener("pointerleave", () => {
+      const current = focused();
+      light(current ? idsOf(current) : []);
+    });
+    item.addEventListener("focusin", () => light(idsOf(item)));
+    // Focus leaving falls back to the item under a resting pointer, so a click that scrolls the legend keeps its light.
+    item.addEventListener("focusout", () => {
+      const hovered = document.querySelector<HTMLElement>("[data-legend]:hover");
+      light(hovered ? idsOf(hovered) : []);
+    });
+  }
+
+  diagram?.addEventListener("click", (event) => {
+    const link = (event.target as Element).closest("a");
+    const id = link?.getAttribute("href")?.slice(1);
+    const item = id ? document.getElementById(id) : null;
+    if (!item) return;
+    // The browser follows the link and scrolls; focus follows it, so keyboard and screen reader users land there too.
+    requestAnimationFrame(() => item.focus({ preventScroll: true }));
+  });
+
+  // Arriving on a legend item's address (an old chapter link) lights its nodes once.
+  const landed = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+  if (landed?.matches("[data-legend]")) light(idsOf(landed));
 </script>
 
 <style>
-  .diagram-theme {
+  .canvas-part {
+    min-width: 0;
+  }
+
+  /* A canvas head stands 4.5rem clear of the block above it (the canvas gap is 3rem). */
+  @media (min-width: 60rem) {
+    .canvas-part:has(> .canvas-head) {
+      margin-top: 1.5rem;
+    }
+  }
+
+  /* ── The story: challenge and approach side by side, the proof points ruled beneath ── */
+  .story-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem 2rem;
+  }
+
+  .story-part h2,
+  .story-proof h3,
+  .story-decisions h3 {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-wrap: balance;
+    color: var(--text-heading);
+  }
+
+  .story-part p {
+    margin: 0.375rem 0 0;
+    max-width: 62ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .story-proof {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0 2rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .story-proof li {
+    border-top: 1px solid var(--border);
+    padding-block: 0.875rem;
+  }
+
+  .story-proof p {
+    margin: 0.25rem 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .story-decisions {
+    margin-top: 2rem;
+  }
+
+  .story-decisions ol {
+    display: grid;
+    gap: 1rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .story-decisions li {
+    border-top: 1px solid var(--border);
+    padding-top: 0.875rem;
+  }
+
+  .story-decisions dl {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0.5rem 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .story-decisions dt {
+    color: var(--text-faint);
+  }
+
+  .story-decisions dd {
+    margin: 0;
+    color: var(--text);
+  }
+
+  @media (min-width: 40rem) {
+    .story-proof {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .story-pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Three tiers of head on the page: the name, these canvas heads, and the small heads (story, legend, proof points). */
+  .canvas-head {
+    max-width: 24ch;
+    min-width: 0;
+    margin: 0 0 1.25rem;
+    overflow-wrap: break-word;
+    font-size: clamp(1.75rem, 1.2vw + 1rem, 2.25rem);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text-heading);
+  }
+
+  /* ── The map: on the page's own surface, one hairline round it ── */
+  .map-frame {
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    padding: 1rem;
+  }
+
+
+  /* A linked node answers hover, press and focus on its outline, in the page's own tokens. */
+  .map-frame :global(a:hover g.node :is(rect, path, polygon, circle, ellipse)) {
+    stroke: var(--text-heading) !important;
+    stroke-width: 2px !important;
+  }
+
+  .map-frame :global(a:active g.node :is(rect, path, polygon, circle, ellipse)) {
+    stroke: var(--text-muted) !important;
+    stroke-width: 3px !important;
+  }
+
+  .map-frame :global(a:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 4px;
+  }
+
+  .map-frame:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* The legend's light: the nodes of the item in hand stay, the rest step back. Opacity only. */
+  .map-frame :global(g.node) {
+    transition: opacity 200ms ease-out;
+  }
+
+  .map-frame[data-focus] :global(g.node:not([data-lit])) {
+    opacity: 0.25;
+  }
+
+  :global(.enlarge-button) {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0 0 -0.75rem;
+    border-radius: 999px;
+    padding-inline: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 200ms ease-out,
+      color 200ms ease-out;
+  }
+
+  /* Enlarging needs the viewer script, so the button stays hidden without JavaScript. */
+  :global(html:not(.js) .enlarge-button) {
     display: none;
   }
 
-  .diagram-theme :global(svg) {
+  :global(.enlarge-button:hover) {
+    background: var(--surface-raised);
+    color: var(--text-heading);
+  }
+
+  :global(.enlarge-button:active) {
+    background: var(--surface);
+    color: var(--text-heading);
+  }
+
+  :global(.enlarge-button:disabled),
+  .viewer-button:disabled {
+    background: transparent;
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  :global(.enlarge-button:focus-visible),
+  .viewer-button:focus-visible,
+  .stack-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    transition: none;
+  }
+
+  /* ── The legend: one numbered row per component, its features beneath ── */
+  .legend-head {
+    margin: 1rem 0 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-heading);
+  }
+
+  .legend {
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: legend;
+  }
+
+  .legend-item {
+    counter-increment: legend;
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    column-gap: 0.75rem;
+    border-top: 1px solid var(--border);
+    padding-block: 0.75rem;
+    outline: none;
+  }
+
+  .legend-item:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legend-item::before {
+    content: counter(legend);
+    grid-row: 1 / span 3;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .legend-item:hover::before,
+  .legend-item:focus::before,
+  .legend-item:target::before {
+    color: var(--text-heading);
+  }
+
+  .legend-item:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .legend-item:active::before {
+    color: var(--text-muted);
+  }
+
+  .legend-item h4,
+  .tooling h4 {
+    grid-column: 2;
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text-heading);
+  }
+
+  .legend-item p,
+  .tooling p {
+    grid-column: 2;
+    margin: 0.25rem 0 0;
+    max-width: 62ch;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .legend-features {
+    grid-column: 2;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .legend-features li {
+    margin-top: 0.25rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--border-strong);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .tooling {
+    padding: 1rem 0 0 2.75rem;
+  }
+
+  /* ── Features no node holds ── */
+  .ruled-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ruled-list li {
+    border-top: 1px solid var(--border-strong);
+    padding-block: 0.75rem 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* Two across; three across when the lines come in threes (and fit), so no row is left with one. */
+  @media (min-width: 40rem) {
+    .ruled-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Three across only where the column is wide enough that one-liners stay short. */
+  #what-it-includes {
+    container-type: inline-size;
+  }
+
+  @container (min-width: 56rem) {
+    .ruled-list-thirds {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* ── Provenance: a closing note, set close under the features it follows ── */
+  @media (min-width: 60rem) {
+    .provenance {
+      margin-top: -1.5rem;
+    }
+  }
+
+  .provenance p {
+    margin: 0;
+    max-width: 52ch;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .stack-link {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    margin-top: 0.5rem;
+    color: var(--text-heading);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.3em;
+    transition: text-decoration-color 200ms ease-out;
+  }
+
+  .stack-link:hover {
+    text-decoration-color: var(--text-heading);
+  }
+
+  .stack-link:active {
+    color: var(--text-muted);
+  }
+
+  /* ── The map's drawing and its viewer ── */
+  :global(.diagram-theme) {
+    display: none;
+  }
+
+  :global(.diagram-theme svg) {
     display: block;
     margin-inline: auto;
   }
 
   /* Mermaid sets edge labels in the node text colour, which is the page colour here: invisible against it. */
-  .diagram-theme :global(.edgeLabel text),
+  :global(.diagram-theme .edgeLabel text),
   .diagram-viewer-canvas :global(.edgeLabel text) {
     fill: var(--text-heading) !important;
   }
 
-  .diagram-dark {
+  :global(.diagram-dark) {
     display: block;
   }
 
-  :global(.light) .diagram-dark {
+  :global(.light .diagram-dark) {
     display: none;
   }
 
-  :global(.light) .diagram-light {
+  :global(.light .diagram-light) {
     display: block;
   }
 
@@ -186,6 +642,11 @@ const column = "md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4";
     overflow: auto;
     overscroll-behavior: contain;
     border-radius: 0.5rem;
+  }
+
+  .diagram-viewer-canvas:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
   }
 
   /* Phones keep the diagram legible and scroll it sideways; larger screens fit the whole of it in view. */
@@ -212,9 +673,11 @@ const column = "md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4";
     padding-inline: 0.875rem;
     color: var(--text-muted);
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 200ms ease, color 200ms ease;
+    transition:
+      background-color 200ms ease-out,
+      color 200ms ease-out;
   }
 
   .viewer-button:hover {
@@ -224,5 +687,14 @@ const column = "md:col-span-8 md:col-start-5 lg:col-span-9 lg:col-start-4";
 
   .viewer-button:active {
     background: var(--bg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .map-frame :global(g.node),
+    :global(.enlarge-button),
+    .viewer-button,
+    .stack-link {
+      transition: none;
+    }
   }
 </style>

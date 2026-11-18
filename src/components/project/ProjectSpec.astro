@@ -1,0 +1,215 @@
+---
+import BackLink from "../BackLink.astro";
+import ProjectName from "../ProjectName.astro";
+
+interface Props {
+  slug: string;
+  name: string;
+  description: string;
+  featured: boolean;
+  source: string;
+  demo?: string;
+  facts: { label: string; value: string; datetime?: string; id?: string }[];
+}
+
+const { slug, name, description, featured, source, demo, facts } = Astro.props as Props;
+---
+
+<!-- The spec sheet: the project's name, actions and facts, held beside the canvas while it scrolls (when it fits the screen). -->
+<div class="spec" data-spec>
+  <div class="spec-head">
+    <BackLink
+      href="/projects"
+      label="All work"
+      siblingPrefix="/project/"
+      origins={[
+        { path: "/", href: featured ? `/#work-${slug}` : "/#projects", label: "Back to selected work" },
+        { path: "/projects", href: `/projects#work-${slug}`, label: "Back to all work" },
+      ]}
+    />
+
+    <ProjectName as="h1" data-physics-text name={name} slug={slug} class="spec-name font-sans" />
+
+    <p class="spec-sentence">{description}</p>
+
+    <div class="spec-actions">
+      <a href={source} target="_blank" rel="noopener noreferrer" class="spec-button spec-button-primary">
+        GitHub repository<span class="sr-only"> (opens in a new tab)</span>
+      </a>
+      {
+        demo && (
+          <a href={demo} target="_blank" rel="noopener noreferrer" class="spec-button spec-button-secondary">
+            Live demo<span class="sr-only"> (opens in a new tab)</span>
+          </a>
+        )
+      }
+    </div>
+
+    <dl class="spec-facts">
+      {
+        facts.map((fact) => (
+          <div id={fact.id}>
+            <dt>{fact.label}</dt>
+            <dd>{fact.datetime ? <time datetime={fact.datetime}>{fact.value}</time> : fact.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</div>
+
+<script>
+  // The sheet sticks only while all of it fits under the bar; taller than that, it scrolls with the page, so nothing
+  // is ever out of reach. On a wide screen too short for it, data-loose drops the page to its one column. Without
+  // scripting it never sticks.
+  const spec = document.querySelector<HTMLElement>("[data-spec]");
+  const wide = window.matchMedia("(min-width: 60rem) and (min-height: 40rem)");
+
+  function fit() {
+    if (!spec) return;
+    const root = getComputedStyle(document.documentElement);
+    const rem = parseFloat(root.fontSize);
+    // Matches the sticky top in the stylesheet (the bar plus 1.5rem) and leaves 1.5rem clear at the foot.
+    const top = (parseFloat(root.getPropertyValue("--header-h")) + 1.5) * rem;
+    // Measured in the two-column layout, the one the decision is about; nothing paints in between.
+    spec.removeAttribute("data-loose");
+    const fits = spec.offsetHeight + top + 1.5 * rem <= window.innerHeight;
+    spec.toggleAttribute("data-sticky", wide.matches && fits);
+    spec.toggleAttribute("data-loose", wide.matches && !fits);
+  }
+
+  fit();
+  wide.addEventListener("change", fit);
+  window.addEventListener("resize", fit, { passive: true });
+  document.fonts?.ready.then(fit);
+</script>
+
+<style>
+  .spec {
+    min-width: 0;
+  }
+
+  @media (min-width: 60rem) and (min-height: 40rem) {
+    .spec {
+      grid-column: 1 / span 4;
+      align-self: start;
+    }
+  }
+
+  @media (min-width: 60rem) and (min-height: 40rem) {
+    .spec[data-sticky] {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+  }
+
+  .spec-head :global(.spec-name) {
+    margin-top: 1rem;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    font-size: var(--text-display-s);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    color: var(--text-heading);
+  }
+
+  .spec-sentence {
+    margin: 1.25rem 0 0;
+    max-width: 40rem;
+    font-size: var(--text-lead);
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  .spec-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+
+  .spec-button {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding-inline: 1.375rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 200ms ease-out,
+      border-color 200ms ease-out;
+  }
+
+  .spec-button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 4px;
+    transition: none;
+  }
+
+  .spec-button-primary {
+    background: var(--text-heading);
+    color: var(--bg);
+  }
+
+  .spec-button-primary:hover {
+    background: color-mix(in oklch, var(--text-heading) 86%, var(--bg));
+  }
+
+  .spec-button-primary:active {
+    background: color-mix(in oklch, var(--text-heading) 72%, var(--bg));
+  }
+
+  .spec-button-secondary {
+    border-color: var(--border-strong);
+    color: var(--text-heading);
+  }
+
+  .spec-button-secondary:hover {
+    background: var(--surface-raised);
+  }
+
+  .spec-button-secondary:active {
+    background: var(--surface);
+  }
+
+  /* Properties: one row each, the name on the left and the value beside it. */
+  .spec-facts {
+    margin: 2rem 0 0;
+    border-top: 1px solid var(--border);
+    max-width: 40rem;
+  }
+
+  .spec-facts > div {
+    display: grid;
+    grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr);
+    column-gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-block: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .spec-facts dt {
+    color: var(--text-faint);
+  }
+
+  .spec-facts dd {
+    margin: 0;
+    min-width: 0;
+    color: var(--text-heading);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spec-button {
+      transition: none;
+    }
+  }
+</style>

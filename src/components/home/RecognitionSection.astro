@@ -127,7 +127,7 @@ const largePhotos = await Promise.all(
   <dialog class="photo-viewer" aria-labelledby="photo-viewer-caption" data-photo-viewer data-photos={JSON.stringify(largePhotos)}>
     <figure class="photo-viewer-figure">
       <div class="photo-viewer-stage" data-viewer-stage>
-      <img class="photo-viewer-img" width={largePhotos[0].width} height={largePhotos[0].height} alt={largePhotos[0].alt} data-viewer-img />
+      <img class="photo-viewer-img" src={largePhotos[0].src} width={largePhotos[0].width} height={largePhotos[0].height} alt={largePhotos[0].alt} data-viewer-img />
       </div>
       <figcaption id="photo-viewer-caption" class="text-sm text-(--text-muted)" data-viewer-caption>{largePhotos[0].caption}</figcaption>
     </figure>

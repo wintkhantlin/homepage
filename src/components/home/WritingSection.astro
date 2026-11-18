@@ -13,7 +13,7 @@ const { posts } = Astro.props as Props;
 
 const notes = posts.slice(0, 3).map((post) => {
   const wordCount = post.body?.split(/\s+/u).filter(Boolean).length ?? 0;
-  const categoryName = post.data.categories[0].replace(/-/gu, " ");
+  const categoryName = (post.data.categories?.[0] ?? "general").replace(/-/gu, " ");
 
   return {
     post,

@@ -247,6 +247,8 @@ export function mountCursor(root: HTMLElement) {
       line.style.setProperty('--y', `${y}px`);
       line.style.setProperty('--a', `${offset + (360 / POPS) * i}deg`);
       line.addEventListener('animationend', () => line.remove(), { once: true });
+      // Fallback: if the keyframes never run (a stylesheet kills animation), animationend never fires.
+      window.setTimeout(() => line.remove(), 600);
       root.append(line);
     }
   };

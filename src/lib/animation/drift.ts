@@ -7,6 +7,9 @@ import { spring, reducedMotion } from './spring';
  * The real <img>s and links stay in the DOM; the canvas only paints over the images.
  */
 
+/** How far a side bends while the strip is still, once a frame is cut off there (0 = flat at rest). The moving bend is separate. */
+const REST_BEND = 0.5;
+
 const FLAT_VERTEX = `
 attribute vec2 aPos;
 uniform vec4 uRect;   // x, y, w, h in canvas uv (y down)
@@ -58,7 +61,7 @@ void main() {
   float side = sx < 0.0 ? -1.0 : 1.0;
   float e = smoothstep(0.45, 1.0, abs(sx));
   float rest = side < 0.0 ? uRest.x : uRest.y;
-  float a = 0.5 * max(rest, uSpeed) + 0.35 * uSpeed;
+  float a = max(${REST_BEND.toFixed(3)} * rest, 0.5 * uSpeed) + 0.35 * uSpeed;
   if (e <= 0.0 || a <= 0.001) { gl_FragColor = scene(uv); return; }
   float e2 = e * e;
 
@@ -278,7 +281,11 @@ export function initDrift() {
   if (!section) return;
   const stage = section.querySelector<HTMLElement>('[data-drift-stage]')!;
   const track = section.querySelector<HTMLElement>('[data-drift-track]')!;
+  const viewport = section.querySelector<HTMLElement>('[data-drift-viewport]')!;
   const media = [...section.querySelectorAll<HTMLElement>('[data-drift-media]')];
+  const counts = [...section.querySelectorAll<HTMLElement>('[data-drift-count]')];
+  const progress = section.querySelector<HTMLElement>('[data-drift-progress]');
+  const total = media.length;
   const roomy = window.matchMedia('(min-width: 768px) and (min-height: 520px)');
 
   let pinned = false;
@@ -291,11 +298,38 @@ export function initDrift() {
     return [Math.min(1, Math.max(0, value / ramp)), Math.min(1, Math.max(0, (distance - value) / ramp))];
   };
 
+  // "N / total": only touch the text when the frame number changes.
+  let shown = 1;
+  const show = (index: number) => {
+    const next = Math.min(total, Math.max(1, index));
+    if (next === shown) return;
+    shown = next;
+    for (const count of counts) count.textContent = String(next);
+  };
+
+  // Native strip (phones): the frame snapped at the start of the viewport, or the last one once the end is reached.
+  let reading = 0;
+  const readSwipe = () => {
+    reading = 0;
+    if (pinned) return;
+    const items = track.children;
+    const step = items.length > 1 ? (items[1] as HTMLElement).offsetLeft - (items[0] as HTMLElement).offsetLeft : 0;
+    const end = viewport.scrollWidth - viewport.clientWidth;
+    show(end > 0 && viewport.scrollLeft >= end - 2 ? total : step > 0 ? Math.round(viewport.scrollLeft / step) + 1 : 1);
+  };
+  viewport.addEventListener('scroll', () => { if (!pinned && !reading) reading = requestAnimationFrame(readSwipe); }, { passive: true });
+
   // The bend follows the strip's own momentum: the offset spring's velocity, normalised so ~1 is a brisk scroll.
   // It is continuous, so the bend eases in and out without sampling or smoothing, behaves the same at any refresh
   // rate, and reaches 0 exactly as the strip comes to rest.
   const offset = spring(0, (value, velocity) => {
     track.style.transform = pinned ? `translate3d(${-value}px, 0, 0)` : '';
+    if (pinned) {
+      // Progress rule and frame count ride the same spring as the strip: compositor-only transform, text only on change.
+      const p = distance ? Math.min(1, Math.max(0, value / distance)) : 0;
+      if (progress) progress.style.transform = `scaleX(${p})`;
+      show(Math.round(p * (total - 1)) + 1);
+    }
     renderer?.draw(velocity / 3200, rest(value));
   }, { mass: 1, stiffness: 140, damping: 22 });
 
@@ -334,6 +368,7 @@ export function initDrift() {
         section.style.removeProperty('--drift-height');
         section.style.marginBottom = '';
         snap(0);
+        readSwipe();
       }
     }
     measure();
@@ -345,6 +380,7 @@ export function initDrift() {
   roomy.addEventListener('change', apply);
   reducedMotion.addEventListener('change', apply);
   apply();
+  readSwipe();
 
   // Keyboard: the strip moves by transform, so focus can't scroll it. Scroll the page to the place that shows the focused frame.
   section.addEventListener('focusin', event => {

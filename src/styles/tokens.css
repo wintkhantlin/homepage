@@ -14,6 +14,10 @@
   --section-gap-l: 176px;
   /* Where a page's first heading starts below the fixed bar, so every inner page opens at the same height. */
   --page-top: 9rem;
+  /* The fixed bar's height (.site-header-inner min-height in Header.astro), for anything that docks under it. */
+  --header-h: 4.5rem;
+  /* How far below the top an anchor lands, clear of the bar (html scroll-padding-top). */
+  --scroll-pad-top: 6rem;
 }
 
 @media (max-width: 60rem) {

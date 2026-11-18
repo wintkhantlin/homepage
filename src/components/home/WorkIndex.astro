@@ -62,10 +62,12 @@ const maturityLabels = {
               <p class="index-meta"><span>{projectKind(project)}</span><span>{project.data.publishedDate.getFullYear()} · {maturityLabels[project.data.maturity]}</span></p>
               <ProjectName as={ItemHeading} id={`index-name-${index}`} name={project.data.name} slug={project.id} class="index-name" />
               <p id={`index-about-${index}`} class="index-about">{project.data.description}</p>
-              {heading ? (
+              {heading && project.data.proofPoints?.length ? (
                 <p class="index-stack index-stack--highlights"><span class="sr-only">Engineering highlights: </span>{project.data.proofPoints.map((point) => point.title).join(" · ")}</p>
               ) : (
-                <p class="index-stack"><span class="sr-only">Built with </span>{project.data.technologies?.slice(0, 4).join(" / ")}</p>
+                project.data.technologies?.length ? (
+                  <p class="index-stack"><span class="sr-only">Built with </span>{project.data.technologies.slice(0, 4).join(" / ")}</p>
+                ) : null
               )}
               <span class="index-case">Explore the project <span aria-hidden="true">↗</span></span>
             </div>

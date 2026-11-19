@@ -156,7 +156,7 @@ function materialOf(element: HTMLElement): Material {
 }
 
 function convexHull(points: Point[]): Point[] {
-  const sorted = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const sorted = points.toSorted((a, b) => a[0] - b[0] || a[1] - b[1]);
   if (sorted.length < 3) return sorted;
   const cross = (o: Point, a: Point, b: Point) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
   const lower: Point[] = [];

@@ -58,14 +58,15 @@ const isActive = (href: string) => {
       <button
         id="theme-toggle"
         type="button"
-        aria-label="Switch to light theme"
         class="flex size-11 cursor-pointer items-center justify-center rounded-full text-(--text-muted) transition-[background-color,color,transform] duration-300 hover:bg-(--surface-raised) hover:text-(--text-heading) active:scale-95 -mr-3"
       >
-        <span id="theme-icon-dark" class="hidden">
-          <Icon name="lucide:sun" class="size-3.75" />
+        <span class="if-dark">
+          <Icon name="lucide:sun" class="size-3.75" aria-hidden="true" />
+          <span class="sr-only">Switch to light theme</span>
         </span>
-        <span id="theme-icon-light" class="hidden">
-          <Icon name="lucide:moon" class="size-3.75" />
+        <span class="if-light">
+          <Icon name="lucide:moon" class="size-3.75" aria-hidden="true" />
+          <span class="sr-only">Switch to dark theme</span>
         </span>
       </button>
     </nav>
@@ -110,59 +111,70 @@ const isActive = (href: string) => {
 </style>
 
 <script>
-  function updateIcons() {
-    const isLight = document.documentElement.classList.contains("light");
-    const darkIcon = document.getElementById("theme-icon-dark");
-    const lightIcon = document.getElementById("theme-icon-light");
-    const button = document.getElementById("theme-toggle");
-    const themeColor = document.getElementById("theme-color");
+  type Scheme = "light" | "dark";
 
-    if (darkIcon) darkIcon.classList.toggle("hidden", isLight);
-    if (lightIcon) lightIcon.classList.toggle("hidden", !isLight);
-    button?.setAttribute("aria-label", isLight ? "Switch to dark theme" : "Switch to light theme");
-    themeColor?.setAttribute("content", isLight ? "#fafafa" : "#0c0d0c");
+  const root = document.documentElement;
+  const schemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+  const pageColor: Record<Scheme, string> = { light: "#fafafa", dark: "#0c0d0c" };
+
+  // The scheme on screen: the pinned one, else the system's.
+  function shownScheme(): Scheme {
+    const pinned = schemeMeta?.content;
+    if (pinned === "light" || pinned === "dark") return pinned;
+    return systemDark.matches ? "dark" : "light";
   }
 
-  function persistTheme(theme: "light" | "dark") {
-    try {
-      localStorage.setItem("theme", theme);
-    } catch {}
-  }
-
-  function applyTheme(theme: "light" | "dark") {
-    document.documentElement.classList.toggle("light", theme === "light");
-    document.documentElement.dataset.theme = theme === "light"
-      ? "github-light-high-contrast"
-      : "github-dark-high-contrast";
-    persistTheme(theme);
-    updateIcons();
+  // null follows the system again. The icons, labels and colours all key off the meta in CSS.
+  function applyTheme(pinned: Scheme | null, persist = true) {
+    if (schemeMeta) schemeMeta.content = pinned ?? "light dark";
+    if (pinned) root.dataset.theme = `github-${pinned}-high-contrast`;
+    else delete root.dataset.theme;
+    for (const meta of document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')) {
+      const scheme = pinned ?? (meta.media.includes("dark") ? "dark" : "light");
+      meta.content = pageColor[scheme];
+    }
+    if (persist) {
+      try {
+        if (pinned) localStorage.setItem("theme", pinned);
+        else localStorage.removeItem("theme");
+      } catch {}
+    }
     window.dispatchEvent(new CustomEvent("portfolio:theme-change"));
   }
 
+  // Flips what is on screen. Landing on the system's own scheme unpins, so the site follows the system again;
+  // a pin the system later comes to match is kept.
   function toggleTheme() {
-    const isLight = document.documentElement.classList.contains("light");
-    const newTheme = isLight ? "dark" : "light";
+    const target: Scheme = shownScheme() === "dark" ? "light" : "dark";
+    const system: Scheme = systemDark.matches ? "dark" : "light";
+    const pinned = target === system ? null : target;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (document.startViewTransition && !reduceMotion) {
       // Marks this transition as the theme switch, so page changes don't play its mask.
-      const root = document.documentElement;
       root.classList.add("theme-switching");
-      document
-        .startViewTransition(() => {
-          applyTheme(newTheme);
-        })
-        .finished.finally(() => root.classList.remove("theme-switching"));
+      const transition = document.startViewTransition(() => {
+        applyTheme(pinned);
+      });
+      // A skipped animation (a hidden tab, say) still switches the theme; only the mask is lost.
+      transition.ready.catch(() => {});
+      transition.finished.finally(() => root.classList.remove("theme-switching"));
     } else {
-      applyTheme(newTheme);
+      applyTheme(pinned);
     }
   }
 
-  updateIcons();
-
   const btn = document.getElementById("theme-toggle");
   btn?.addEventListener("click", toggleTheme);
+
+  // A switch made in another tab arrives here, so open tabs stay on the same theme.
+  window.addEventListener("storage", (event) => {
+    if (event.key !== "theme" && event.key !== null) return;
+    const value = event.newValue;
+    applyTheme(event.key && (value === "light" || value === "dark") ? value : null, false);
+  });
 
   // On the homepage, mark the nav link whose section is in view.
   function trackActiveSection() {

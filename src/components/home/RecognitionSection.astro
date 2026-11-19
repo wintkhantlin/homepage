@@ -124,7 +124,7 @@ const largePhotos = await Promise.all(
   </div>
 
   <!-- Opens over the page when scripting runs; without it, each photo link opens the full-size file. -->
-  <dialog class="photo-viewer" aria-labelledby="photo-viewer-caption" data-photo-viewer data-photos={JSON.stringify(largePhotos)}>
+  <dialog class="photo-viewer" closedby="any" aria-labelledby="photo-viewer-caption" data-photo-viewer data-photos={JSON.stringify(largePhotos)}>
     <figure class="photo-viewer-figure">
       <div class="photo-viewer-stage" data-viewer-stage>
       <img class="photo-viewer-img" src={largePhotos[0].src} width={largePhotos[0].width} height={largePhotos[0].height} alt={largePhotos[0].alt} data-viewer-img />
@@ -269,12 +269,17 @@ const largePhotos = await Promise.all(
       opener?.focus({ preventScroll: true });
     });
 
-    // A click on the backdrop lands on the dialog itself, never on its content.
-    viewer.addEventListener("click", (event) => {
-      if (event.target !== viewer) return;
-      const box = viewer.getBoundingClientRect();
-      if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) close();
-    });
+    // closedby="any" lets a click on the backdrop close the viewer through the cancel handler above. Where the browser
+    // lacks it (Safari), a press and release both outside the box close it, so a drag ending on the backdrop does not.
+    if (!("closedBy" in HTMLDialogElement.prototype)) {
+      const outside = (event: PointerEvent) => {
+        const box = viewer.getBoundingClientRect();
+        return event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom;
+      };
+      let pressedOutside = false;
+      viewer.addEventListener("pointerdown", (event) => { pressedOutside = outside(event); });
+      viewer.addEventListener("pointerup", (event) => { if (pressedOutside && outside(event)) close(); });
+    }
   }
 </script>
 
@@ -374,9 +379,15 @@ const largePhotos = await Promise.all(
 
 
 
+  .photo-viewer:modal {
+    overscroll-behavior: contain;
+  }
+
   .photo-viewer::backdrop {
     background: color-mix(in srgb, var(--bg) 88%, transparent);
     opacity: var(--viewer-backdrop, 0);
+    overflow: hidden;
+    overscroll-behavior: contain;
   }
 
   .photo-viewer-figure {

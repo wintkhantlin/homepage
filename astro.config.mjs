@@ -81,7 +81,7 @@ export default defineConfig({
   integrations: [
     expressiveCode({
       themes: ["github-dark-high-contrast", "github-light-high-contrast"],
-      useDarkModeMediaQuery: false,
+      useDarkModeMediaQuery: true,
     }),
     mdx(),
     sitemap({

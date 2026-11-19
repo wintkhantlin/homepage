@@ -34,45 +34,53 @@
     --font-mono: var(--font-body), "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-/* ── Dark theme (default) ── */
+/* ── Theme ──
+   Each token is a light-dark() pair, so it follows the used color-scheme. By default that is the visitor's system
+   setting; the header toggle pins one scheme by writing it into <meta name="color-scheme">, which these rules mirror. */
 :root {
-    --bg: #0c0d0c;
-    --surface: #131513;
-    --surface-raised: #191b19;
-    --text: #e7e6e2;
-    --text-heading: #faf9f6;
-    --text-muted: #aaa9a4;
-    --text-faint: #858780;
-    --border: rgba(232, 235, 227, 0.14);
-    --border-strong: rgba(232, 235, 227, 0.22);
-    --focus: #caff77;
-    --code-inline: #1b1e1b;
-    --article-link: #bbc6ff;
-    --selection: #caff77;
-    --selection-text: #10130d;
-    --shadow-color: rgba(0, 0, 0, 0.48);
+    --bg: light-dark(#fafafa, #0c0d0c);
+    --surface: light-dark(#f3f3f2, #131513);
+    --surface-raised: light-dark(#ffffff, #191b19);
+    --text: light-dark(#27272a, #e7e6e2);
+    --text-heading: light-dark(#18181b, #faf9f6);
+    --text-muted: light-dark(#52525b, #aaa9a4);
+    --text-faint: light-dark(#71717a, #858780);
+    --border: light-dark(rgba(161, 161, 170, 0.45), rgba(232, 235, 227, 0.14));
+    --border-strong: light-dark(rgba(113, 113, 122, 0.72), rgba(232, 235, 227, 0.22));
+    --focus: light-dark(#18181b, #caff77);
+    --code-inline: light-dark(#eeeeef, #1b1e1b);
+    --article-link: light-dark(#3b49df, #bbc6ff);
+    --selection: light-dark(#18181b, #caff77);
+    --selection-text: light-dark(#fafafa, #10130d);
+    --shadow-color: light-dark(rgba(24, 24, 27, 0.16), rgba(0, 0, 0, 0.48));
 
+    color-scheme: light dark;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) {
+    color-scheme: light;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
     color-scheme: dark;
 }
 
-/* ── Light theme ── */
-:root.light {
-    --bg: #fafafa;
-    --surface: #f3f3f2;
-    --surface-raised: #ffffff;
-    --text: #27272a;
-    --text-heading: #18181b;
-    --text-muted: #52525b;
-    --text-faint: #71717a;
-    --border: rgba(161, 161, 170, 0.45);
-    --border-strong: rgba(113, 113, 122, 0.72);
-    --focus: #18181b;
-    --code-inline: #eeeeef;
-    --article-link: #3b49df;
-    --selection: #18181b;
-    --selection-text: #fafafa;
-    --shadow-color: rgba(24, 24, 27, 0.16);
-    color-scheme: light;
+/* Shown only in one scheme, however it was chosen; for things a colour token can't switch. */
+@media (prefers-color-scheme: light) {
+    :root:not(:has(> head > meta[name="color-scheme"][content="dark"])) .if-dark {
+        display: none !important;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not(:has(> head > meta[name="color-scheme"][content="light"])) .if-light {
+        display: none !important;
+    }
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) .if-dark,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) .if-light {
+    display: none !important;
 }
 
 .hero-cta {
@@ -437,16 +445,9 @@ body {
 
 @media (prefers-contrast: more) {
     :root {
-        --text-muted: #cac9c4;
-        --text-faint: #b3b5ad;
-        --border: rgba(250, 249, 246, 0.34);
-        --border-strong: rgba(250, 249, 246, 0.52);
-    }
-
-    :root.light {
-        --text-muted: #3f3f46;
-        --text-faint: #52525b;
-        --border: rgba(63, 63, 70, 0.46);
-        --border-strong: rgba(39, 39, 42, 0.7);
+        --text-muted: light-dark(#3f3f46, #cac9c4);
+        --text-faint: light-dark(#52525b, #b3b5ad);
+        --border: light-dark(rgba(63, 63, 70, 0.46), rgba(250, 249, 246, 0.34));
+        --border-strong: light-dark(rgba(39, 39, 42, 0.7), rgba(250, 249, 246, 0.52));
     }
 }

@@ -84,8 +84,8 @@ const { chapters: legend, tooling, productFeatures } = buildChapters(components,
 
   <div class="map-frame overscroll-x-contain overflow-x-auto" data-diagram tabindex="0" aria-label="Scrollable system map">
     <!-- Both themes ship as static SVG; CSS shows the one matching the active theme. Each linked node leads to its legend item. -->
-    <div class="diagram-theme diagram-dark min-w-168" role="group" aria-label={`${name} system map`} set:html={diagramDark} />
-    <div class="diagram-theme diagram-light min-w-168" role="group" aria-label={`${name} system map`} set:html={diagramLight} />
+    <div class="diagram-theme diagram-dark if-dark min-w-168" role="group" aria-label={`${name} system map`} set:html={diagramDark} />
+    <div class="diagram-theme diagram-light if-light min-w-168" role="group" aria-label={`${name} system map`} set:html={diagramLight} />
   </div>
 
   <button type="button" class="enlarge-button" data-diagram-enlarge>
@@ -93,7 +93,7 @@ const { chapters: legend, tooling, productFeatures } = buildChapters(components,
     Enlarge diagram
   </button>
 
-  <dialog class="diagram-viewer" aria-label={`${name} system map, enlarged`} data-diagram-viewer>
+  <dialog class="diagram-viewer" closedby="any" aria-label={`${name} system map, enlarged`} data-diagram-viewer>
     <div class="diagram-viewer-canvas" tabindex="0" aria-label="Scrollable system map" data-diagram-canvas></div>
     <div class="mt-3 flex justify-end">
       <button type="button" class="viewer-button" data-diagram-close>
@@ -163,8 +163,8 @@ const { chapters: legend, tooling, productFeatures } = buildChapters(components,
 
   // The viewer shows a copy of the map for the active theme, with its node links taken out: it is for looking.
   document.querySelector<HTMLButtonElement>("[data-diagram-enlarge]")?.addEventListener("click", () => {
-    const theme = document.documentElement.classList.contains("light") ? "light" : "dark";
-    const svg = diagram?.querySelector<SVGSVGElement>(`.diagram-${theme} svg`);
+    const shown = [...(diagram?.querySelectorAll<HTMLElement>(".diagram-theme") ?? [])].find((map) => map.checkVisibility());
+    const svg = shown?.querySelector<SVGSVGElement>("svg");
     if (!viewer || !canvas || !svg) return;
     const copy = svg.cloneNode(true) as SVGSVGElement;
     copy.style.maxWidth = "none";
@@ -176,10 +176,17 @@ const { chapters: legend, tooling, productFeatures } = buildChapters(components,
 
   closeViewer?.addEventListener("click", () => viewer?.close());
 
-  // A click on the backdrop lands on the dialog itself, never on its content.
-  viewer?.addEventListener("click", (event) => {
-    if (event.target === viewer) viewer.close();
-  });
+  // closedby="any" closes the viewer on a backdrop click. Where the browser lacks it (Safari), test the pointer against
+  // the box rather than event.target, which is also the dialog for its own padding; press and release must both be outside.
+  if (viewer && !("closedBy" in HTMLDialogElement.prototype)) {
+    const outside = (event: PointerEvent) => {
+      const box = viewer.getBoundingClientRect();
+      return event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom;
+    };
+    let pressedOutside = false;
+    viewer.addEventListener("pointerdown", (event) => { pressedOutside = outside(event); });
+    viewer.addEventListener("pointerup", (event) => { if (pressedOutside && outside(event)) viewer.close(); });
+  }
 
   // The legend and the map point at each other: a legend item under the pointer or in focus lights its nodes (the rest
   // step back), and a node, clicked or entered, brings its legend item into view and focus. Without scripting the
@@ -595,10 +602,6 @@ const { chapters: legend, tooling, productFeatures } = buildChapters(components,
   }
 
   /* ── The map's drawing and its viewer ── */
-  :global(.diagram-theme) {
-    display: none;
-  }
-
   :global(.diagram-theme svg) {
     display: block;
     margin-inline: auto;
@@ -608,18 +611,6 @@ const { chapters: legend, tooling, productFeatures } = buildChapters(components,
   :global(.diagram-theme .edgeLabel text),
   .diagram-viewer-canvas :global(.edgeLabel text) {
     fill: var(--text-heading) !important;
-  }
-
-  :global(.diagram-dark) {
-    display: block;
-  }
-
-  :global(.light .diagram-dark) {
-    display: none;
-  }
-
-  :global(.light .diagram-light) {
-    display: block;
   }
 
   .diagram-viewer {
@@ -634,8 +625,14 @@ const { chapters: legend, tooling, productFeatures } = buildChapters(components,
     color: var(--text);
   }
 
+  .diagram-viewer:modal {
+    overscroll-behavior: contain;
+  }
+
   .diagram-viewer::backdrop {
     background: color-mix(in srgb, var(--bg) 88%, transparent);
+    overflow: hidden;
+    overscroll-behavior: contain;
   }
 
   .diagram-viewer-canvas {

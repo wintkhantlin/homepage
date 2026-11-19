@@ -68,7 +68,21 @@ const structuredDataPayload = structuredData
     <meta name="author" content={siteConfig.author} />
     <meta name="keywords" content={metaKeywords.join(", ")} />
     <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
-    <meta name="theme-color" content="#0c0d0c" id="theme-color" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0d0c" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      // Only the pinned scheme, applied before first paint; Header.astro does the switching.
+      document.documentElement.classList.add('js');
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') {
+          document.querySelector('meta[name="color-scheme"]').content = theme;
+          document.documentElement.dataset.theme = 'github-' + theme + '-high-contrast';
+          for (const meta of document.querySelectorAll('meta[name="theme-color"]')) meta.content = theme === 'light' ? '#fafafa' : '#0c0d0c';
+        }
+      } catch {}
+    </script>
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
     <meta property="og:locale" content={locale} />
@@ -100,23 +114,6 @@ const structuredDataPayload = structuredData
         <script is:inline type="application/ld+json" set:html={structuredDataPayload} />
       )
     }
-    <script is:inline>
-      (function() {
-        document.documentElement.classList.add('js');
-
-        let theme = 'dark';
-        try {
-          theme = localStorage.getItem('theme') || 'dark';
-        } catch {}
-
-        const isLight = theme === 'light';
-        document.documentElement.classList.toggle('light', isLight);
-        document.documentElement.dataset.theme = isLight
-          ? 'github-light-high-contrast'
-          : 'github-dark-high-contrast';
-        document.querySelector('#theme-color')?.setAttribute('content', isLight ? '#fafafa' : '#0c0d0c');
-      })();
-    </script>
   </head>
   <body>
     <a lang="en" class="skip-link" href="#main-content">Skip to main content</a>

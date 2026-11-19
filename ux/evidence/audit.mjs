@@ -26,10 +26,6 @@ const viewports = {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-function round(n, digits = 2) {
-  return Number.isFinite(n) ? Number(n.toFixed(digits)) : n;
-}
-
 async function collectPage(page) {
   return page.evaluate(() => {
     const text = (el) => (el?.textContent || "").replace(/\s+/g, " ").trim();

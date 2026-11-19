@@ -1,9 +1,6 @@
 import { chromium } from 'playwright-core';
 const b = await chromium.launch({ channel: 'chrome', headless: true });
 const out = {};
-const parse = (v) => { const m = String(v).match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(/[,\s/]+/).filter(Boolean).map(Number); return { r:p[0],g:p[1],b:p[2],a:p[3]??1 }; };
-const lum = ({r,g,b}) => { const f=(v)=>{v/=255;return v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4;}; return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b); };
-const ratio=(a,b)=>{const l1=lum(a),l2=lum(b);return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05);};
 async function scan(page, theme) {
   return await page.evaluate((theme) => {
     const parse = (v) => { const m = String(v).match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(/[,\s/]+/).filter(Boolean).map(Number); return { r:p[0],g:p[1],b:p[2],a:p[3]??1 }; };

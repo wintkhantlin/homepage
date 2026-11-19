@@ -22,11 +22,6 @@ function wire(page, bucket) {
   });
 }
 
-const rect = (el) => {
-  const r = el.getBoundingClientRect();
-  return { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height), right: Math.round(r.right), bottom: Math.round(r.bottom) };
-};
-
 const pageProbe = () => {
   const text = (el) => (el?.textContent || "").replace(/\s+/g, " ").trim();
   const vis = (el) => {
